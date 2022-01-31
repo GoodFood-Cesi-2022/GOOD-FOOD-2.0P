@@ -1,0 +1,44 @@
+site_name: GOODFOOD API DOC
+site_url: "http://localhost:8000"
+dev_addr: "localhost:8000"
+
+nav:
+  - Accueil: index.md
+  - Services: 
+    - Conteneurs: services/services.md
+    - Installation: services/install.md
+    - Configuration: services/conf.md
+  - Développement:
+    - API: debug/postman.md
+    - Débuggage: debug/telescope.md
+  - Test:
+    - PHPUnit: test/phpunit.md
+
+theme:
+  name: material
+  palette: 
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+      primary: teal
+      accent: teal
+    - scheme: slate 
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+      primary: red
+      accent: red
+  icon:
+    logo: material/noodles
+
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

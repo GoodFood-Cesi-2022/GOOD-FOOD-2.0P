@@ -1,0 +1,1 @@
+CREATE DATABASE goodfood OWNER goodfood_user;

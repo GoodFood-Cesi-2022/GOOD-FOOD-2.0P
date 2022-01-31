@@ -1,0 +1,104 @@
+version: "3.7"
+services:
+  api:
+    build:
+      args:
+        user: www
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: goodfood
+    container_name: goodfood-api
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - goodfood
+  db:
+    image: postgres
+    container_name: goodfood-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DATABASE: ${DB_DATABASE}
+      POSTGRES_ROOT_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: postgres
+    volumes:
+      - ./.docker-compose/postgresql:/docker-entrypoint-initdb.d
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - goodfood
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
+      retries: 3
+      timeout: 5s
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: goodfood-nginx
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    volumes:
+      - ./:/var/www
+      - ./.docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      - goodfood
+  cache:
+    image: redis:6-alpine
+    container_name: goodfood-cache
+    restart: unless-stopped
+    networks:
+      - goodfood
+    volumes:
+      - cache-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      retries: 3
+      timeout: 5s
+  search:
+    image: typesense/typesense:0.22.1
+    container_name: goodfood-search
+    restart: unless-stopped
+    entrypoint: sh -c "/opt/typesense-server --data-dir /data --api-key=${TYPESENSE_API_KEY} --enable-cors"
+    networks:
+      - goodfood
+    volumes:
+      - search-data:/data
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: goodfood-mailhog
+    restart: unless-stopped
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - goodfood
+  doc:
+    build:
+      context: ./
+      dockerfile: ./.doc/Dockerfile
+    image: goodfood-doc
+    container_name: goodfood-doc
+    restart: unless-stopped
+    working_dir: /docs
+    volumes:
+      - ./.doc:/docs
+    ports:
+      - 8009:8000
+
+networks:
+  goodfood:
+    driver: bridge
+
+volumes:
+  search-data:
+    driver: local
+  db-data:
+    driver: local
+  cache-data:
+    driver: local
