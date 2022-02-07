@@ -38,14 +38,19 @@ services:
       retries: 3
       timeout: 5s
   nginx:
-    image: nginx:1.17-alpine
+    build:
+      context: ./
+      dockerfile: ./.docker-compose/nginx/Dockerfile
+      args:
+        user: www
+        uid: 1000
+    image: goodfood-nginx
     container_name: goodfood-nginx
     restart: unless-stopped
     ports:
       - 8080:80
     volumes:
       - ./:/var/www
-      - ./.docker-compose/nginx:/etc/nginx/conf.d
     networks:
       - goodfood
   cache:
@@ -90,6 +95,27 @@ services:
       - ./.doc:/docs
     ports:
       - 8009:8000
+  doctum:
+    build:
+      context: ./
+      dockerfile: ./.doctum/Dockerfile
+    container_name: goodfood-doctum
+    image: goodfood-doctum
+    restart: unless-stopped
+    ports:
+      - 8010:80
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: goodfood-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.admin"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - 5050:80
+    networks:
+      - goodfood
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
 
 networks:
   goodfood:
@@ -101,4 +127,6 @@ volumes:
   db-data:
     driver: local
   cache-data:
+    driver: local
+  pgadmin-data:
     driver: local

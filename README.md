@@ -25,7 +25,7 @@ docker-compose up -d
 5. Installation des dépendances composer
 
 ```bash
-docker-composer exec api composer install
+docker-compose exec api composer install
 ```
 
 Vérifier l'installation [localhost:8080](http://localhost:8080)
