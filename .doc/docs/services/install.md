@@ -20,10 +20,30 @@ docker-compose build api
 docker-compose build doc
 ```
 
+### NGINX
+
+!!! tip "Pour les droits utilisateurs"
+
+```bash
+docker-compose build nginx
+```
+
+### Doctum
+
+```
+docker-compose build doctum
+```
+
 ## Lancement des services
 
 ```bash
 docker-compose up -d
+```
+
+### Installation des dépendances composer
+
+```bash
+docker-compose exec api composer install
 ```
 
 Toutes les resources seront contruites et l'application sera disponible à l'adresse suivante [localhost:8080](http://localhost:8080)
@@ -70,10 +90,6 @@ Une petite liste d'extras
 ### PGADMIN
 
 Pour consulter la base de données et la gérer via un navigateur
-
-```bash
-docker run -d --name pgadmin --network good-food-20p_goodfood -p 5050:80 --env PGADMIN_DEFAULT_EMAIL="admin@admin.admin" --env PGADMIN_DEFAULT_PASSWORD="admin" -v pgadmin:/var/lib/pgadmin dpage/pgadmin4
-```
 
 Rendez-vous sur le lien [localhost:5050](http://localhost:5050)
 

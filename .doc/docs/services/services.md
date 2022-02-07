@@ -13,12 +13,14 @@ Liste des conteneurs pour gérer les services de l'application.
 |search||8108|`HTTP`| Service pour l'indexation et la recherche de résultat|PROD|
 |mailhog|8025,1025|8025,1025|`HTTP`,`SMTP`|Faker de boite mail pour tester les mails envoyés de l'application|DEV|
 |doc|8009|8000|`HTTP`|Documentation [MKdocs Material](https://squidfunk.github.io/mkdocs-material/) pour la documentation technique|DEV|
+|pgadmin|5050|80|`HTTP`|Interface pour gérer la base de données depuis une application web. [configuration](/services/PGADMIN)|PROD|
+|doctum|8010|80|`HTTP`|Documentation API pour les références DocBlock|DEV|
 
 ### Réseau
 
 L'ensemble des conteneurs sont sur le réseau `goodfood` pour qu'ils puissent communiquer entre eux.
 
-!!! danger "Exception pour le conteneur de doc"
+!!! danger "Exception pour le conteneur de doc, doctum"
 
 ### Stockage
 
@@ -27,7 +29,7 @@ Pour le développement nous utilisons le stockage physique de l'hôte pour enreg
 La base de données possède un volume fixe ainsi que le service search et le cache.
 
 
-## Conteneur Personnalisé
+## Conteneurs Personnalisés
 
 ### API
 
@@ -50,3 +52,11 @@ docker-compose build api
 
 La configuration est disponible dans le fichier `./doc/Dockerfile`. Pour l'instant il est vide mais il sera peut-être nécessaire de rajouter des extensions ou des étapes de constuction.
 
+
+### DOC API REFERENCES
+
+Cette documentation est générée par [DOCTUM](https://github.com/code-lts/doctum). Cette documentation contient les références des `DocBlock` contenu dans le dossier `app` du dépôt.
+
+Elle est accessible sur [localhost:8010](http://localhost:8010)
+
+La configuration est disponible dans le dichier `./doctum/Dockerfile`

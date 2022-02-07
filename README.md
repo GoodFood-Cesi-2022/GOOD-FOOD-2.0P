@@ -9,11 +9,7 @@ Bienvenue sur le repo de l'API GOODFOOD.
 3. Créer les images
 
 ```bash
-docker-compose build api
-```
-
-```bash
-docker-compose build doc
+docker-compose build
 ```
 
 4. Lancez les conteneurs
