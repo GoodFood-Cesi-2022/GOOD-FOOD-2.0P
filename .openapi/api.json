@@ -1,0 +1,10 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "GOODFOOD API",
+      "version": "0.0.0"
+    },
+    "paths": {
+      
+    }
+}

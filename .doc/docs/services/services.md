@@ -15,12 +15,13 @@ Liste des conteneurs pour gérer les services de l'application.
 |doc|8009|8000|`HTTP`|Documentation [MKdocs Material](https://squidfunk.github.io/mkdocs-material/) pour la documentation technique|DEV|
 |pgadmin|5050|80|`HTTP`|Interface pour gérer la base de données depuis une application web. [configuration](/services/PGADMIN)|PROD|
 |doctum|8010|80|`HTTP`|Documentation API pour les références DocBlock|DEV|
+|redoc|8011|80|`HTTP`|Conteneur pour visualiser les spécifications de l'API au format OPEN API V3|DEV|
 
 ### Réseau
 
 L'ensemble des conteneurs sont sur le réseau `goodfood` pour qu'ils puissent communiquer entre eux.
 
-!!! danger "Exception pour le conteneur de doc, doctum"
+!!! danger "Exception pour le conteneur de doc, doctum, redoc"
 
 ### Stockage
 
@@ -31,7 +32,7 @@ La base de données possède un volume fixe ainsi que le service search et le ca
 
 ## Conteneurs Personnalisés
 
-### API
+### API (app laravel)
 
 Le conteneur de l'API est personnalisé. Il est construit à partir du fichier `./Dockerfile`. Il est basé sur l'image `php:8.1-fpm`. 
 
@@ -45,7 +46,7 @@ Pour build l'image
 docker-compose build api
 ```
 
-### DOC
+### DOC (mkdocs)
 
 !!! tip "Par défaut le site est en hot-relive"
     Quand vous mettez à jour la documentation le site se recharge automatiquement.
@@ -53,10 +54,17 @@ docker-compose build api
 La configuration est disponible dans le fichier `./doc/Dockerfile`. Pour l'instant il est vide mais il sera peut-être nécessaire de rajouter des extensions ou des étapes de constuction.
 
 
-### DOC API REFERENCES
+### DOC API REFERENCES (doctum)
 
 Cette documentation est générée par [DOCTUM](https://github.com/code-lts/doctum). Cette documentation contient les références des `DocBlock` contenu dans le dossier `app` du dépôt.
 
 Elle est accessible sur [localhost:8010](http://localhost:8010)
 
 La configuration est disponible dans le dichier `./doctum/Dockerfile`
+
+
+### DOC API SPECIFICATIONS (redoc)
+
+Documentation pour convertir en une page HTML statique et voir les spécifications de l'API définit au format OPENAPI V3. Accessible sur [localhost:8011](http://localhost:8011)
+
+La configuration du conteneur est disponible `./openapi/Dockerfile`
