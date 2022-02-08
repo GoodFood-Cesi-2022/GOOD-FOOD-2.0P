@@ -7,6 +7,7 @@ pipeline {
                 DB_DATABASE = credentials("goodfood_database")
                 DB_USERNAME = credentials("goodfood_database_user")
                 DB_PASSWORD = credentials("goodfood_database_password")
+                DB_PORT = credentials("goodfood_database_port")
                 TYPESENSE_API_KEY = credentials("typesense_api_key")
             }
             steps {
@@ -20,7 +21,7 @@ pipeline {
                 sh "echo DB_DATABASE=${DB_DATABASE} >> .env"
                 sh "echo DB_USERNAME=${DB_USERNAME} >> .env"
                 sh "echo DB_PASSWORD=${DB_PASSWORD} >> .env"
-                sh "echo DB_PORT=5432"
+                sh "echo DB_PORT=${DB_PORT} >> .env"
                 sh "echo TYPESENSE_API_KEY=${TYPESENSE_API_KEY} >> .env"
                 sh "php artisan key:generate"
                 sh "cp .env .env.testing"
