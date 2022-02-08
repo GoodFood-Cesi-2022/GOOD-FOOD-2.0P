@@ -116,6 +116,14 @@ services:
       - goodfood
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+  redoc:
+    build: 
+      context: ./
+      dockerfile: ./.openapi/Dockerfile
+    image: goodfood-redoc
+    container_name: goodfood-redoc
+    ports:
+      - 8011:80
 
 networks:
   goodfood:
