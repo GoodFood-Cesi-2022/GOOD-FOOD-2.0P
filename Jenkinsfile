@@ -32,17 +32,5 @@ pipeline {
                 sh "vendor/bin/phpunit --coverage-html 'reports/coverage'"
             }
         }
-        stage("Static Code Analysis") {
-            steps {}
-        }
-        stage("Build Technical Doc - MkDocs") {
-            steps {}
-        }
-        stage("Build Reference Doc - Doctum") {
-            steps {}
-        }
-        stage("Build API Doc - OpenApi") {
-            steps {}
-        }
     }
 }
