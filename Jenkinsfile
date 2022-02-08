@@ -9,6 +9,8 @@ pipeline {
                 DB_PASSWORD = credentials("goodfood_database_password")
             }
             steps {
+                sh "docker-compose build api db nginx cache search"
+                sh "docker-compose up -d api db nginx cache search"
                 sh "php --version"
                 sh "composer --version"
                 sh "composer install"
@@ -24,12 +26,17 @@ pipeline {
         }
         stage("Unit") {
             steps {
-                sh "php artisan test"
+                sh "docker exec api php artisan test"
             }
         }
         stage("Code Coverage") {
             steps {
-                sh "vendor/bin/phpunit --coverage-html 'reports/coverage'"
+                sh "docker exec api vendor/bin/phpunit --coverage-html 'reports/coverage'"
+            }
+        }
+        stage("Clean") {
+            steps {
+                sh "docker-compose down --volumes --rmi all"
             }
         }
     }
