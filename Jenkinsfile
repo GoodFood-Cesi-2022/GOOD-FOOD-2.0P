@@ -20,6 +20,7 @@ pipeline {
                 sh "echo DB_DATABASE=${DB_DATABASE} >> .env"
                 sh "echo DB_USERNAME=${DB_USERNAME} >> .env"
                 sh "echo DB_PASSWORD=${DB_PASSWORD} >> .env"
+                sh "echo DB_PORT=5432"
                 sh "echo TYPESENSE_API_KEY=${TYPESENSE_API_KEY} >> .env"
                 sh "php artisan key:generate"
                 sh "cp .env .env.testing"
