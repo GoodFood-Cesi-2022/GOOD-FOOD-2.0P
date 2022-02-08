@@ -3,10 +3,10 @@ pipeline {
     stages {
         stage("Build") {
             environment {
-                DB_HOST = credentials("db")
-                DB_DATABASE = credentials("goodfood")
-                DB_USERNAME = credentials("goodfood_user")
-                DB_PASSWORD = credentials("goodfood_user")
+                DB_HOST = credentials("goodfood_database_host")
+                DB_DATABASE = credentials("goodfood_database")
+                DB_USERNAME = credentials("goodfood_database_user")
+                DB_PASSWORD = credentials("goodfood_database_password")
             }
             steps {
                 sh "php --version"
