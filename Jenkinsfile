@@ -13,9 +13,9 @@ pipeline {
             steps {
                 sh "docker-compose build api db nginx cache search"
                 sh "docker-compose up -d api db nginx cache search"
-                sh "docker-compose exec api php --version"
-                sh "docker-compose exec api composer --version"
-                sh "docker-compose exec api composer install"
+                sh "docker-compose exec -T api php --version"
+                sh "docker-compose exec -T api composer --version"
+                sh "docker-compose exec -T api composer install"
                 sh "cp .env.example .env"
                 sh "echo DB_HOST=${DB_HOST} >> .env"
                 sh "echo DB_DATABASE=${DB_DATABASE} >> .env"
@@ -23,19 +23,19 @@ pipeline {
                 sh "echo DB_PASSWORD=${DB_PASSWORD} >> .env"
                 sh "echo DB_PORT=${DB_PORT} >> .env"
                 sh "echo TYPESENSE_API_KEY=${TYPESENSE_API_KEY} >> .env"
-                sh "docker-compose exec api php artisan key:generate"
+                sh "docker-compose exec -T api php artisan key:generate"
                 sh "cp .env .env.testing"
-                sh "docker-compose exec api php artisan migrate"
+                sh "docker-compose exec -T api php artisan migrate"
             }
         }
         stage("Unit") {
             steps {
-                sh "docker-compose exec api php artisan test"
+                sh "docker-compose exec -T api php artisan test"
             }
         }
         stage("Code Coverage") {
             steps {
-                sh "docker-compose exec api vendor/bin/phpunit --coverage-html 'reports/coverage'"
+                sh "docker-compose exec -T api vendor/bin/phpunit --coverage-html 'reports/coverage'"
             }
         }
     }
