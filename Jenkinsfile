@@ -13,29 +13,29 @@ pipeline {
             steps {
                 sh "docker-compose build api db nginx cache search"
                 sh "docker-compose up -d api db nginx cache search"
-                sh "docker exec api php --version"
-                sh "docker exec api composer --version"
-                sh "docker exec api composer install"
-                sh "docker exec api cp .env.example .env"
-                sh "docker exec api echo DB_HOST=${DB_HOST} >> .env"
-                sh "docker exec api echo DB_DATABASE=${DB_DATABASE} >> .env"
-                sh "docker exec api echo DB_USERNAME=${DB_USERNAME} >> .env"
-                sh "docker exec api echo DB_PASSWORD=${DB_PASSWORD} >> .env"
-                sh "docker exec api echo DB_PORT=${DB_PORT} >> .env"
-                sh "docker exec api echo TYPESENSE_API_KEY=${TYPESENSE_API_KEY} >> .env"
-                sh "docker exec api php artisan key:generate"
-                sh "docker exec api cp .env .env.testing"
-                sh "docker exec api php artisan migrate"
+                sh "docker-compose exec api php --version"
+                sh "docker-compose exec api composer --version"
+                sh "docker-compose exec api composer install"
+                sh "cp .env.example .env"
+                sh "echo DB_HOST=${DB_HOST} >> .env"
+                sh "echo DB_DATABASE=${DB_DATABASE} >> .env"
+                sh "echo DB_USERNAME=${DB_USERNAME} >> .env"
+                sh "echo DB_PASSWORD=${DB_PASSWORD} >> .env"
+                sh "echo DB_PORT=${DB_PORT} >> .env"
+                sh "echo TYPESENSE_API_KEY=${TYPESENSE_API_KEY} >> .env"
+                sh "docker-compose exec api php artisan key:generate"
+                sh "cp .env .env.testing"
+                sh "docker-compose exec api php artisan migrate"
             }
         }
         stage("Unit") {
             steps {
-                sh "docker exec api php artisan test"
+                sh "docker-compose exec api php artisan test"
             }
         }
         stage("Code Coverage") {
             steps {
-                sh "docker exec api vendor/bin/phpunit --coverage-html 'reports/coverage'"
+                sh "docker-compose exec api vendor/bin/phpunit --coverage-html 'reports/coverage'"
             }
         }
     }
