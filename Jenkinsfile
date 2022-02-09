@@ -18,12 +18,12 @@ pipeline {
                 sh "docker-compose exec -T api composer --version"
                 sh "docker-compose exec -T api composer install"
                 sh "cp .env.example .env"
-                sh 'sed -i s/"DB_HOST=[0-9a-zA-Z\.]*/DB_HOST=${DB_HOST}/"g .env'
-                sh 'sed -i s/"DB_DATABASE=[0-9a-zA-Z\.]*/DB_DATABASE=${DB_DATABASE}/"g .env'
-                sh 'sed -i s/"DB_USERNAME=[0-9a-zA-Z\.]*/DB_USERNAME=${DB_USERNAME}/"g .env'
-                sh 'sed -i s/"DB_PASSWORD=[0-9a-zA-Z\.]*/DB_PASSWORD=${DB_PASSWORD}/"g .env'
-                sh 'sed -i s/"DB_PORT=[0-9a-zA-Z\.]*/DB_PORT=${DB_PORT}/"g .env'
-                sh 'sed -i s/"TYPESENSE_API_KEY=[0-9a-zA-Z\.]*/TYPESENSE_API_KEY=${TYPESENSE_API_KEY}/"g .env'
+                sh 'sed -i s/"DB_HOST=[0-9a-zA-Z.]*/DB_HOST=${DB_HOST}/"g .env'
+                sh 'sed -i s/"DB_DATABASE=[0-9a-zA-Z.]*/DB_DATABASE=${DB_DATABASE}/"g .env'
+                sh 'sed -i s/"DB_USERNAME=[0-9a-zA-Z.]*/DB_USERNAME=${DB_USERNAME}/"g .env'
+                sh 'sed -i s/"DB_PASSWORD=[0-9a-zA-Z.]*/DB_PASSWORD=${DB_PASSWORD}/"g .env'
+                sh 'sed -i s/"DB_PORT=[0-9a-zA-Z.]*/DB_PORT=${DB_PORT}/"g .env'
+                sh 'sed -i s/"TYPESENSE_API_KEY=[0-9a-zA-Z.]*/TYPESENSE_API_KEY=${TYPESENSE_API_KEY}/"g .env'
                 sh "docker-compose exec -T api php artisan key:generate"
                 sh "cp .env .env.testing"
                 sh "docker-compose exec -T api php artisan migrate"
