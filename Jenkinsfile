@@ -13,6 +13,7 @@ pipeline {
             steps {
                 sh "docker-compose build api db nginx cache search"
                 sh "docker-compose up -d api db nginx cache search"
+                sh "docker-compose exec -T api ls -l"
                 sh "docker-compose exec -T api php --version"
                 sh "docker-compose exec -T api composer --version"
                 sh "docker-compose exec -T api composer install"
