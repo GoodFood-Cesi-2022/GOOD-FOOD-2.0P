@@ -38,10 +38,10 @@ pipeline {
                 sh "docker exec api vendor/bin/phpunit --coverage-html 'reports/coverage'"
             }
         }
-        stage("Clean") {
-            steps {
-                sh "docker-compose down --volumes --rmi all"
-            }
+    }
+    post {
+        always {
+            sh "docker-compose down --volumes --rmi all"
         }
     }
 }
