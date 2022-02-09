@@ -37,6 +37,15 @@ pipeline {
         stage("Code Coverage") {
             steps {
                 sh "docker-compose exec -T api vendor/bin/phpunit --coverage-html 'reports/coverage'"
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: false,
+                    reportDir: 'reports/coverage', 
+                    reportFiles: 'index.html', 
+                    reportName: 'HTML Report', 
+                    reportTitles: ''
+                ])
             }
         }
     }
