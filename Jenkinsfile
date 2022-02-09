@@ -31,7 +31,7 @@ pipeline {
         }
         stage("Unit") {
             steps {
-                sh "docker-compose exec -T api php artisan test"
+                sh "docker-compose exec -T api php artisan test --without-tty"
             }
         }
         stage("Code Coverage") {
