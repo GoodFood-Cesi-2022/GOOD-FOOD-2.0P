@@ -39,7 +39,7 @@ pipeline {
                 // XDEBUG_MODE=coverage
                 // /bin/bash -c "export XDEBUG_MODE=coverage && vendor/bin/phpunit --coverage-html 'reports/coverage'"
                 // sh "docker-compose exec -T api vendor/bin/phpunit --coverage-html reports/coverage"
-                sh "docker-compose exec -Ti api /bin/bash -c 'export XDEBUG_MODE=coverage && vendor/bin/phpunit --coverage-html reports/coverage'"
+                sh "docker-compose exec -T api /bin/bash -c 'export XDEBUG_MODE=coverage && vendor/bin/phpunit --coverage-html reports/coverage'"
                 publishHTML([
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
