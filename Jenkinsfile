@@ -48,12 +48,12 @@ pipeline {
                 ])
             }
         }
-        stage('SonarQube Analysis') {
-            def scannerHome = tool 'sonar-api-scanner'
-            withSonarQubeEnv() {
-                sh "${scannerHome}/bin/sonar-api-scanner"
-            }
-        }
+        // stage('SonarQube Analysis') {
+        //     def scannerHome = tool 'sonar-api-scanner'
+        //     withSonarQubeEnv() {
+        //         sh "${scannerHome}/bin/sonar-api-scanner"
+        //     }
+        // }
     }
     post {
         always {
