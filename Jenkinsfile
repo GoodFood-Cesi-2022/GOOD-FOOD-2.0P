@@ -36,9 +36,6 @@ pipeline {
         }
         stage("Code Coverage") {
             steps {
-                // XDEBUG_MODE=coverage
-                // /bin/bash -c "export XDEBUG_MODE=coverage && vendor/bin/phpunit --coverage-html 'reports/coverage'"
-                // sh "docker-compose exec -T api vendor/bin/phpunit --coverage-html reports/coverage"
                 sh "docker-compose exec -T api /bin/bash -c 'export XDEBUG_MODE=coverage && vendor/bin/phpunit --coverage-html reports/coverage'"
                 publishHTML([
                     allowMissing: false,
@@ -46,9 +43,15 @@ pipeline {
                     keepAll: false,
                     reportDir: 'reports/coverage', 
                     reportFiles: 'index.html', 
-                    reportName: 'HTML Report', 
-                    reportTitles: ''
+                    reportName: 'HTML GOODFOOD API CODE COVERAGE', 
+                    reportTitles: 'CODE COVERAGE'
                 ])
+            }
+        }
+        stage('SonarQube Analysis') {
+            def scannerHome = tool 'sonar-api-scanner'
+            withSonarQubeEnv() {
+                sh "${scannerHome}/bin/sonar-api-scanner"
             }
         }
     }
