@@ -49,9 +49,15 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-            def scannerHome = tool 'sonarqube-scanner'
-            withSonarQubeEnv() {
-                sh "${scannerHome}/bin/sonarqube-scanner"
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh "./gradlew sonarqube"
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+                waitForQualityGate abortPipeline: true
             }
         }
     }
