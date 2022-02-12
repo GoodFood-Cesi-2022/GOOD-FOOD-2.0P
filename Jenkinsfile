@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        scannerHome = tool 'sonar_scanner'
+    }
     stages {
         stage("Build") {
             environment {
@@ -51,7 +54,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh "/opt/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner"
+                    sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
         }
