@@ -51,7 +51,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh "dcoker run sonarsource/sonar-scanner-cli"
+                    sh "docker run sonarsource/sonar-scanner-cli"
                 }
             }
         }
