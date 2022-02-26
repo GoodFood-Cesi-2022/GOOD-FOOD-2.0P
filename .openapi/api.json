@@ -16,6 +16,57 @@
       "tags": [
         "users"
       ],
+      "parameters": [
+        {
+          "in": "query",
+          "name": "role",
+          "description": "Filtre les résultats sur les utilisateurs ayant ce rôle",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "goodfood",
+              "contractor",
+              "user"
+            ]
+          }
+        },
+        {
+          "in": "query",
+          "name": "sort_by",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "created_at",
+              "updated_at",
+              "firstname",
+              "lastname"
+            ]
+          }
+        },
+        {
+          "in": "query",
+          "name": "order_by",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          }
+        },
+        {
+          "in": "query",
+          "name": "search",
+          "description": "Recherche dans le champ lastname, firstname, email",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
       "responses": {
         "200": {
           "description": "OK",
