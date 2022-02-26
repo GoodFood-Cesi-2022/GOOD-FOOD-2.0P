@@ -1,10 +1,718 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "title": "GOODFOOD API",
-      "version": "0.0.0"
+  "openapi": "3.0.0",
+  "info": {
+    "title": "GOODFOOD API",
+    "version": "0.0.0"
+  },
+"servers": [
+  {
+    "url": "localhost:8080/api"
+  }
+],
+  "paths": {
+  "/users": {
+    "get": {
+      "summary": "Récupère la liste des utilisateurs",
+      "tags": [
+        "users"
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+            "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  },
+                  "meta": {
+                    "$ref": "#/components/schemas/PaginationMeta"
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/PaginationLinks"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
-    "paths": {
-      
+    "post": {
+      "summary": "Ajoute un nouvelle utilisateur",
+      "tags": [
+        "users"
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        }
+      }
     }
+  },
+  "/users/{user_id}": {
+    "get": {
+      "summary": "Retourne un utilisateur du système.",
+      "tags": [
+        "users"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/UserId"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "summary": "Modifie les informations d'un utilisateur existant",
+      "tags": [
+        "users"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/UserId"
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "responses": {
+        "204": {
+          "description": "No Content",
+          "content": {}
+        }
+      }
+    },
+    "delete": {
+      "summary": "Supprime un utilisateur du système",
+      "tags": [
+        "users"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/UserId"
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "No Content",
+          "content": {}
+        }
+      }
+    }
+  },
+  "/users/{user_id}/addresses": {
+    "get": {
+      "summary": "Récupére la liste des adresses de l'utilisateur",
+      "tags": [
+        "users"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/UserId"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UserAddress"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "post": {
+      "summary": "Ajoute une adresse à l'utilisateur, l'adresse doit-être préalablement créer dans le système, veuillez regarder la partie de l'API concernant la gestion des adresses.",
+      "tags": [
+        "users"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/UserId"
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "address_id"
+              ],
+              "properties": {
+                "address_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "Un Id d'adresse valide du système"
+                }
+              },
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/UserAddress"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserAddress"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/users/{user_id}/addresses/{address_id}": {
+    "put": {
+      "summary": "Modifie les informations de l'adresse de l'utilisateur, mais ne modifie pas l'adresse elle même. Pour modifier l'adresse veuillez regarder la partie de l'API sur les adresses.",
+      "tags": [
+        "users"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/UserId"
+        },
+        {
+          "$ref": "#/components/parameters/AddressId"
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UserAddress"
+            }
+          }
+        }
+      },
+      "responses": {
+        "204": {
+          "description": "No Content",
+          "content": {}
+        }
+      }
+    },
+    "delete": {
+      "summary": "Supprime l'adresse du compte de l'utilisateur mais ne supprime pas l'adresse du système. Pour supprimer l'adresse du système veuillez regarder la partie de l'API sur les adresses.",
+      "tags": [
+        "users"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/UserId"
+        },
+        {
+          "$ref": "#/components/parameters/AddressId"
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "No Content",
+          "content": {}
+        }
+      }
+    }
+  },
+  "/users/{user_id}/roles": {
+    "get": {
+      "summary": "Retourne les rôles de l'utilisateur.",
+      "tags": [
+        "users"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/UserId"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UserRole"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "post": {
+      "summary": "Ajoute un rôle à l'utilisateur, pour récuperer les rôles du système, veuillez regarder la partie de l'API sur les rôles.",
+      "tags": [
+        "users"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/UserId"
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Role"
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRole"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/users/{user_id}/roles/{role_id}": {
+    "delete": {
+      "summary": "Retire de l'utilisateur le rôle.",
+      "tags": [
+        "users"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/UserId"
+        },
+        {
+          "$ref": "#/components/parameters/RoleId"
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "No Content",
+          "content": {}
+        }
+      }
+    }
+  },
+  "/addresses": {
+    "post": {
+      "summary": "Créé une nouvelle adresse dans le système.",
+      "tags": [
+        "addresses"
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Address"
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Address"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/addresses/{address_id}": {
+    "put": {
+      "summary": "Modifie une adresse existante du système.",
+      "tags": [
+        "addresses"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/AddressId"
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Address"
+            }
+          }
+        }
+      },
+      "responses": {
+        "204": {
+          "description": "No Content",
+          "content": {}
+        }
+      }
+    },
+    "delete": {
+      "summary": "Supprime une adresse du système, uniquement si elle n'est pas utilisée.",
+      "tags": [
+        "addresses"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/AddressId"
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "No Content",
+          "content": {}
+        }
+      }
+    }
+  },
+  "/roles": {
+    "get": {
+      "summary": "Retourne la liste des rôles de la plateforme.",
+      "tags": [
+        "roles"
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  },
+"components": {
+  
+  "schemas": {
+    "User": {
+      "type": "object",
+      "required": [
+        "firstname",
+        "lastname",
+        "phone_number",
+        "email"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        }
+      }
+    },
+    "Address": {
+      "type": "object",
+      "required": [
+        "first_line",
+        "zip_code",
+        "country",
+        "city",
+        "lat",
+        "lon"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly" : true
+        },
+        "first_line": {
+          "type": "string"
+        },
+        "second_line": {
+          "type": "string"
+        },
+        "zip_code": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "lat": {
+          "type": "string"
+        },
+        "lon": {
+          "type": "string"
+        }
+      }
+    },
+    "UserAddress": {
+      "type": "object",
+      "required": [
+        "name",
+        "default",
+        "timezone"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "default": {
+          "type": "boolean"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "deleted_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "readOnly": true
+        },
+        "address": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Address"
+            }
+          ],
+          "readOnly": true
+        }
+      }
+    },
+    "UserRole": {
+      "allOf": [
+        {
+          "$ref" : "#/components/schemas/Role"
+        }
+      ]
+    },
+    "Role": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "code": {
+          "type": "string",
+          "enum": [
+            "goodfood",
+            "contractor",
+            "user"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "description": "Intitulé du rôle.",
+          "readOnly": true
+        },
+        "description": {
+          "type": "string",
+          "description": "Description du rôle.",
+          "readOnly": true
+        }
+      }
+    },
+    "PaginationLinks": {
+      "type": "object",
+      "properties": {
+        "first": {
+          "type": "string",
+          "format": "uri",
+          "readOnly": true
+        },
+        "last": {
+          "type": "string",
+          "format": "uri",
+          "readOnly": true
+        },
+        "prev": {
+          "type": "string",
+          "format": "uri",
+          "readOnly": true
+        },
+        "next": {
+          "type": "string",
+          "format": "uri",
+          "readOnly": true
+        }
+      }
+    },
+    "PaginationMeta": {
+      "type": "object",
+      "properties": {
+        "current_page": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "from": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "last_page": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "path": {
+          "type": "string",
+          "format": "uri",
+          "readOnly": true
+        },
+        "per_page": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "to": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        }
+      }
+    }
+    
+  },
+  "parameters": {
+    "UserId": {
+      "description": "ID d'un utilisateur du système.",
+      "in": "path",
+      "name": "user_id",
+      "schema": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "required": true
+    },
+    "AddressId": {
+      "description": "ID d'une adresse du système",
+      "required": true,
+      "in": "path",
+      "name": "address_id",
+      "schema": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "RoleId": {
+      "description": "ID d'un rôle du système",
+      "required": true,
+      "in": "path",
+      "name": "role_id",
+      "schema": {
+        "type": "integer",
+        "format": "int64"
+      }
+    }
+  }
+}
+
 }
