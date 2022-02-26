@@ -40,6 +40,15 @@
               }
             }
           }
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     },
@@ -68,6 +77,18 @@
               }
             }
           }
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "422": {
+          "$ref": "#/components/responses/UnprocessableEntity"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     }
@@ -93,6 +114,18 @@
               }
             }
           }
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     },
@@ -120,6 +153,21 @@
         "204": {
           "description": "No Content",
           "content": {}
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "422": {
+          "$ref": "#/components/responses/UnprocessableEntity"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     },
@@ -137,6 +185,18 @@
         "204": {
           "description": "No Content",
           "content": {}
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     }
@@ -165,6 +225,18 @@
               }
             }
           }
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     },
@@ -212,6 +284,21 @@
               }
             }
           }
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "422": {
+          "$ref": "#/components/responses/UnprocessableEntity"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     }
@@ -243,6 +330,21 @@
         "204": {
           "description": "No Content",
           "content": {}
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "422": {
+          "$ref": "#/components/responses/UnprocessableEntity"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     },
@@ -263,6 +365,18 @@
         "204": {
           "description": "No Content",
           "content": {}
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     }
@@ -291,6 +405,18 @@
               }
             }
           }
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     },
@@ -324,6 +450,21 @@
               }
             }
           }
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "422": {
+          "$ref": "#/components/responses/UnprocessableEntity"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     }
@@ -346,6 +487,18 @@
         "204": {
           "description": "No Content",
           "content": {}
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     }
@@ -376,6 +529,18 @@
               }
             }
           }
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "422": {
+          "$ref": "#/components/responses/UnprocessableEntity"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     }
@@ -405,6 +570,21 @@
         "204": {
           "description": "No Content",
           "content": {}
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "422": {
+          "$ref": "#/components/responses/UnprocessableEntity"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     },
@@ -422,6 +602,18 @@
         "204": {
           "description": "No Content",
           "content": {}
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     }
@@ -445,6 +637,15 @@
               }
             }
           }
+        },
+        "401": {
+          "$ref": "#/components/responses/Unauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/Forbidden"
+        },
+        "500": {
+          "$ref": "#/components/responses/ServerError"
         }
       }
     }
@@ -678,6 +879,15 @@
           "readOnly": true
         }
       }
+    },
+    "CommonResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "readOnly": true
+        }
+      }
     }
     
   },
@@ -710,6 +920,68 @@
       "schema": {
         "type": "integer",
         "format": "int64"
+      }
+    }
+  },
+  "responses": {
+    "NotFound" : {
+      "description": "Not Found",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/CommonResponse"
+          }
+        }
+      }
+    },
+    "Unauthorized": {
+      "description": "Unauthorized",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/CommonResponse"
+          }
+        }
+      }
+    },
+    "Forbidden": {
+      "description": "Forbidden",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/CommonResponse"
+          }
+        }
+      }
+    },
+    "BadRequest": {
+      "description": "Bad Request",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/CommonResponse"
+          }
+        }
+      }
+    },
+    "UnprocessableEntity": {
+      "description": "Unprocessable Entity",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/CommonResponse"
+          }
+        }
+      }
+    },
+    "ServerError": {
+      "description": "Internal Server Error",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/CommonResponse"
+          }
+        }
       }
     }
   }
