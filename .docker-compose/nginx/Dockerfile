@@ -5,6 +5,7 @@ ARG uid
 
 # Copy nginx goodfood conf
 COPY ./.docker-compose/nginx/goodfood.conf /etc/nginx/conf.d/default.conf
+COPY ./.docker-compose/nginx/oauthprovider.conf /etc/nginx/conf.d/oauthprovider.conf
 
 # Configure App Directories
 RUN adduser -G www-data -G root -u $uid -H -D $user

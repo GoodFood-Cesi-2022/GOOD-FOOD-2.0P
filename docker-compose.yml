@@ -63,6 +63,7 @@ services:
     restart: unless-stopped
     ports:
       - 8080:80
+      - 8085:8001
     volumes:
       - ./:/var/www
     networks:

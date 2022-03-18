@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['scopes:api']], function() {
+Route::group(['middleware' => []], function() {
 
 
     Route::get('tmp', function() {
-        return response('ok');
+        return response(['alive' => true]);
     });
 
 

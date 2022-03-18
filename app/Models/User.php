@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -47,9 +49,29 @@ class User extends Authenticatable
     /**
      * Email de l'utilisateur
      */
-    public function email() {
-        return $this->belongsTo(\App\Models\Email::class);
+    public function emailLogin() {
+        return $this->belongsTo(\App\Models\Email::class, 'email_id', 'id');
     }
+
+        /**
+     * Get the user's first name.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            get: function($v) {
+                return $this->emailLogin->email;
+            }
+        );
+    }
+
+    public function getEmailForVerification() {
+        return $this->emailLogin->email;
+    }
+
+
 
 
 }
