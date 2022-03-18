@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => []], function() {
+
+
+    Route::get('tmp', function() {
+        return response(['alive' => true]);
+    });
+
+
 });

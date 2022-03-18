@@ -25,6 +25,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Client secret are hased in database
+        if(!$this->app->environment('local')) {
+            \Laravel\Passport\Passport::hashClientSecrets();
+        }
+
+        if(!$this->app->routesAreCached()) {
+            \Laravel\Passport\Passport::routes();
+        }
     }
 }

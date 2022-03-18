@@ -1,3 +1,4 @@
+# Worker
 FROM php:8.1-fpm
 
 ARG user
@@ -34,6 +35,15 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
+USER $user
+
 WORKDIR /var/www
 
-USER $user
+# Install Node
+SHELL ["/bin/bash", "--login", "-i", "-c"]
+RUN touch /home/${user}/.bashrc \
+    && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
+    && source /home/${user}/.bashrc \
+    && nvm install 16.14.0 
+SHELL ["/bin/bash", "--login", "-c"]
+
