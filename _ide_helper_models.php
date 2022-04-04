@@ -36,7 +36,7 @@ namespace App\Models{
  * @property int $id
  * @property string $firstname
  * @property string $lastname
- * @property string $phone_number
+ * @property string $phone
  * @property string $password
  * @property int $email_id
  * @property \Illuminate\Support\Carbon|null $email_verified_at
