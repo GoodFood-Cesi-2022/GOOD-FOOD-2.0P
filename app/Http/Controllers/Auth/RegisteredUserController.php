@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Email;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
+use App\Http\Requests\Users\ExternalCreateRequest;
 
 class RegisteredUserController extends Controller
 {
@@ -33,20 +31,13 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(ExternalCreateRequest $request)
     {
-        $request->validate([
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('emails', 'email')],
-            'phone' => ['required', 'string', 'max:16'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
 
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
-            'phone_number' => $request->phone,
+            'phone' => $request->phone,
             'email_id' => Email::create(['email' => $request->email])->id,
             'password' => Hash::make($request->password),
         ]);

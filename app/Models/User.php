@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use Ramsey\Uuid\Uuid;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -22,9 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'firstname',
         'lastname',
-        'phone_number',
+        'phone',
         'password',
-        'email_id'
+        'email_id',
     ];
 
     /**
@@ -35,6 +35,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'confirmable_token'
     ];
 
     /**
@@ -67,8 +68,35 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    public function getEmailForVerification() {
+    /**
+     * Surchage de la methode pour récupérer le mail de vérification du built-in de Laravel
+     *
+     * @return string
+     */
+    public function getEmailForVerification() : string {
         return $this->emailLogin->email;
+    }
+
+
+    /**
+     * Génére un unique token pour confirmer le compte de l'utilisateur
+     *
+     * @return string
+     */
+    public static function generateConfirmableToken() : string {
+
+        return hash_hmac('SHA256', Uuid::uuid4(), config('app.key'));
+
+    }
+
+    /**
+     * Marque le token de confirmation comme lu
+     *
+     * @return self
+     */
+    public function makeConfirmableTokenUsed() : self  {
+        $this->confirmable_token = null;
+        return $this;
     }
 
 
