@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,12 +13,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => []], function() {
+Route::group(['middleware' => ["auth:api", "verified"]], function() {
 
 
     Route::get('tmp', function() {
         return response(['alive' => true]);
     });
 
+
+    Route::group(['prefix' => 'users'], function() {
+        
+        Route::get('', [\App\Http\Controllers\Api\Users\UsersController::class, 'getAllUsers']);
+
+        Route::post('', [\App\Http\Controllers\Api\Users\UsersController::class, 'createUser']);
+
+        Route::group(['prefix' => "{user_id}"], function() {
+
+            Route::get('', [\App\Http\Controllers\Api\Users\UsersController::class, 'getUser']);
+
+        });
+
+    });
+
+    Route::group(['prefix' => "roles"], function() {
+
+        Route::get('', [\App\Http\Controllers\Api\Roles\RolesController::class, 'getAll']);
+
+    });
 
 });
