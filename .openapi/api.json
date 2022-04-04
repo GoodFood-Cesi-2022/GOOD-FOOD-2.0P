@@ -710,7 +710,7 @@
       "required": [
         "firstname",
         "lastname",
-        "phone_number",
+        "phone",
         "email"
       ],
       "properties": {
@@ -725,7 +725,7 @@
         "lastname": {
           "type": "string"
         },
-        "phone_number": {
+        "phone": {
           "type": "string"
         },
         "email": {
