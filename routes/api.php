@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Users\UserRolesController;
+use App\Http\Controllers\Api\Users\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +32,16 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
         Route::group(['prefix' => "{user_id}"], function() {
 
             Route::get('', [\App\Http\Controllers\Api\Users\UsersController::class, 'getUser']);
+
+            Route::group(['prefix' => "roles"], function() {
+
+                Route::get('', [\App\Http\Controllers\Api\Users\UserRolesController::class, 'getRoles']);
+                Route::post('',[\App\Http\Controllers\Api\Users\UserRolesController::class, 'addRole']);
+                Route::delete('{role}', [\App\Http\Controllers\Api\Users\UserRolesController::class, 'detachRole']);
+                
+
+            });
+
 
         });
 

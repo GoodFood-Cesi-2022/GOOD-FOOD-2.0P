@@ -54,6 +54,10 @@ class RouteServiceProvider extends ServiceProvider
             return $value === "current" ? auth()->user : \App\Models\User::whereId($value)->firstOrFail();
         });
 
+        Route::bind('role', function($value) {
+            return is_string($value) ? \App\Models\Role::whereCode($value)->firstOrFail() : \App\Models\Role::findOrFail($value);
+        });
+
 
     }
 

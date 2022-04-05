@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
-use Ramsey\Uuid\Uuid;
+use App\Contracts\Users\ConfirmableToken as ConfirmableTokenInterface;
+use App\Traits\Users\HasRole;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Contracts\Users\HasRole as HasRoleInterface;
+use App\Traits\Users\ConfirmableToken;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasRoleInterface, ConfirmableTokenInterface
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRole, ConfirmableToken;
 
     /**
      * The attributes that are mass assignable.
@@ -75,28 +78,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getEmailForVerification() : string {
         return $this->emailLogin->email;
-    }
-
-
-    /**
-     * Génére un unique token pour confirmer le compte de l'utilisateur
-     *
-     * @return string
-     */
-    public static function generateConfirmableToken() : string {
-
-        return hash_hmac('SHA256', Uuid::uuid4(), config('app.key'));
-
-    }
-
-    /**
-     * Marque le token de confirmation comme lu
-     *
-     * @return self
-     */
-    public function makeConfirmableTokenUsed() : self  {
-        $this->confirmable_token = null;
-        return $this;
     }
 
 
