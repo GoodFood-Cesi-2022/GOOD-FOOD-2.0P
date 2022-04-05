@@ -3,13 +3,12 @@
 namespace App\Enums;
 
 
-enum Roles {
+enum Roles : string {
 
-    case goodfood;
+    case goodfood = 'goodfood';
 
-    case contractor;
+    case contractor = 'contractor';
 
-    case user;
-
+    case user = 'user';
 
 }
