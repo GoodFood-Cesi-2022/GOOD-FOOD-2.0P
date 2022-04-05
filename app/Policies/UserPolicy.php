@@ -41,7 +41,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('goodfood');
+        return $user->hasRole(Roles::goodfood->name);
     }
 
     /**
