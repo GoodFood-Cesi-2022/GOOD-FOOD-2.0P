@@ -18,7 +18,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->hasRole(Roles::goodfood->name);
     }
 
     /**
@@ -30,7 +30,9 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        //
+        if($user->hasRole(Roles::goodfood->value)) { return true; }
+
+        return $user->id === $model->id;
     }
 
     /**
