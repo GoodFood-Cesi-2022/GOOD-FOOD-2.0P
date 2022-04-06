@@ -51,11 +51,11 @@ class RouteServiceProvider extends ServiceProvider
 
         // Bindings
         Route::bind('user_id', function($value) {
-            return $value === "current" ? auth()->user : \App\Models\User::whereId($value)->firstOrFail();
+            return $value === "current" ? auth()->user() : \App\Models\User::whereId($value)->firstOrFail();
         });
 
         Route::bind('role', function($value) {
-            return is_string($value) ? \App\Models\Role::whereCode($value)->firstOrFail() : \App\Models\Role::findOrFail($value);
+            return is_numeric($value) ? \App\Models\Role::findOrFail($value) : \App\Models\Role::whereCode($value)->firstOrFail();
         });
 
 
