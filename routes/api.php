@@ -38,7 +38,6 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
                 Route::get('', [\App\Http\Controllers\Api\Users\UserRolesController::class, 'getRoles']);
                 Route::post('',[\App\Http\Controllers\Api\Users\UserRolesController::class, 'addRole']);
                 Route::delete('{role}', [\App\Http\Controllers\Api\Users\UserRolesController::class, 'detachRole']);
-                
 
             });
 
