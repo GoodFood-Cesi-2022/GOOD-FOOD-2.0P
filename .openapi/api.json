@@ -492,15 +492,9 @@
         }
       },
       "responses": {
-        "201": {
-          "description": "Created",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRole"
-              }
-            }
-          }
+        "204": {
+          "description": "No Content",
+          "content": {}
         },
         "401": {
           "$ref": "#/components/responses/Unauthorized"
