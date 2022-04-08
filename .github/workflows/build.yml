@@ -63,6 +63,7 @@ jobs:
   publish:
     name: "Publish On Docker Hub"
     needs: test
+    runs-on: ubuntu-latest
     steps:
       - name: Login to DockerHub
         uses: docker/login-action@v1
