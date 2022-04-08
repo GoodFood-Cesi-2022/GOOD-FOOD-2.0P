@@ -6,7 +6,7 @@ services:
         user: www
         uid: 1000
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: ./.docker-compose/api/Dockerfile
     image: goodfood-oauth-provider
     container_name: goodfood-oauth-provider
     working_dir: /var/www
@@ -20,7 +20,7 @@ services:
         user: www
         uid: 1000
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: ./.docker-compose/api/Dockerfile
     image: goodfood
     container_name: goodfood-api
     restart: unless-stopped
