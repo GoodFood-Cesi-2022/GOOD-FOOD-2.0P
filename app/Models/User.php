@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
+use App\Contracts\Users\ConfirmableToken as ConfirmableTokenInterface;
+use App\Traits\Users\HasRole;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Contracts\Users\HasRole as HasRoleInterface;
+use App\Traits\Users\ConfirmableToken;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasRoleInterface, ConfirmableTokenInterface
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRole, ConfirmableToken;
 
     /**
      * The attributes that are mass assignable.
@@ -22,9 +25,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'firstname',
         'lastname',
-        'phone_number',
+        'phone',
         'password',
-        'email_id'
+        'email_id',
     ];
 
     /**
@@ -35,6 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'confirmable_token'
     ];
 
     /**
@@ -67,7 +71,12 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    public function getEmailForVerification() {
+    /**
+     * Surchage de la methode pour récupérer le mail de vérification du built-in de Laravel
+     *
+     * @return string
+     */
+    public function getEmailForVerification() : string {
         return $this->emailLogin->email;
     }
 

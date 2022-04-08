@@ -104,7 +104,7 @@
       }
     },
     "post": {
-      "summary": "Ajoute un nouvelle utilisateur",
+      "summary": "Ajoute un nouvel utilisateur",
       "tags": [
         "users"
       ],
@@ -492,15 +492,9 @@
         }
       },
       "responses": {
-        "201": {
-          "description": "Created",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRole"
-              }
-            }
-          }
+        "204": {
+          "description": "No Content",
+          "content": {}
         },
         "401": {
           "$ref": "#/components/responses/Unauthorized"
@@ -520,7 +514,7 @@
       }
     }
   },
-  "/users/{user_id}/roles/{role_id}": {
+  "/users/{user_id}/roles/{role_code}": {
     "delete": {
       "summary": "Retire de l'utilisateur le rôle.",
       "tags": [
@@ -531,7 +525,7 @@
           "$ref": "#/components/parameters/UserId"
         },
         {
-          "$ref": "#/components/parameters/RoleId"
+          "$ref": "#/components/parameters/RoleCode"
         }
       ],
       "responses": {
@@ -710,7 +704,7 @@
       "required": [
         "firstname",
         "lastname",
-        "phone_number",
+        "phone",
         "email"
       ],
       "properties": {
@@ -725,7 +719,7 @@
         "lastname": {
           "type": "string"
         },
-        "phone_number": {
+        "phone": {
           "type": "string"
         },
         "email": {
@@ -963,14 +957,13 @@
         "format": "int64"
       }
     },
-    "RoleId": {
-      "description": "ID d'un rôle du système",
+    "RoleCode": {
+      "description": "Code d'un rôle du système",
       "required": true,
       "in": "path",
-      "name": "role_id",
+      "name": "role_code",
       "schema": {
-        "type": "integer",
-        "format": "int64"
+        "type": "string"
       }
     }
   },
