@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v3.0.0
         with:
           name: phpunit.coverage.xml
-          path: ./phpunit.coverage.xml
+          path: /var/www/phpunit.coverage.xml
 
   quality:
     name: Quality Job with SonarCloud
