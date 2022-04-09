@@ -65,7 +65,7 @@ jobs:
           php artisan key:generate
           
       - name: Run tests
-        run: vendor/bin/phpunit --coverage-xml 
+        run: vendor/bin/phpunit --coverage-xml ./
 
       - name: Fix code coverage paths for Sonar phpunit.coverage.xml
         run: sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' phpunit.coverage.xml
