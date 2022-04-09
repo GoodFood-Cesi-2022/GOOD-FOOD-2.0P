@@ -68,8 +68,8 @@ jobs:
 
       - name: Fix code coverage paths for Sonar reports/index.xml
         run: |
-          sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' ./phpunit.clover.xml
-          sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' ./phpunit.junit.xml
+          sed -i 's/\/var\/www\//\/github\/workspace\//g' ./phpunit.clover.xml
+          sed -i 's/\/var\/www\//\/github\/workspace\//g' ./phpunit.junit.xml
 
       - name: Upload PHPUnit Artifacts
         uses: actions/upload-artifact@v3.0.0
@@ -92,9 +92,6 @@ jobs:
         uses: actions/download-artifact@v3.0.0
         with:
           name: phpunit-results
-        
-      - name: Show Downloaded artifact
-        run: ls -la
 
       - name : SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
