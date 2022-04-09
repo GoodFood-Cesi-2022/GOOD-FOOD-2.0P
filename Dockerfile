@@ -57,4 +57,6 @@ COPY --from=frontbuilder /var/www/public /var/www/public
 RUN touch .env && \
     composer install
 
+RUN chown -R $user:$user /var/www
+
 

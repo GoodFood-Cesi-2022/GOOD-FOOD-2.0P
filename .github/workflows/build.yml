@@ -55,11 +55,9 @@ jobs:
           --health-retries 5
     steps:
         # Run in custom image with phpfpm
-      - name: CD Wordir
-        run: cd /var/www
-
       - name: Prepare Laravel Application
         run: |
+          ls -l
           cp .env.ci .env
           php artisan key:generate
           
@@ -68,7 +66,12 @@ jobs:
 
       - name: Fix code coverage paths for Sonar phpunit.coverage.xml
         run: sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' phpunit.coverage.xml
-  
+
+      - name: Upload PHPUnit Artifacts
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          path: ./phpunit.coverage.xml
+
   quality:
     name: Quality Job with SonarCloud
     runs-on: ubuntu-latest
@@ -78,6 +81,12 @@ jobs:
         with:
           fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
 
+      - name: Download PHPUnit Coverage to be analyse by sonar
+        uses: actions/download-artifact@v3.0.0
+        with:
+          name: phpunit.coverage.xml
+          path: ./phpunit.coverage.xml
+          
       - name : SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
