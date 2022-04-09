@@ -42,10 +42,8 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user && \
-    rm -rf /var/www/html && \
-    chown -R $user:$user /var/www
+    rm -rf /var/www/html
 
-USER $user
 WORKDIR /var/www
 COPY . /var/www/
 
@@ -53,10 +51,12 @@ COPY . /var/www/
 COPY --from=frontbuilder /var/www/node_modules /var/www/node_modules
 COPY --from=frontbuilder /var/www/public /var/www/public
 
+# Change Owner 
+RUN chown -R $user:$user /var/www
+
+USER $user
+
 # Install php composer dependencies
 RUN touch .env && \
     composer install
-
-RUN chown -R $user:$user /var/www
-
 
