@@ -17,7 +17,7 @@ env:
 
 jobs:
   build:
-    name: "Build Docker Image"
+    name: "Build Docker Image And push to Docker Hub"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -25,6 +25,13 @@ jobs:
           fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
       - name: Build the docker image
         run: docker build . --file Dockerfile --tag goodfoodcesi2022/api:latest --build-arg user=www --build-arg uid=1000 --rm
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push to Docker Hub
+        run: docker push goodfoodcesi2022/api:latest
   test:
     name: "Test PHPUnit"
     needs: build
@@ -60,18 +67,6 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  publish:
-    name: "Publish On Docker Hub"
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push to Docker Hub
-        run: docker push goodfoodcesi2022/api:latest
       
 
 
