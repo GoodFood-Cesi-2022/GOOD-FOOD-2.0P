@@ -54,10 +54,11 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
+      - name: debug
+        run: ls -l
         # Run in custom image with phpfpm
       - name: Prepare Laravel Application
         run: |
-          ls -l
           cp .env.ci .env
           php artisan key:generate
           
@@ -86,7 +87,7 @@ jobs:
         with:
           name: phpunit.coverage.xml
           path: ./phpunit.coverage.xml
-          
+
       - name : SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
