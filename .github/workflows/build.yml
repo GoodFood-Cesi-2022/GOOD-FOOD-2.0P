@@ -60,20 +60,19 @@ jobs:
         # Run in custom image with phpfpm
       - name: Prepare Laravel Application
         run: |
-          
           cp .env.ci .env
           php artisan key:generate
           
       - name: Run tests
-        run: vendor/bin/phpunit --coverage-xml ./
+        run: export XDEBUG_MODE=coverage && vendor/bin/phpunit --coverage-xml ./reports/
 
-      - name: Fix code coverage paths for Sonar phpunit.coverage.xml
-        run: sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' phpunit.coverage.xml
+      - name: Fix code coverage paths for Sonar reports/index.xml
+        run: sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' ./reports/index.xml
 
       - name: Upload PHPUnit Artifacts
         uses: actions/upload-artifact@v3.0.0
         with:
-          path: /var/www/phpunit.coverage.xml
+          path: ./reports
 
   quality:
     name: Quality Job with SonarCloud
