@@ -18,18 +18,23 @@ jobs:
     name: "Build Docker Image And push to Docker Hub"
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
+
       - name: Build the docker image
         run: docker build . --file Dockerfile --tag goodfoodcesi2022/api:latest --build-arg user=www --build-arg uid=1000 --rm
+      
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
       - name: Push to Docker Hub
         run: docker push goodfoodcesi2022/api:latest
+
   test:
     name: "Test PHPUnit"
     needs: build
@@ -49,10 +54,10 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-    
+
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
 
       - name: Prepare Laravel Application
         run: |
@@ -64,12 +69,19 @@ jobs:
 
       - name: Fix code coverage paths for Sonar phpunit.coverage.xml
         run: sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' phpunit.coverage.xml
-      
-      # - name : SonarCloud Scan
-      #   uses: sonarsource/sonarcloud-github-action@master
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  
+  quality:
+    name: Quality Job with SonarCloud
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
+
+      - name : SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
 
 
