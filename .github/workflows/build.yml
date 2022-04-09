@@ -72,6 +72,8 @@ jobs:
   
   quality:
     name: Quality Job with SonarCloud
+    runs-on: ubuntu-latest
+    needs: test
     steps:
       - uses: actions/checkout@v3
         with:
