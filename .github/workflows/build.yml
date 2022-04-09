@@ -54,7 +54,8 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     defaults:
-      run: cd /var/www
+      run: 
+        working-directory: /var/www
     steps:
         # Run in custom image with phpfpm
       - name: Prepare Laravel Application
