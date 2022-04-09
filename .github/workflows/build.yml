@@ -55,7 +55,11 @@ jobs:
           --health-retries 5
     steps:
       - name: debug
-        run: ls -l
+        run: |
+          ls -la
+          cd /var/www
+          ls -la
+          find . -ls
         # Run in custom image with phpfpm
       - name: Prepare Laravel Application
         run: |
