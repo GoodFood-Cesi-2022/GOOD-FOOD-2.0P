@@ -54,28 +54,28 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: debug
-        run: |
-          ls -la
-          cd /var/www
-          ls -la
-          find . -ls
         # Run in custom image with phpfpm
       - name: Prepare Laravel Application
         run: |
+          cd /var/www
+          ls -la
           cp .env.ci .env
           php artisan key:generate
           
       - name: Run tests
-        run: php artisan test --coverage-xml 
+        run: |
+          cd /var/www
+          php artisan test --coverage-xml 
 
       - name: Fix code coverage paths for Sonar phpunit.coverage.xml
-        run: sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' phpunit.coverage.xml
+        run: |
+          cd /var/www
+          sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' phpunit.coverage.xml
 
       - name: Upload PHPUnit Artifacts
         uses: actions/upload-artifact@v3.0.0
         with:
-          path: ./phpunit.coverage.xml
+          path: /var/www/phpunit.coverage.xml
 
   quality:
     name: Quality Job with SonarCloud
