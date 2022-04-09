@@ -46,13 +46,15 @@ RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /var/www
 
 USER $user
-
 WORKDIR /var/www
-
 COPY . /var/www/
 
+# Copy builded dependencies
+COPY --from=frontbuilder /var/www/node_modules /var/www/node_modules
+COPY --from=frontbuilder /var/www/public /var/www/public
+
+# Install php composer dependencies
 RUN touch .env && \
     composer install
 
-COPY --from=frontbuilder /var/www/node_modules /var/www/
-COPY --from=frontbuilder /var/www/public /var/www/
+
