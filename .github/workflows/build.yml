@@ -54,10 +54,9 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+        # Run in custom image with phpfpm
+      - name: CD Wordir
+        run: cd /var/www
 
       - name: Prepare Laravel Application
         run: |
