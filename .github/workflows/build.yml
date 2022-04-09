@@ -64,16 +64,20 @@ jobs:
           php artisan key:generate
           
       - name: Run tests
-        run: export XDEBUG_MODE=coverage && vendor/bin/phpunit --coverage-clover ./phpunit.coverage.xml
+        run: export XDEBUG_MODE=coverage && vendor/bin/phpunit --coverage-clover ./phpunit.clover.xml --log-junit ./phpunit.junit.xml
 
       - name: Fix code coverage paths for Sonar reports/index.xml
-        run: sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' ./phpunit.coverage.xml
+        run: |
+          sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' ./phpunit.clover.xml
+          sed -i 's/\/home\/runner\/work\/GoodFood-Cesi-2022\/GOOD-FOOD-2.0P\//\/github\/workspace\//g' ./phpunit.junit.xml
 
       - name: Upload PHPUnit Artifacts
         uses: actions/upload-artifact@v3.0.0
         with:
-          name: phpunit.coverage.xml
-          path: /var/www/phpunit.coverage.xml
+          name: phpunit-results
+          path: |
+            /var/www/phpunit.junit.xml
+            /var/www/phpunit.clover.xml
 
   quality:
     name: Quality Job with SonarCloud
@@ -87,8 +91,10 @@ jobs:
       - name: Download PHPUnit Coverage to be analyse by sonar
         uses: actions/download-artifact@v3.0.0
         with:
-          name: phpunit.coverage.xml
-          path: ./phpunit.coverage.xml
+          name: phpunit-results
+        
+      - name: Show Downloaded artifact
+        run: ls -la
 
       - name : SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
