@@ -37,7 +37,7 @@ Route::middleware('guest')->group(function () {
     Route::get('confirm-account/{token}', [ConfirmAccountController::class, 'view'])
                 ->name('account.confirm.view');
 
-    Route::post('confirm-acccount', [ConfirmAccountController::class, 'store'])
+    Route::post('confirm-account', [ConfirmAccountController::class, 'store'])
                 ->name('account.confirm.save');
 });
 

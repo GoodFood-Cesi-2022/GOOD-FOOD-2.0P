@@ -37,7 +37,7 @@ class ConfirmAccountController extends Controller {
 
         if(is_null($request->safe()->token)) {
             return abort(404);
-        };
+        }
 
         $user = User::whereConfirmableToken($request->token)->firstOrFail();
 
@@ -46,7 +46,7 @@ class ConfirmAccountController extends Controller {
         $user->makeConfirmableTokenUsed()->markEmailAsVerified();
 
         // Redirection vers l'application GoodFood
-        return redirect('/');
+        return redirect(config('app.front_url'));
 
     }
 

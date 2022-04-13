@@ -19,17 +19,6 @@ class UsersController extends Controller {
 
 
     /**
-     * Retourne les informations de l'utilisateur courant
-     *
-     * @return \App\Http\Resources\UserResource
-     */
-    public function getCurrentUser() : UserResource {
-
-        return new UserResource(auth()->user);
-
-    }
-
-    /**
      * Retourne l'utilisateur demandé
      *
      * @param \Illuminate\Http\Request $request
