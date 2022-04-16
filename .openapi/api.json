@@ -4,123 +4,164 @@
     "title": "GOODFOOD API",
     "version": "0.0.0"
   },
-"servers": [
-  {
-    "url": "localhost:8080/api"
-  }
-],
+  "servers": [
+    {
+      "url": "localhost:8080/api"
+    }
+  ],
   "paths": {
-  "/users": {
-    "get": {
-      "summary": "Récupère la liste des utilisateurs",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "in": "query",
-          "name": "role",
-          "description": "Filtre les résultats sur les utilisateurs ayant ce rôle",
-          "required": false,
-          "schema": {
-            "type": "string",
-            "enum": [
-              "goodfood",
-              "contractor",
-              "user"
-            ]
-          }
-        },
-        {
-          "in": "query",
-          "name": "sort_by",
-          "required": false,
-          "schema": {
-            "type": "string",
-            "enum": [
-              "created_at",
-              "updated_at",
-              "firstname",
-              "lastname"
-            ]
-          }
-        },
-        {
-          "in": "query",
-          "name": "order_by",
-          "required": false,
-          "schema": {
-            "type": "string",
-            "enum": [
-              "asc",
-              "desc"
-            ]
-          }
-        },
-        {
-          "in": "query",
-          "name": "search",
-          "description": "Recherche dans le champ lastname, firstname, email",
-          "required": false,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "OK",
-            "content": {
-            "application/json": {
+    "/files": {
+      "post": {
+        "summary": "Ajouter un fichier dans le système pour être utilisé comme photo de recette, pièce jointe, etc..",
+        "tags": [
+          "files"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/User"
+                  "filename": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/File"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/File"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Récupère la liste des utilisateurs",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "role",
+            "description": "Filtre les résultats sur les utilisateurs ayant ce rôle",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "goodfood",
+                "contractor",
+                "user"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort_by",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created_at",
+                "updated_at",
+                "firstname",
+                "lastname"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "order_by",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "description": "Recherche dans le champ lastname, firstname, email",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
                     }
-                  },
-                  "meta": {
-                    "$ref": "#/components/schemas/PaginationMeta"
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/PaginationLinks"
                   }
                 }
               }
             }
-          }
-        },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
-        }
-      }
-    },
-    "post": {
-      "summary": "Ajoute un nouvel utilisateur",
-      "tags": [
-        "users"
-      ],
-      "requestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/User"
-            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       },
-      "responses": {
-        "201": {
-          "description": "Created",
+      "post": {
+        "summary": "Ajoute un nouvel utilisateur",
+        "tags": [
+          "users"
+        ],
+        "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -129,35 +170,80 @@
             }
           }
         },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "422": {
-          "$ref": "#/components/responses/UnprocessableEntity"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
       }
-    }
-  },
-  "/users/{user_id}": {
-    "get": {
-      "summary": "Retourne un utilisateur du système.",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/UserId"
+    },
+    "/users/{user_id}": {
+      "get": {
+        "summary": "Retourne un utilisateur du système.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
-      ],
-      "responses": {
-        "200": {
-          "description": "OK",
+      },
+      "put": {
+        "summary": "Modifie les informations d'un utilisateur existant",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -166,168 +252,175 @@
             }
           }
         },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
-        }
-      }
-    },
-    "put": {
-      "summary": "Modifie les informations d'un utilisateur existant",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/UserId"
-        }
-      ],
-      "requestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/User"
-            }
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       },
-      "responses": {
-        "204": {
-          "description": "No Content",
-          "content": {}
-        },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "422": {
-          "$ref": "#/components/responses/UnprocessableEntity"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
+      "delete": {
+        "summary": "Supprime un utilisateur du système",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
       }
     },
-    "delete": {
-      "summary": "Supprime un utilisateur du système",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/UserId"
+    "/users/{user_id}/addresses": {
+      "get": {
+        "summary": "Récupére la liste des adresses de l'utilisateur",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserAddress"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
-      ],
-      "responses": {
-        "204": {
-          "description": "No Content",
-          "content": {}
-        },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
-        }
-      }
-    }
-  },
-  "/users/{user_id}/addresses": {
-    "get": {
-      "summary": "Récupére la liste des adresses de l'utilisateur",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/UserId"
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "OK",
+      },
+      "post": {
+        "summary": "Ajoute une adresse à l'utilisateur, l'adresse doit-être préalablement créer dans le système, veuillez regarder la partie de l'API concernant la gestion des adresses.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/UserAddress"
-                }
+                "type": "object",
+                "required": [
+                  "address_id"
+                ],
+                "properties": {
+                  "address_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Un Id d'adresse valide du système"
+                  }
+                },
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UserAddress"
+                  }
+                ]
               }
             }
           }
         },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAddress"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
       }
     },
-    "post": {
-      "summary": "Ajoute une adresse à l'utilisateur, l'adresse doit-être préalablement créer dans le système, veuillez regarder la partie de l'API concernant la gestion des adresses.",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/UserId"
-        }
-      ],
-      "requestBody": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "address_id"
-              ],
-              "properties": {
-                "address_id": {
-                  "type": "integer",
-                  "format": "int64",
-                  "description": "Un Id d'adresse valide du système"
-                }
-              },
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/UserAddress"
-                }
-              ]
-            }
+    "/users/{user_id}/addresses/{address_id}": {
+      "put": {
+        "summary": "Modifie les informations de l'adresse de l'utilisateur, mais ne modifie pas l'adresse elle même. Pour modifier l'adresse veuillez regarder la partie de l'API sur les adresses.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "$ref": "#/components/parameters/AddressId"
           }
-        }
-      },
-      "responses": {
-        "201": {
-          "description": "Created",
+        ],
+        "requestBody": {
           "content": {
             "application/json": {
               "schema": {
@@ -336,237 +429,185 @@
             }
           }
         },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "422": {
-          "$ref": "#/components/responses/UnprocessableEntity"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
-        }
-      }
-    }
-  },
-  "/users/{user_id}/addresses/{address_id}": {
-    "put": {
-      "summary": "Modifie les informations de l'adresse de l'utilisateur, mais ne modifie pas l'adresse elle même. Pour modifier l'adresse veuillez regarder la partie de l'API sur les adresses.",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/UserId"
-        },
-        {
-          "$ref": "#/components/parameters/AddressId"
-        }
-      ],
-      "requestBody": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/UserAddress"
-            }
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       },
-      "responses": {
-        "204": {
-          "description": "No Content",
-          "content": {}
-        },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "422": {
-          "$ref": "#/components/responses/UnprocessableEntity"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
+      "delete": {
+        "summary": "Supprime l'adresse du compte de l'utilisateur mais ne supprime pas l'adresse du système. Pour supprimer l'adresse du système veuillez regarder la partie de l'API sur les adresses.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "$ref": "#/components/parameters/AddressId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
       }
     },
-    "delete": {
-      "summary": "Supprime l'adresse du compte de l'utilisateur mais ne supprime pas l'adresse du système. Pour supprimer l'adresse du système veuillez regarder la partie de l'API sur les adresses.",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/UserId"
-        },
-        {
-          "$ref": "#/components/parameters/AddressId"
+    "/users/{user_id}/roles": {
+      "get": {
+        "summary": "Retourne les rôles de l'utilisateur.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserRole"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
-      ],
-      "responses": {
-        "204": {
-          "description": "No Content",
-          "content": {}
-        },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
-        }
-      }
-    }
-  },
-  "/users/{user_id}/roles": {
-    "get": {
-      "summary": "Retourne les rôles de l'utilisateur.",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/UserId"
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "OK",
+      },
+      "post": {
+        "summary": "Ajoute un rôle à l'utilisateur, pour récuperer les rôles du système, veuillez regarder la partie de l'API sur les rôles.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
+                "$ref": "#/components/schemas/Role"
               }
             }
           }
         },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
       }
     },
-    "post": {
-      "summary": "Ajoute un rôle à l'utilisateur, pour récuperer les rôles du système, veuillez regarder la partie de l'API sur les rôles.",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/UserId"
-        }
-      ],
-      "requestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Role"
-            }
+    "/users/{user_id}/roles/{role_code}": {
+      "delete": {
+        "summary": "Retire de l'utilisateur le rôle.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "$ref": "#/components/parameters/RoleCode"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
-      },
-      "responses": {
-        "204": {
-          "description": "No Content",
-          "content": {}
-        },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "422": {
-          "$ref": "#/components/responses/UnprocessableEntity"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
-        }
       }
-    }
-  },
-  "/users/{user_id}/roles/{role_code}": {
-    "delete": {
-      "summary": "Retire de l'utilisateur le rôle.",
-      "tags": [
-        "users"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/UserId"
-        },
-        {
-          "$ref": "#/components/parameters/RoleCode"
-        }
-      ],
-      "responses": {
-        "204": {
-          "description": "No Content",
-          "content": {}
-        },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
-        }
-      }
-    }
-  },
-  "/addresses": {
-    "post": {
-      "summary": "Créé une nouvelle adresse dans le système.",
-      "tags": [
-        "addresses"
-      ],
-      "requestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Address"
-            }
-          }
-        }
-      },
-      "responses": {
-        "201": {
-          "description": "Created",
+    },
+    "/addresses": {
+      "post": {
+        "summary": "Créé une nouvelle adresse dans le système.",
+        "tags": [
+          "addresses"
+        ],
+        "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -575,460 +616,1447 @@
             }
           }
         },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "422": {
-          "$ref": "#/components/responses/UnprocessableEntity"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
-        }
-      }
-    }
-  },
-  "/addresses/{address_id}": {
-    "put": {
-      "summary": "Modifie une adresse existante du système.",
-      "tags": [
-        "addresses"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/AddressId"
-        }
-      ],
-      "requestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Address"
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
-        }
-      },
-      "responses": {
-        "204": {
-          "description": "No Content",
-          "content": {}
-        },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "422": {
-          "$ref": "#/components/responses/UnprocessableEntity"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
         }
       }
     },
-    "delete": {
-      "summary": "Supprime une adresse du système, uniquement si elle n'est pas utilisée.",
-      "tags": [
-        "addresses"
-      ],
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/AddressId"
-        }
-      ],
-      "responses": {
-        "204": {
-          "description": "No Content",
-          "content": {}
-        },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "404": {
-          "$ref": "#/components/responses/NotFound"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
-        }
-      }
-    }
-  },
-  "/roles": {
-    "get": {
-      "summary": "Retourne la liste des rôles de la plateforme.",
-      "tags": [
-        "roles"
-      ],
-      "responses": {
-        "200": {
-          "description": "OK",
+    "/addresses/{address_id}": {
+      "put": {
+        "summary": "Modifie une adresse existante du système.",
+        "tags": [
+          "addresses"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AddressId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Role"
+                "$ref": "#/components/schemas/Address"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprime une adresse du système, uniquement si elle n'est pas utilisée.",
+        "tags": [
+          "addresses"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AddressId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/roles": {
+      "get": {
+        "summary": "Retourne la liste des rôles de la plateforme.",
+        "tags": [
+          "roles"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Role"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "summary": "Récupérer toutes les recettes de la plateforme",
+        "tags": [
+          "recipes"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Recipe"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Ajouter une nouvelle recette",
+        "tags": [
+          "recipes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ingredients": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "description": "ID d'un ingrédient",
+                      "format": "int64"
+                    }
+                  }
+                },
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Recipe"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/recipes/types": {
+      "get": {
+        "summary": "Retourne les types de recettes",
+        "tags": [
+          "recipes"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeType"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/recipes/{recipe_id}": {
+      "get": {
+        "summary": "Retourne une recette de plateforme",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Modifier les informations de la recette",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ingredients": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "description": "ID d'un ingrédient",
+                      "format": "int64"
+                    }
+                  }
+                },
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Recipe"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Permet de supprimer une recette, si elle est utilisée ppar d'autres contractant alors elle sera supprimée",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/recipes/{recipe_id}/star": {
+      "post": {
+        "summary": "Rend la recette obligatoire à l'ensemble des franchisés",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/recipes/{recipe_id}/unstar": {
+      "post": {
+        "summary": "Rend la recette en non obligatoire auprès des franchisés",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/recipes/{recipe_id}/pictures": {
+      "get": {
+        "summary": "Retourne toutes les photos de la recette",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/File"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Attache un fichier déjà uploadé par l'API `files` comme photo de la recette, le fichier doit-être une image",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "ID d'un fichier de la plateforme"
+                  }
                 }
               }
             }
           }
         },
-        "401": {
-          "$ref": "#/components/responses/Unauthorized"
-        },
-        "403": {
-          "$ref": "#/components/responses/Forbidden"
-        },
-        "500": {
-          "$ref": "#/components/responses/ServerError"
-        }
-      }
-    }
-  }
-  },
-"components": {
-  
-  "schemas": {
-    "User": {
-      "type": "object",
-      "required": [
-        "firstname",
-        "lastname",
-        "phone",
-        "email"
-      ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly": true
-        },
-        "firstname": {
-          "type": "string"
-        },
-        "lastname": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string",
-          "format": "email"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time",
-          "readOnly": true
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time",
-          "readOnly": true
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
       }
     },
-    "Address": {
-      "type": "object",
-      "required": [
-        "first_line",
-        "zip_code",
-        "country",
-        "city",
-        "lat",
-        "lon"
-      ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly" : true
-        },
-        "first_line": {
-          "type": "string"
-        },
-        "second_line": {
-          "type": "string"
-        },
-        "zip_code": {
-          "type": "string"
-        },
-        "country": {
-          "type": "string"
-        },
-        "city": {
-          "type": "string"
-        },
-        "lat": {
-          "type": "string"
-        },
-        "lon": {
-          "type": "string"
+    "/recipes/{recipe_id}/pictures/{file_id}": {
+      "delete": {
+        "summary": "Détacher une photo de la recette, le fichier sera automatiquement supprimé du système si le fichier n'est plus lié",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          },
+          {
+            "$ref": "#/components/parameters/FileId"
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
       }
     },
-    "UserAddress": {
-      "type": "object",
-      "required": [
-        "name",
-        "default",
-        "timezone"
-      ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly": true
-        },
-        "name": {
-          "type": "string"
-        },
-        "default": {
-          "type": "boolean"
-        },
-        "timezone": {
-          "type": "string"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time",
-          "readOnly": true
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time",
-          "readOnly": true
-        },
-        "deleted_at": {
-          "type": "string",
-          "format": "date-time",
-          "nullable": true,
-          "readOnly": true
-        },
-        "address": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/Address"
+    "/recipes/{recipe_id}/ingredients": {
+      "get": {
+        "summary": "Retourne la liste des ingrédients de la recette",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Ingredient"
+                  }
+                }
+              }
             }
-          ],
-          "readOnly": true
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
       }
     },
-    "UserRole": {
-      "allOf": [
-        {
-          "$ref" : "#/components/schemas/Role"
+    "/ingredients": {
+      "get": {
+        "summary": "Retourne l'ensemble des ingrédients de la plateforme",
+        "tags": [
+          "ingredients"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Ingredient"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
         }
-      ]
-    },
-    "Role": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly": true
-        },
-        "code": {
-          "type": "string",
-          "enum": [
-            "goodfood",
-            "contractor",
-            "user"
-          ]
-        },
-        "title": {
-          "type": "string",
-          "description": "Intitulé du rôle.",
-          "readOnly": true
-        },
-        "description": {
-          "type": "string",
-          "description": "Description du rôle.",
-          "readOnly": true
-        }
-      }
-    },
-    "PaginationLinks": {
-      "type": "object",
-      "properties": {
-        "first": {
-          "type": "string",
-          "format": "uri",
-          "readOnly": true
-        },
-        "last": {
-          "type": "string",
-          "format": "uri",
-          "readOnly": true
-        },
-        "prev": {
-          "type": "string",
-          "format": "uri",
-          "readOnly": true
-        },
-        "next": {
-          "type": "string",
-          "format": "uri",
-          "readOnly": true
-        }
-      }
-    },
-    "PaginationMeta": {
-      "type": "object",
-      "properties": {
-        "current_page": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly": true
-        },
-        "from": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly": true
-        },
-        "last_page": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly": true
-        },
-        "path": {
-          "type": "string",
-          "format": "uri",
-          "readOnly": true
-        },
-        "per_page": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly": true
-        },
-        "to": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly": true
-        },
-        "total": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly": true
-        }
-      }
-    },
-    "CommonResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "readOnly": true
-        }
-      }
-    }
-    
-  },
-  "parameters": {
-    "UserId": {
-      "description": "ID d'un utilisateur du système.",
-      "in": "path",
-      "name": "user_id",
-      "schema": {
-        "type": "integer",
-        "format": "int64"
       },
-      "required": true
-    },
-    "AddressId": {
-      "description": "ID d'une adresse du système",
-      "required": true,
-      "in": "path",
-      "name": "address_id",
-      "schema": {
-        "type": "integer",
-        "format": "int64"
+      "post": {
+        "summary": "Créer un nouvel ingrédient pour être utilisé dans les recettes",
+        "tags": [
+          "ingredients"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ingredient"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ingredient"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
       }
     },
-    "RoleCode": {
-      "description": "Code d'un rôle du système",
-      "required": true,
-      "in": "path",
-      "name": "role_code",
-      "schema": {
-        "type": "string"
+    "/ingredients/types": {
+      "get": {
+        "summary": "Récupérer l'ensemble des types des ingrédients",
+        "tags": [
+          "ingredients"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IngredientType"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer un nouveau type d'ingrédient",
+        "tags": [
+          "ingredients"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IngredientType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ingredient"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/ingredients/types/{ingredient_type_id}": {
+      "put": {
+        "summary": "Modifier les informations d'un type d'ingrédient",
+        "tags": [
+          "ingredients"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IngredientTypeId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IngredientType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer un type d'ingrédient, tous les ingrédients perdront ce type",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IngredientTypeId"
+          }
+        ],
+        "tags": [
+          "ingredients"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/ingredients/{ingredient_id}": {
+      "put": {
+        "summary": "Modifier un ingrédient du système",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IngredientId"
+          }
+        ],
+        "tags": [
+          "ingredients"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ingredient"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer un ingrédient du système. Toutes les recettes utilisant ces ingrédients conserveront cet ingrédient et le stock des fournisseurs ne changera pas. Il ne pourra plus être utilisé pour créer dans les nouvelles recettes et ne pourra plus être commandé par les franchisés",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IngredientId"
+          }
+        ],
+        "tags": [
+          "ingredients"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
       }
     }
   },
-  "responses": {
-    "NotFound" : {
-      "description": "Not Found",
-      "content": {
-        "application/json": {
-          "schema": {
-            "$ref": "#/components/schemas/CommonResponse"
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": [
+          "firstname",
+          "lastname",
+          "phone",
+          "email"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
           }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          }
+        ]
+      },
+      "Address": {
+        "type": "object",
+        "required": [
+          "first_line",
+          "zip_code",
+          "country",
+          "city",
+          "lat",
+          "lon"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "first_line": {
+            "type": "string"
+          },
+          "second_line": {
+            "type": "string"
+          },
+          "zip_code": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "string"
+          },
+          "lon": {
+            "type": "string"
+          }
+        }
+      },
+      "UserAddress": {
+        "type": "object",
+        "required": [
+          "name",
+          "default",
+          "timezone"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "default": {
+            "type": "boolean"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "deleted_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "readOnly": true
+          },
+          "address": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ],
+            "readOnly": true
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          }
+        ]
+      },
+      "UserRole": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Role"
+          }
+        ]
+      },
+      "Role": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "goodfood",
+              "contractor",
+              "user"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "description": "Intitulé du rôle.",
+            "readOnly": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Description du rôle.",
+            "readOnly": true
+          }
+        }
+      },
+      "PaginationLinks": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          },
+          "last": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          },
+          "next": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        }
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "properties": {
+          "current_page": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "from": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "last_page": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "path": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          },
+          "per_page": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "to": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          }
+        }
+      },
+      "CommonResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "Recipe": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "base_price": {
+            "type": "number",
+            "format": "double"
+          },
+          "star": {
+            "type": "boolean"
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          }
+        ]
+      },
+      "Timestamps": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        }
+      },
+      "IngredientType": {
+        "type": "object",
+        "required": [
+          "name",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string",
+            "readOnly": true
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          }
+        ]
+      },
+      "RecipeType": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "File": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Nom du fichier avec son extension"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL public pour récupérer le fichier",
+            "readOnly": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Poid du fichier en kilobyte",
+            "readOnly": true
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          }
+        ]
+      },
+      "RecipeIngredient": {
+        "type": "object",
+        "required": [
+          "ingredient_id"
+        ],
+        "properties": {
+          "ingredient_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          }
+        ]
+      },
+      "Ingredient": {
+        "type": "object",
+        "required": [
+          "name",
+          "allergen",
+          "types"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Nom de l'ingrédient"
+          },
+          "allergen": {
+            "type": "boolean",
+            "description": "Determine si l'ingrédient est un allergène"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IngredientType"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          }
+        ]
+      }
+    },
+    "parameters": {
+      "UserId": {
+        "description": "ID d'un utilisateur du système.",
+        "in": "path",
+        "name": "user_id",
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "required": true
+      },
+      "AddressId": {
+        "description": "ID d'une adresse du système",
+        "required": true,
+        "in": "path",
+        "name": "address_id",
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "RoleCode": {
+        "description": "Code d'un rôle du système",
+        "required": true,
+        "in": "path",
+        "name": "role_code",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "RecipeId": {
+        "name": "recipe_id",
+        "description": "ID d'une recette du système",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "FileId": {
+        "name": "file_id",
+        "description": "ID d'un fichier uploadé sur la plateforme",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "IngredientTypeId": {
+        "name": "ingredient_type_id",
+        "description": "ID d'un type d'ingrédient du système",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "IngredientId": {
+        "name": "ingredient_id",
+        "description": "ID d'un ingredient du système",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     },
-    "Unauthorized": {
-      "description": "Unauthorized",
-      "content": {
-        "application/json": {
-          "schema": {
-            "$ref": "#/components/schemas/CommonResponse"
+    "responses": {
+      "NotFound": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CommonResponse"
+            }
           }
         }
-      }
-    },
-    "Forbidden": {
-      "description": "Forbidden",
-      "content": {
-        "application/json": {
-          "schema": {
-            "$ref": "#/components/schemas/CommonResponse"
+      },
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CommonResponse"
+            }
           }
         }
-      }
-    },
-    "BadRequest": {
-      "description": "Bad Request",
-      "content": {
-        "application/json": {
-          "schema": {
-            "$ref": "#/components/schemas/CommonResponse"
+      },
+      "Forbidden": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CommonResponse"
+            }
           }
         }
-      }
-    },
-    "UnprocessableEntity": {
-      "description": "Unprocessable Entity",
-      "content": {
-        "application/json": {
-          "schema": {
-            "$ref": "#/components/schemas/CommonResponse"
+      },
+      "BadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CommonResponse"
+            }
           }
         }
-      }
-    },
-    "ServerError": {
-      "description": "Internal Server Error",
-      "content": {
-        "application/json": {
-          "schema": {
-            "$ref": "#/components/schemas/CommonResponse"
+      },
+      "UnprocessableEntity": {
+        "description": "Unprocessable Entity",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CommonResponse"
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CommonResponse"
+            }
           }
         }
       }
     }
   }
-}
-
 }
