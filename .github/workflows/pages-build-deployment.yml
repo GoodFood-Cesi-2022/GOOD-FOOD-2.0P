@@ -42,7 +42,6 @@ jobs:
         with:
           name: github-pages
           path: ./artifact.tar
-          if-no-files-found: warn
 
   deploy:
     runs-on: ubuntu-latest
