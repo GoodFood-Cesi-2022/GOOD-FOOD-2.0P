@@ -1,11 +1,3 @@
-FROM node:16.14-alpine3.14 AS frontbuilder
-
-WORKDIR /var/www
-COPY . /var/www/
-RUN npm install && \
-    npm run prod
-
-
 # Worker
 FROM php:8.1-fpm
 
@@ -42,21 +34,18 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user && \
-    rm -rf /var/www/html
-
-WORKDIR /var/www
-COPY . /var/www/
-
-# Copy builded dependencies
-COPY --from=frontbuilder /var/www/node_modules /var/www/node_modules
-COPY --from=frontbuilder /var/www/public /var/www/public
-
-# Change Owner 
-RUN chown -R $user:$user /var/www
+    mkdir -p /var/www && \
+    chown -R $user:$user /var/www
 
 USER $user
 
-# Install php composer dependencies
-RUN touch .env && \
-    composer install
+# Install Node
+SHELL ["/bin/bash", "--login", "-i", "-c"]
+RUN touch /home/${user}/.bashrc \
+    && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
+    && source /home/${user}/.bashrc \
+    && nvm install 16.14.0 
+SHELL ["/bin/bash", "--login", "-c"]
 
+
+WORKDIR /var/www

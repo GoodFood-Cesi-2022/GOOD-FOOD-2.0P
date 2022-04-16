@@ -47,7 +47,7 @@ trait HasRole {
      */
     public function hasAllRoles(array $codes) : bool {
 
-        return $this->roles()->whereIn('code', $codes)->count() > 0;
+        return $this->roles()->whereIn('code', $codes)->count() === count($codes);
 
     }
 
