@@ -6,12 +6,11 @@ permissions:
 
 name: Doc Builds
 
-# Controls when the workflow will run
 on:
   push:
     branches:
-      feature/github_doc_pages
-
+      - main
+      - develop
 
 jobs:
   build:
