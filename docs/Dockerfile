@@ -42,11 +42,14 @@ RUN pip install mkdocs-material
 
 RUN mkdir /mkdocs
 COPY /.doc /mkdocs/
+RUN mkdir -p /mkdocks/redoc && \
+    mkidr -p /mkdocks/doctum
+
 
 WORKDIR /mkdocs
 
-COPY --from=doctum-builder /opt/doctum/build /mkdocs/docs/
-COPY --from=redoc-builder /redoc/ /mkdocs/docs/
+COPY --from=doctum-builder /opt/doctum/build /mkdocs/docs/doctum/
+COPY --from=redoc-builder /redoc/ /mkdocs/docs/redoc/
 
 RUN mkdocs build
 

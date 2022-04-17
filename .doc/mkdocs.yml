@@ -14,6 +14,8 @@ nav:
   - Sécurité: security/security.md
   - Test:
     - PHPUnit: test/phpunit.md
+  - API: redoc/redoc-static.html
+  - Namespaces: doctum/index.html
 
 theme:
   name: material
