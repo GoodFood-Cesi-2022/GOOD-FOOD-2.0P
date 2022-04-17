@@ -43,7 +43,7 @@ RUN pip install mkdocs-material
 RUN mkdir /mkdocs
 COPY /.doc /mkdocs/
 RUN mkdir -p /mkdocks/redoc && \
-    mkidr -p /mkdocks/doctum
+    mkdir -p /mkdocks/doctum
 
 
 WORKDIR /mkdocs
