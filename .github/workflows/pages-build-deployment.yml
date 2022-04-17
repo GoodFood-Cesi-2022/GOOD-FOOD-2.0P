@@ -1,0 +1,54 @@
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  deployments: write
+
+name: Doc Builds
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Build all docs
+        run: docker build . --file ./docs/Dockerfile --tag goodfood-docs:builder --rm
+
+      - name: Build container extract
+        run: docker container create --name extract goodfood-docs:builder
+
+      - name: Copy site from extract container
+        run: docker container cp extract:/mkdocs/site ./
+
+      - name: Delete container extract
+        run: docker container rm -f extract
+
+      - name: Make tar archive
+        run: tar --dereference --hard-dereference --directory site/ -cvf artifact.tar .
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: github-pages
+          path: ./artifact.tar
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
