@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\Users\UserRolesController;
-use App\Http\Controllers\Api\Users\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,5 +49,19 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
         Route::get('', [\App\Http\Controllers\Api\Roles\RolesController::class, 'getAll']);
 
     });
+
+    Route::group(['prefix' => 'ingredients'], function() {
+
+
+        Route::group(['prefix' => 'types'], function(){
+
+            Route::get('', [\App\Http\Controllers\Api\Ingredients\IngredientTypeController::class, 'all']);
+            Route::post('', [\App\Http\Controllers\Api\Ingredients\IngredientTypeController::class, 'create']);
+
+
+        });
+
+    });
+
 
 });
