@@ -57,7 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasRoleInterface,
         return $this->belongsTo(\App\Models\Email::class, 'email_id', 'id');
     }
 
-        /**
+    /**
      * Get the user's first name.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute

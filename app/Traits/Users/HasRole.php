@@ -30,13 +30,12 @@ trait HasRole {
      * @return boolean
      */
     public function hasOneOfRoles(array $codes) : bool {
-        $q = $this->roles();
 
-        foreach($codes as $code) {
-            $q->orWhere('code', '=', $code);
+        if(count($codes) <= 0) {
+            return false;
         }
 
-        return $q->count() > 0;
+        return $this->roles()->whereIn('code', $codes)->count() > 0;
     }
 
     /**
