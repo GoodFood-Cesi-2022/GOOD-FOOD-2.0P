@@ -64,6 +64,10 @@ class RoleContractTest extends TestCase
             Roles::contractor->value
         ]));
 
+        $this->assertFalse($user->hasOneOfRoles([
+            'user'
+        ]));
+
     }
 
     /**
