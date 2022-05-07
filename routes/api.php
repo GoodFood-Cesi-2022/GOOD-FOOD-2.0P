@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ["auth:api", "verified"]], function() {
 
 
-    Route::get('tmp', function() {
+    Route::get('ping', function() {
         return response(['alive' => true]);
     });
 
