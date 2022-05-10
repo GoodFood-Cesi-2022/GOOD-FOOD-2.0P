@@ -38,20 +38,6 @@ class IngredientPolicy
     }
 
     /**
-     * Determine if the user can view one ingredient
-     *
-     * @param User $user
-     * @param Ingredient $ingredient
-     * @return boolean
-     */
-    public function view(User $user, Ingredient $ingredient) : bool {
-        return $user->hasOneOfRoles([
-            Roles::goodfood->value,
-            Roles::contractor->value
-        ]);
-    }
-
-    /**
      * Determine if the user can update the ingredient
      *
      * @param User $user

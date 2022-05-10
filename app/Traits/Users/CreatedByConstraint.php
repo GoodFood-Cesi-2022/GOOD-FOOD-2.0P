@@ -12,7 +12,7 @@ trait CreatedByConstraint {
      * Return the relation to get the created by is linking to User
      */
     public function createdBy() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
     /**
@@ -22,7 +22,7 @@ trait CreatedByConstraint {
      * @return void
      */
     public function setCreatedBy(User|int $user) : void {
-        $this->created_by = is_int($user) ? $user : $user->getAttribute($user->getKeyName());
+        $this->createdBy()->associate(is_int($user) ? $user : $user->getAttribute($user->getKeyName()));
     }
 
     /**

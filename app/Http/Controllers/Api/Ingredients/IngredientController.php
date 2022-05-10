@@ -55,7 +55,7 @@ class IngredientController extends Controller
      */
     public function all() : IngredientCollection {
 
-        $this->authorize('view-any', Ingredient::class);
+        $this->authorize('viewAny', Ingredient::class);
 
         $ingredients = Ingredient::paginate(25);
 

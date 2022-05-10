@@ -49,6 +49,7 @@ class IngredientTest extends ApiCase
 
     }
 
+
     /**
      * Test la création d'un ingrédient allergène
      * 
@@ -95,6 +96,35 @@ class IngredientTest extends ApiCase
     }
 
     /**
+     * Test l'appartenance de l'ingrédient à l'utilisateur logger
+     *
+     * @group ingredients
+     * @return void
+     */
+    public function test_belonging_logged_user() : void {
+
+        $user = $this->actingAsContractor();
+
+        $response = $this->postJson(self::BASE_PATH, [
+            'name' => "ingredientisownedby",
+            'allergen' => true,
+            'types' => []
+        ]);
+
+        $response->assertCreated();
+
+        $data = json_decode($response->getOriginalContent(), true);
+
+        $ingredient = Ingredient::find($data['id']);
+
+        $this->assertTrue($ingredient->isCreatedBy($user->id));
+
+        $this->assertTrue($ingredient->createdBy->id === $user->id);
+
+    }
+
+
+    /**
      * Test transaction
      *
      * @group ingredients
@@ -121,6 +151,27 @@ class IngredientTest extends ApiCase
         $response->assertStatus(500);
 
     }
+
+    /**
+     * Test la récupération de tous les ingrédients
+     *
+     * @group ingredients
+     * @return void
+     */
+    public function test_all_ingredients() {
+
+        $this->actingAsContractor();
+
+        $response = $this->get(self::BASE_PATH);
+
+        $response->assertStatus(200)->assertJsonStructure([
+            'data',
+            'links',
+            'meta'
+        ]);
+
+    }
+
 
     /**
      * test update
@@ -270,7 +321,8 @@ class IngredientTest extends ApiCase
         return [
             ['POST', self::BASE_PATH, 403, Roles::user->value],
             ['PUT', self::BASE_PATH . '/:ingredient', 403, Roles::user->value],
-            ['DELETE', self::BASE_PATH . '/:ingredient', 403, Roles::user->value]
+            ['DELETE', self::BASE_PATH . '/:ingredient', 403, Roles::user->value],
+            ['GET', self::BASE_PATH, 403, Roles::user->value],
         ];
 
     }
