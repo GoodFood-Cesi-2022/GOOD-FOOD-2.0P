@@ -1115,10 +1115,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "file_id": {
-                    "type": "integer",
-                    "format": "int64",
-                    "description": "ID d'un fichier de la plateforme"
+                  "file_uuid": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "UUID d'un fichier de la plateforme"
                   }
                 }
               }
@@ -1148,7 +1148,7 @@
         }
       }
     },
-    "/recipes/{recipe_id}/pictures/{file_id}": {
+    "/recipes/{recipe_id}/pictures/{file_uuid}": {
       "delete": {
         "summary": "Détacher une photo de la recette, le fichier sera automatiquement supprimé du système si le fichier n'est plus lié",
         "parameters": [
@@ -1156,7 +1156,7 @@
             "$ref": "#/components/parameters/RecipeId"
           },
           {
-            "$ref": "#/components/parameters/FileId"
+            "$ref": "#/components/parameters/FileUuid"
           }
         ],
         "tags": [
@@ -1846,24 +1846,24 @@
           "name"
         ],
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
             "readOnly": true
           },
           "name": {
             "type": "string",
             "description": "Nom du fichier avec son extension"
           },
-          "url": {
-            "type": "string",
-            "description": "URL public pour récupérer le fichier",
-            "readOnly": true
-          },
           "size": {
             "type": "integer",
             "format": "int64",
-            "description": "Poid du fichier en kilobyte",
+            "description": "Poid du fichier en bytes",
+            "readOnly": true
+          },
+          "size_unit": {
+            "type": "string",
+            "description": "Unité du poids du fichier",
             "readOnly": true
           }
         },
@@ -1977,14 +1977,14 @@
           "format": "int64"
         }
       },
-      "FileId": {
-        "name": "file_id",
+      "FileUuid": {
+        "name": "file_uuid",
         "description": "ID d'un fichier uploadé sur la plateforme",
         "required": true,
         "in": "path",
         "schema": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string",
+          "format": "uuid"
         }
       },
       "IngredientTypeId": {

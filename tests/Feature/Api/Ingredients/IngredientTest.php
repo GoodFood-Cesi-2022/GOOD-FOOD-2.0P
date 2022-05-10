@@ -134,7 +134,7 @@ class IngredientTest extends ApiCase
 
         $this->actingAsContractor();
 
-        $mock = Mockery::mock(\App\Models\Ingredient::class);
+        $mock = Mockery::mock(new \App\Models\Ingredient);
         $mock->shouldReceive('create')->andThrow(new \Exception('any error'));
         $this->app->instance(\App\Models\Ingredient::class, $mock);
 

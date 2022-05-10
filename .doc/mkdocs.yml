@@ -12,6 +12,7 @@ nav:
     - API: debug/postman.md
     - Débuggage: debug/telescope.md
   - Sécurité: security/security.md
+  - Fichiers: files/file.md
   - Test:
     - PHPUnit: test/phpunit.md
   - API: redoc/redoc-static.html
