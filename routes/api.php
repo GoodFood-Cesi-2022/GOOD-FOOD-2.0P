@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\FilesController;
 use App\Http\Controllers\Api\Ingredients\IngredientController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +68,13 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
         });
 
         
+    });
+
+
+    Route::group(['prefix' => 'files'], function() {
+
+        Route::post('', [\App\Http\Controllers\Api\FilesController::class, 'upload']);
+
     });
 
 
