@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Ingredients\IngredientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,15 +53,20 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
 
     Route::group(['prefix' => 'ingredients'], function() {
 
+        Route::get('', [\App\Http\Controllers\Api\Ingredients\IngredientController::class, 'all']);
+        Route::post('', [\App\Http\Controllers\Api\Ingredients\IngredientController::class, 'create']);
 
         Route::group(['prefix' => 'types'], function(){
-
             Route::get('', [\App\Http\Controllers\Api\Ingredients\IngredientTypeController::class, 'all']);
             Route::post('', [\App\Http\Controllers\Api\Ingredients\IngredientTypeController::class, 'create']);
-
-
         });
 
+        Route::group(['prefix' => '{ingredient}'], function() {
+            Route::put('', [\App\Http\Controllers\Api\Ingredients\IngredientController::class, 'update']);
+            Route::delete('', [\App\Http\Controllers\Api\Ingredients\IngredientController::class, 'delete']);
+        });
+
+        
     });
 
 

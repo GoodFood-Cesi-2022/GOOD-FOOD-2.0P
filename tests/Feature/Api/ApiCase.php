@@ -9,7 +9,7 @@ use App\Models\User;
 use Laravel\Passport\Passport;
 
 class ApiCase extends TestCase {
-    
+
     /**
      * Authentifie l'utilisateur pour l'API en tant que client
      *
