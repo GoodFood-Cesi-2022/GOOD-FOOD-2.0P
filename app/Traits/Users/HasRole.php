@@ -31,7 +31,7 @@ trait HasRole {
      */
     public function hasOneOfRoles(array $codes) : bool {
 
-        if(count($codes) <= 0) {
+        if(empty($codes)) {
             return false;
         }
 

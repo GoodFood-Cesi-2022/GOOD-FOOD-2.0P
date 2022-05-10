@@ -20,7 +20,9 @@ class FilesController extends Controller
      */
     public function upload(AddFileRequest $request, File $file_model) : JsonResponse {
 
-        if($request->file('filename')->isValid() && $path = $request->file('filename')->store('files')) {
+        if($request->file('filename') &&
+            $request->file('filename')->isValid() && 
+                $path = $request->file('filename')->store('files')) {
 
             try {
 

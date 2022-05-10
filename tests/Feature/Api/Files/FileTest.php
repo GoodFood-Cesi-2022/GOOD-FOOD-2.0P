@@ -26,7 +26,7 @@ class FileTest extends ApiCase
         $this->actingAsContractor();
 
         $file_name = "image.png";
-        $file_size = 9000;
+        $file_size = 7999;
         
         $file = UploadedFile::fake()->image($file_name)->size($file_size);
 
@@ -82,7 +82,7 @@ class FileTest extends ApiCase
 
         $this->actingAsContractor();
 
-        $file = UploadedFile::fake()->create('file.xlsx');
+        $file = UploadedFile::fake()->create('file.xlsx', 5000);
 
         $response = $this->post(self::BASE_PATH, [
             'filename' => $file,
@@ -109,7 +109,7 @@ class FileTest extends ApiCase
         $mock->shouldReceive('create')->andThrow(new \Exception('any error'));
         $this->app->instance(\App\Models\File::class, $mock);
 
-        $file = UploadedFile::fake()->create('doc.pdf');
+        $file = UploadedFile::fake()->create('doc.pdf', 5000);
 
         $response = $this->post(self::BASE_PATH, [
             'filename' => $file,
@@ -119,6 +119,32 @@ class FileTest extends ApiCase
         $response->assertStatus(500);
 
         Storage::assertMissing($file->hashName('files'));
+
+    }
+
+    /**
+     * Tets le retour en cas d'echec d'upload
+     *
+     * @group files
+     * @return void
+     */
+    public function test_error_on_upload() : void {
+
+        $this->actingAsContractor();
+
+        $mock = Mockery::mock(new \App\Http\Requests\Files\AddFileRequest());
+        $mock->shouldReceive('isValid')->andReturn(false);
+        $this->app->instance(\App\Http\Requests\Files\AddFileRequest::class, $mock);
+
+        $file = UploadedFile::fake()->create('doc.pdf', 1000);
+
+        $response = $this->post(self::BASE_PATH, [
+            'filename' => $file,
+            'name' => "doc.pdf"
+        ]);
+
+        $response->assertStatus(400);
+
 
     }
 

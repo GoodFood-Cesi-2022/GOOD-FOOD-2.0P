@@ -29,7 +29,7 @@ class AddFileRequest extends FormRequest
                 'required',
                 'file',
                 'mimes:jpeg,jpg,png,bmp,pdf',
-                'max:10000' // max 10Mo
+                'max:8000' // max 8Mo
             ],
             'name' => [
                 'required',

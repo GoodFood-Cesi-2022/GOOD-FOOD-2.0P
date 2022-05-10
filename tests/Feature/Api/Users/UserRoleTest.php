@@ -104,6 +104,23 @@ class UserRoleTest extends ApiCase {
     }
 
     /**
+     * test le cas où pas de rôle passé pour vérification
+     *
+     * @return void
+     */
+    public function test_has_one_of_roles_empty() {
+
+        $user = User::factory()->create();
+
+        $role_id = Role::whereCode(Roles::contractor->value)->first()->id;
+
+        $user->roles()->attach($role_id);
+
+        $this->assertFalse($user->hasOneOfRoles([]));
+
+    }
+
+    /**
      * Test les accès en fonction des rôles
      *
      * @group user_role
