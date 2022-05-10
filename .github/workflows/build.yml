@@ -43,7 +43,7 @@ jobs:
     container:
       image: goodfoodcesi2022/api:latest
     services:
-      db:
+      dbtest:
         image: postgres
         env:
           POSTGRES_DB: test
