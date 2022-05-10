@@ -1914,7 +1914,7 @@
           "types": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/IngredientType"
+              "$ref": "#/components/schemas/IngredientTypeCode"
             }
           }
         },
@@ -1923,6 +1923,18 @@
             "$ref": "#/components/schemas/Timestamps"
           }
         ]
+      },
+      "IngredientTypeCode": {
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code du type d'ingrédient"
+          }
+        }
       }
     },
     "parameters": {

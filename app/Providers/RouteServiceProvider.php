@@ -58,6 +58,10 @@ class RouteServiceProvider extends ServiceProvider
             return is_numeric($value) ? \App\Models\Role::findOrFail($value) : \App\Models\Role::whereCode($value)->firstOrFail();
         });
 
+        Route::bind('ingredient', function($value) {
+            return \App\Models\Ingredient::findOrFail($value);
+        });
+
 
     }
 

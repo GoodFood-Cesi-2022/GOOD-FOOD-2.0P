@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Enums\Roles;
-use App\Models\IngredientType;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
