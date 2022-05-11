@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Str;
 use App\Models\IngredientType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class IngredientTypeSeeder extends Seeder
 {
@@ -25,9 +26,8 @@ class IngredientTypeSeeder extends Seeder
         ];
 
         foreach($types as $type => $description) {
-            IngredientType::firstOrCreate([
+            IngredientType::firstOrCreate(['code' => Str::slug($type)],[
                 'name' => $type,
-                'code' => $type,
                 'description' => $description
             ]);
         }
