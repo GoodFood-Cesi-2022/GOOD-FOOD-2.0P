@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             IngredientTypeSeeder::class,
+            RecipeTypeSeeder::class,
         ]);
     }
 }

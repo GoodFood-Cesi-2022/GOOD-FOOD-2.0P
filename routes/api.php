@@ -78,4 +78,11 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
     });
 
 
+    Route::group(['prefix' => 'recipes'], function() {
+
+        Route::post('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'add']);
+
+    });
+
+
 });

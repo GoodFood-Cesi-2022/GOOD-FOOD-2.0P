@@ -1779,6 +1779,20 @@
           },
           "star": {
             "type": "boolean"
+          },
+          "ingredients" : {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ingredient"
+            }
+          },
+          "recipe_type": {
+            "$ref": "#/components/schemas/RecipeType"
+          },
+          "available_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
           }
         },
         "allOf": [
@@ -1836,6 +1850,17 @@
         "properties": {
           "code": {
             "type": "string",
+            "description": "Code unique",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Translation du type",
+            "readOnly": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Description du type",
             "readOnly": true
           }
         }

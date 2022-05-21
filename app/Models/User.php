@@ -15,7 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail, HasRoleInterface, ConfirmableTokenInterface
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRole, ConfirmableToken;
+    use HasApiTokens, HasFactory, Notifiable, HasRole, ConfirmableToken, Notifiable;
 
     /**
      * The attributes that are mass assignable.
