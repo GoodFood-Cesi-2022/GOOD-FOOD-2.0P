@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +23,8 @@ class RecipeFactory extends Factory
             'description' => $this->faker->text(100),
             'base_price' => $this->faker->randomFloat(2,5,30),
             'star' => false,
-            'available_at' => Carbon::now()
+            'available_at' => Carbon::now(),
+            'created_by' => User::factory()
         ];
     }
 

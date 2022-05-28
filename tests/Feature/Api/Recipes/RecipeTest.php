@@ -29,7 +29,7 @@ class RecipeTest extends ApiCase
         
         $ingredients = Ingredient::factory()->count(2)->create();
         
-        $this->actingAsContractor();
+        $user = $this->actingAsContractor();
 
         $data = [
             'name' => "recipe 1",
@@ -56,6 +56,12 @@ class RecipeTest extends ApiCase
             'created_at',
             'updated_at'
         ]);
+
+        $recipe_id = json_decode($response->content(), true)['id'];
+
+        $recipe = Recipe::find($recipe_id);
+
+        $this->assertTrue($user->id === $recipe->created_by);
         
 
     }

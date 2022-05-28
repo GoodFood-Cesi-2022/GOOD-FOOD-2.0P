@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\Roles;
 use App\Models\User;
+use App\Models\Recipe;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class RecipePolicy
@@ -61,5 +62,27 @@ class RecipePolicy
         return $user->hasRole(Roles::goodfood->value);
 
     }
+
+    /**
+     * Determine if the user can attach file to recipe
+     *
+     * @param User $user
+     * @param Recipe $recipe
+     * @return boolean
+     */
+    public function attachPicture(User $user, Recipe $recipe) : bool {
+
+        if($user->hasRole('goodfood')) {
+            return true;
+        }
+
+        if($user->hasRole('contractor') && $recipe->isCreatedBy($user)) {
+            return true;
+        }
+
+        return false;
+
+    }
+
 
 }

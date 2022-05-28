@@ -62,7 +62,6 @@ class RouteServiceProvider extends ServiceProvider
             return \App\Models\Ingredient::findOrFail($value);
         });
 
-
         Route::bind('recipe', function($value) {
             return \App\Models\Recipe::findOrFail($value);
         });

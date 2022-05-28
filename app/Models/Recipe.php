@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use App\Contracts\CreatedByConstraint as CreatedByConstraintContract;
 use Carbon\Carbon;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Users\CreatedByConstraint;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Recipe extends Model
+class Recipe extends Model implements CreatedByConstraintContract
 {
-    use HasFactory, SoftDeletes, Filterable;
+    use HasFactory, SoftDeletes, Filterable, CreatedByConstraint;
 
 
     protected $fillable = [
@@ -49,6 +51,14 @@ class Recipe extends Model
      */
     public function scopeAvailable(Builder $query) : Builder {
         return $query->whereDate('available_at', '<=', Carbon::today());
+    }
+
+
+    /**
+     * Retourne les photos de la recette
+     */
+    public function pictures() {
+        return $this->belongsToMany(File::class, 'recipe_pictures');
     }
 
 
