@@ -72,6 +72,33 @@ class RecipePolicy
      */
     public function attachPicture(User $user, Recipe $recipe) : bool {
 
+        return $this->canAttachOrDetachPicture($user, $recipe);
+
+    }
+
+    /**
+     * Determine if the user can detach picture
+     *
+     * @param User $user
+     * @param Recipe $recipe
+     * @return boolean
+     */
+    public function detachPicture(User $user, Recipe $recipe) : bool {
+
+        return $this->canAttachOrDetachPicture($user, $recipe);
+        
+
+    }
+
+    /**
+     * Determine if an user can attach or detach picture
+     *
+     * @param User $user
+     * @param Recipe $recipe
+     * @return boolean
+     */
+    protected function canAttachOrDetachPicture(User $user, Recipe $recipe) : bool {
+
         if($user->hasRole('goodfood')) {
             return true;
         }
@@ -82,7 +109,7 @@ class RecipePolicy
 
         return false;
 
-    }
+    } 
 
 
 }

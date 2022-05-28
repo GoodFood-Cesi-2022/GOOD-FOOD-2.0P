@@ -6,6 +6,7 @@ use App\Models\File;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Recipes\AttachPictureRequest;
+use App\Http\Requests\Recipes\DetachPictureRequest;
 
 class RecipePicturesController extends Controller
 {
@@ -25,5 +26,21 @@ class RecipePicturesController extends Controller
         return response('', 204);
 
     }
+
+    /**
+     * Détache un fichier de la recette
+     *
+     * @param DetachPictureRequest $request
+     * @return Response
+     */
+    public function detach(DetachPictureRequest $request) : Response {
+
+        $request->recipe->pictures()->detach($request->picture->id);
+
+        return response('', 204);
+
+    }
+
+
 
 }

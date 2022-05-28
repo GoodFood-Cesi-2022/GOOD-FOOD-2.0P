@@ -66,6 +66,10 @@ class RouteServiceProvider extends ServiceProvider
             return \App\Models\Recipe::findOrFail($value);
         });
 
+        Route::bind('picture', function($value) {
+            return \App\Models\File::whereUuid($value)->firstOrFail();
+        });
+
 
     }
 

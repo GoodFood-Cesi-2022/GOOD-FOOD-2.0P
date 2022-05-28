@@ -92,6 +92,12 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
             
             Route::group(['prefix' => 'pictures'], function() {
                 Route::post('', [\App\Http\Controllers\Api\Recipes\RecipePicturesController::class, 'attach']);
+
+                Route::group(['prefix' => '{picture}'], function() {
+                    Route::delete('', [\App\Http\Controllers\Api\Recipes\RecipePicturesController::class, 'detach']);
+                });
+
+
             });
 
         });
