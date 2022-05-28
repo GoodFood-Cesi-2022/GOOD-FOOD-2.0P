@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('star')->default(false);
             $table->decimal('base_price');
             $table->foreignId('recipe_type_id')->constrained('recipe_types');
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
             $table->timestamp('available_at');
             $table->softDeletes();
@@ -35,6 +36,7 @@ return new class extends Migration
     {
         Schema::table('recipes', function (Blueprint $table) {
             $table->dropForeign(['recipe_type_id']);
+            $table->dropForeign(['created_by']);
         });
 
 
