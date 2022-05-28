@@ -16,6 +16,7 @@ use App\Notifications\NewRecipeStarAdded;
 use App\Http\Requests\Recipes\AddRecipeRequest;
 use App\Http\Requests\Recipes\StarRecipeRequest;
 use App\Http\Requests\Recipes\UnstarRecipeRequest;
+use App\Http\Resources\RecipeTypeCollection;
 use Illuminate\Http\Response;
 
 class RecipesController extends Controller
@@ -117,6 +118,22 @@ class RecipesController extends Controller
         return response('', 204);
 
     }
+
+
+
+    /**
+     * Retourne les types de recette
+     *
+     * @return RecipeTypeCollection
+     */
+    public function getTypes() : RecipeTypeCollection {
+
+        $types = RecipeType::all();
+
+        return new RecipeTypeCollection($types);
+
+    }
+
 
 
     /**

@@ -336,6 +336,27 @@ class RecipeTest extends ApiCase
         $this->assertFalse($recipe->star);
 
     }
+
+
+    /**
+     * Test la mise en recette basique d'une recette star
+     *
+     * @group recipes
+     * @return void
+     */
+    public function test_retreive_recipe_types() : void {
+
+        $this->actingAsClient();
+
+        $response = $this->get(self::BASE_PATH . "/types");
+
+        $response->assertOk()->assertJsonStructure([
+            '*' => [
+                'code'
+            ]
+        ]);
+
+    }
  
 
 

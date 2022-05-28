@@ -81,6 +81,10 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
         Route::get('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'all']);
         Route::post('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'add']);
 
+        Route::group(['prefix' => 'types'], function() {
+            Route::get('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'getTypes']);
+        });
+
 
         Route::group(['prefix' => '{recipe}'], function() {
             Route::post('star', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'star']);
