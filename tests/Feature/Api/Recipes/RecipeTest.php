@@ -204,5 +204,140 @@ class RecipeTest extends ApiCase
 
     }
 
+    /**
+     * Test pour récupérer toutes les recettes
+     *
+     * @group recipes
+     * @return void
+     */
+    public function test_retreive_recipes() : void {
+
+        $recipe_type = RecipeType::first();
+
+        Recipe::factory()->count(10)->for($recipe_type, 'type')->create();
+
+        $this->actingAsContractor();
+
+        $response = $this->get(self::BASE_PATH);
+
+        $response->assertOk();
+
+    }
+
+    /**
+     * Test le filtrage sur le endpointget
+     *
+     * @group recipes
+     * @return void
+     */
+    public function test_retreive_search_insensitive() : void {
+
+        $recipe_type = RecipeType::first();
+
+        Recipe::factory()->count(10)->for($recipe_type, 'type')->create();
+
+        $recipe = Recipe::factory()->for($recipe_type, 'type')->create([
+            'name' => "cAn searCHable CONTENt"
+        ]);
+
+        $this->actingAsContractor();
+
+        $search = 'CaN SEARchABLE contenT';
+
+        $response = $this->get(self::BASE_PATH . "?name=$search");
+
+        $response->assertOk()->assertJsonCount(1, 'data')->assertJsonFragment(['id' => $recipe->id]);
+
+    }
+
+    /**
+     * Test la mise en recette star d'une recette basique
+     *
+     * @group recipes
+     * @return void
+     */
+    public function test_make_a_basic_recipe_to_star_conf_mode() : void {
+
+        $this->actingAsGoodFood();
+
+        $recipe_type = RecipeType::first();
+
+        $recipe = Recipe::factory()->for($recipe_type, 'type')->create();
+
+        set_app_mode('configuration');
+
+        Notification::fake();
+
+        $response = $this->postJson(self::BASE_PATH . "/{$recipe->id}/star");
+
+        $response->assertNoContent();
+
+        $recipe = $recipe->refresh();
+
+        $this->assertTrue($recipe->star);
+        
+        Notification::assertNothingSent();
+
+    }
+
+    /**
+     * Test la mise en recette star d'une recette basique
+     *
+     * @group recipes
+     * @return void
+     */
+    public function test_make_a_basic_recipe_to_star_conf_normal() : void {
+
+        $user = $this->actingAsGoodFood();
+
+        $recipe_type = RecipeType::first();
+
+        $recipe = Recipe::factory()->for($recipe_type, 'type')->create();
+
+        set_app_mode('normal');
+
+        Notification::fake();
+
+        $response = $this->postJson(self::BASE_PATH . "/{$recipe->id}/star");
+
+        $response->assertNoContent();
+
+        $recipe = $recipe->refresh();
+
+        $this->assertTrue($recipe->star);
+        
+        Notification::assertSentTo(
+            [$user], NewRecipeStarAdded::class
+        );
+
+    }
+
+    
+    /**
+     * Test la mise en recette basique d'une recette star
+     *
+     * @group recipes
+     * @return void
+     */
+    public function test_make_a_star_request_to_basic() : void {
+
+        $this->actingAsGoodFood();
+
+        $recipe_type = RecipeType::first();
+
+        $recipe = Recipe::factory()->star()->for($recipe_type, 'type')->create();
+
+        $response = $this->postJson(self::BASE_PATH . "/{$recipe->id}/unstar");
+
+        $response->assertNoContent();
+
+        $recipe = $recipe->refresh();
+
+        $this->assertFalse($recipe->star);
+
+    }
+ 
+
+
 
 }

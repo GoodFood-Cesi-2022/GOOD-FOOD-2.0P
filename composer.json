@@ -10,7 +10,8 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^9.0",
         "laravel/passport": "^10.3",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "tucker-eric/eloquentfilter": "^3.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",

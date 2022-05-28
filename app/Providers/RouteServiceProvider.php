@@ -63,6 +63,11 @@ class RouteServiceProvider extends ServiceProvider
         });
 
 
+        Route::bind('recipe', function($value) {
+            return \App\Models\Recipe::findOrFail($value);
+        });
+
+
     }
 
     /**

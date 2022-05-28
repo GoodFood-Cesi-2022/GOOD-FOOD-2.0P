@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\FilesController;
-use App\Http\Controllers\Api\Ingredients\IngredientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,7 +78,16 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
 
     Route::group(['prefix' => 'recipes'], function() {
 
+        Route::get('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'all']);
         Route::post('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'add']);
+
+
+        Route::group(['prefix' => '{recipe}'], function() {
+            Route::post('star', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'star']);
+            Route::post('unstar', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'unstar']);
+        });
+
+
 
     });
 

@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\Api\Recipes;
 
 use DB;
+use Notification;
 use Carbon\Carbon;
 use App\Models\Recipe;
 use App\Models\Ingredient;
 use App\Models\RecipeType;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RecipeResource;
-use App\Http\Requests\Recipes\AddRecipeRequest;
+use App\Http\Resources\RecipeCollection;
 use App\Notifications\NewRecipeStarAdded;
-use Notification;
+use App\Http\Requests\Recipes\AddRecipeRequest;
+use App\Http\Requests\Recipes\StarRecipeRequest;
+use App\Http\Requests\Recipes\UnstarRecipeRequest;
+use Illuminate\Http\Response;
 
 class RecipesController extends Controller
 {
@@ -53,15 +58,81 @@ class RecipesController extends Controller
 
         }
 
+        $this->sendNotificationRecipeStar($recipe);
+
+        return new RecipeResource($recipe);
+
+    }
+
+
+    /**
+     * Récupèrer l'ensemble des recettes de la plateformes
+     *
+     * @param Request $request
+     * @return RecipeCollection
+     */
+    public function all(Request $request) : RecipeCollection {
+
+        $this->authorize('view-any', Recipe::class);
+
+        $recipes = Recipe::filter($request->all())->paginate('20');
+
+        return new RecipeCollection($recipes);
+
+    }
+
+    /**
+     * Met une recette en recette star
+     *
+     * @param StarRecipeRequest $request
+     * @param Recipe $recipe
+     * @return Response
+     */
+    public function star(StarRecipeRequest $request, Recipe $recipe) : Response {
+
+        $recipe->star = true;
+
+        $recipe->save();
+
+        $this->sendNotificationRecipeStar($recipe);
+
+        return response('', 204);
+
+    }
+
+
+    /**
+     * Met une recette star en recette normale
+     *
+     * @param UnstarRecipeRequest $request
+     * @param Recipe $recipe
+     * @return Response
+     */
+    public function unstar(UnstarRecipeRequest $request, Recipe $recipe) : Response {
+
+        $recipe->star = false;
+
+        $recipe->save();
+
+        return response('', 204);
+
+    }
+
+
+    /**
+     * Envoi une notification quand une recette star est créé
+     *
+     * @param Recipe $recipe
+     * @return void
+     */
+    private function sendNotificationRecipeStar(Recipe $recipe) : void {
+
         if(app_mode_normal() && $recipe->star) {
             // A revoir quand les franchisés seront développés
             $contractors = [auth()->user()];
             Notification::send($contractors, new NewRecipeStarAdded($recipe));
         }
 
-        return new RecipeResource($recipe);
-
-    }
-
+    } 
 
 }

@@ -10,7 +10,19 @@ class RecipePolicy
 {
     use HandlesAuthorization;
 
-    
+    /**
+     * Determine if the current user can view recipes
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function viewAny(User $user) : bool {
+        return $user->hasOneOfRoles([
+            Roles::goodfood->value,
+            Roles::contractor->value
+        ]);
+    }
+
     /**
      * Determine if user can create recipe
      *
