@@ -363,6 +363,40 @@ class RecipeTest extends ApiCase
         ]);
 
     }
+
+
+    /**
+     * Test la mise en recette basique d'une recette star
+     *
+     * @group recipes
+     * @return void
+     */
+    public function test_retreive_recipe_ingredients() : void {
+
+        $recipe_type = RecipeType::first();
+
+        $ingredients = Ingredient::factory()->count(5);
+
+        $recipe = Recipe::factory()
+                    ->star()
+                    ->for($recipe_type, 'type')
+                    ->has($ingredients, 'ingredients')
+                    ->create();
+
+        $this->actingAsClient();
+
+        $response = $this->get(self::BASE_PATH . "/{$recipe->id}/ingredients");
+
+        $response->assertOk()->assertJsonCount(5);
+
+        $content = collect(json_decode($response->content(), true));
+
+        $ingredients = $recipe->refresh()->ingredients;
+
+        $this->assertTrue($content->pluck('id')->toArray() === $ingredients->pluck('id')->toArray());
+
+
+    }
  
 
 

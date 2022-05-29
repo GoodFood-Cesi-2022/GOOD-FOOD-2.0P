@@ -89,6 +89,7 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
         Route::group(['prefix' => '{recipe}'], function() {
             Route::post('star', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'star']);
             Route::post('unstar', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'unstar']);
+            Route::get('ingredients', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'getIngredients']);
             
             Route::group(['prefix' => 'pictures'], function() {
                 Route::get('', [\App\Http\Controllers\Api\Recipes\RecipePicturesController::class, 'getPictures']);
@@ -98,7 +99,7 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
                     Route::delete('', [\App\Http\Controllers\Api\Recipes\RecipePicturesController::class, 'detach']);
                 });
 
-
+                
             });
 
         });

@@ -103,6 +103,18 @@ class RecipePolicy
 
 
     /**
+     * Determine if the user can view ingredients
+     *
+     * @param User $user
+     * @param Recipe $recipe
+     * @return boolean
+     */
+    public function viewIngredients(User $user, Recipe $recipe) : bool {
+        return true;
+    }
+
+
+    /**
      * Determine if an user can attach or detach picture
      *
      * @param User $user
@@ -121,6 +133,6 @@ class RecipePolicy
 
         return false;
 
-    } 
+    }
 
 }

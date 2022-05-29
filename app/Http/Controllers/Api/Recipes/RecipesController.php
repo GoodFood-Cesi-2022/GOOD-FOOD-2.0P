@@ -16,6 +16,7 @@ use App\Notifications\NewRecipeStarAdded;
 use App\Http\Requests\Recipes\AddRecipeRequest;
 use App\Http\Requests\Recipes\StarRecipeRequest;
 use App\Http\Requests\Recipes\UnstarRecipeRequest;
+use App\Http\Resources\IngredientCollection;
 use App\Http\Resources\RecipeTypeCollection;
 use Illuminate\Http\Response;
 
@@ -131,6 +132,23 @@ class RecipesController extends Controller
         $types = RecipeType::all();
 
         return new RecipeTypeCollection($types);
+
+    }
+
+
+    /**
+     * Retourne la liste des ingredients
+     *
+     * @param Request $request
+     * @return IngredientCollection
+     */
+    public function getIngredients(Request $request) : IngredientCollection {
+
+        $this->authorize('view-ingredients', $request->recipe);
+
+        $ingredients = $request->recipe->ingredients;
+
+        return new IngredientCollection($ingredients);
 
     }
 
