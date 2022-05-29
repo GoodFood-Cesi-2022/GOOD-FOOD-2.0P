@@ -72,6 +72,8 @@ return [
 
     'api_url' => env('API_URL', 'http://localhost'),
 
+    'cdn_url' => env('CDN_URL', 'http://localhost'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

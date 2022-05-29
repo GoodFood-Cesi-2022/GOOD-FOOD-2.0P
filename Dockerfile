@@ -62,3 +62,4 @@ USER $user
 RUN touch .env && \
     composer install
 
+RUN php artisan storage:link

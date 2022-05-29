@@ -1079,7 +1079,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/File"
+                    "$ref": "#/components/schemas/FilePublic"
                   }
                 }
               }
@@ -1958,6 +1958,24 @@
           "code": {
             "type": "string",
             "description": "Code du type d'ingrédient"
+          }
+        }
+      },
+      "FilePublic": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "link": {
+            "type": "string",
+            "readOnly": true
+          },
+          "external_link": {
+            "type": "string",
+            "readOnly": true
           }
         }
       }
