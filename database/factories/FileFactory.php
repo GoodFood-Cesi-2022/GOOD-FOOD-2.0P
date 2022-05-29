@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Storage;
+use Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\File>
@@ -37,7 +38,7 @@ class FileFactory extends Factory
 
         return $this->state(function(array $attributes) use($size, $disk) {
         
-            Storage::fake($disk);
+            Storage::persistentFake($disk);
             
             $file = UploadedFile::fake()->create($attributes['name'], $size);
 
@@ -62,13 +63,40 @@ class FileFactory extends Factory
 
         return $this->state(function(array $attributes) use($width, $height, $disk) {
         
-            Storage::fake($disk);
+            Storage::persistentFake($disk);
             
             $file = UploadedFile::fake()->image($this->faker->word . '.jpg', $width, $height)->size(100);
 
             return [
                 'path' => $file->path(),
                 'size' => $file->getSize()
+            ];
+
+        });
+
+    }
+
+    /**
+     * Utilise une image réel créer le model
+     *
+     * @param string $disk
+     * @return void
+     */
+    public function realImage(string $disk = '') {
+
+        return $this->state(function(array $attributes) use($disk) {
+        
+            Storage::persistentFake($disk);
+
+            $name = Str::random();
+
+            $path = storage_path('app/files/') . "$name.jpg";
+
+            copy(base_path('tests/Resources/tmp.jpg'), $path);
+
+            return [
+                'path' => "files/$name.jpg",
+                'size' => 1000
             ];
 
         });

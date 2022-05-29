@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api\Recipes;
 
 use App\Models\File;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\FilePublicCollection;
 use App\Http\Requests\Recipes\AttachPictureRequest;
 use App\Http\Requests\Recipes\DetachPictureRequest;
 
@@ -21,9 +24,17 @@ class RecipePicturesController extends Controller
 
         $file = File::whereUuid($request->file_uuid)->first();
 
-        $request->recipe->pictures()->attach($file->id);
+        $filename = last(explode('/', $file->path));
 
+        $new_path = "public/$filename";
+
+        Storage::move($file->path, $new_path);
+
+        $file->path = $new_path;
+        $file->save();
+        $request->recipe->pictures()->attach($file->id);
         return response('', 204);
+
 
     }
 
@@ -40,6 +51,23 @@ class RecipePicturesController extends Controller
         return response('', 204);
 
     }
+
+    /**
+     * Retourne les liens vers les photos de la recette
+     *
+     * @param Request $request
+     * @return FilePublicCollection
+     */
+    public function getPictures(Request $request) : FilePublicCollection {
+
+        $this->authorize('view-pictures', $request->recipe);
+
+        $pictures = $request->recipe->pictures;
+
+        return new FilePublicCollection($pictures);
+
+    }
+
 
 
 

@@ -4,9 +4,11 @@ namespace Tests\Feature\Api\Recipes;
 
 use App\Models\File;
 use App\Models\Recipe;
-use App\Models\RecipePicture;
 use App\Models\RecipeType;
+use Illuminate\Support\Str;
+use App\Models\RecipePicture;
 use Tests\Feature\Api\ApiCase;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -24,13 +26,15 @@ class RecipePictureTest extends ApiCase
      */
     public function test_attach_picture_to_recipe() : void {
 
+        Storage::fake('public');
+
         $this->actingAsGoodFood();
 
         $recipe_type = RecipeType::first();
 
         $recipe = Recipe::factory()->for($recipe_type, 'type')->create();
 
-        $file = File::factory()->image()->create();
+        $file = File::factory()->realImage()->create();
 
         $response = $this->postJson($this->getBasePath($recipe->id), [
             'file_uuid' => $file->uuid
@@ -42,7 +46,7 @@ class RecipePictureTest extends ApiCase
 
         $this->assertTrue($recipe->pictures->first()->id === $file->id);
 
-        $file = File::factory()->image()->create();
+        $file = File::factory()->realImage()->create();
 
         $response = $this->postJson($this->getBasePath($recipe->id), [
             'file_uuid' => $file->uuid
@@ -65,13 +69,16 @@ class RecipePictureTest extends ApiCase
      */
     public function test_attach_picture_policies() : void {
 
+        Storage::fake();
+        Storage::fake('public');
+
         $this->actingAsContractor();
 
         $recipe_type = RecipeType::first();
 
         $recipe = Recipe::factory()->for($recipe_type, 'type')->create();
 
-        $file = File::factory()->image()->create();
+        $file = File::factory()->realImage()->create();
 
         $response = $this->postJson($this->getBasePath($recipe->id), [
             'file_uuid' => $file->uuid
@@ -81,7 +88,7 @@ class RecipePictureTest extends ApiCase
 
         $this->actingAsGoodFood();
 
-        $file = File::factory()->image()->create();
+        $file = File::factory()->realImage()->create();
 
         $response = $this->postJson($this->getBasePath($recipe->id), [
             'file_uuid' => $file->uuid
@@ -95,7 +102,7 @@ class RecipePictureTest extends ApiCase
 
         $recipe = Recipe::factory()->for($recipe_type, 'type')->create();
 
-        $file = File::factory()->image()->create();
+        $file = File::factory()->realImage()->create();
 
         $response = $this->postJson($this->getBasePath($recipe->id), [
             'file_uuid' => $file->uuid
@@ -105,7 +112,7 @@ class RecipePictureTest extends ApiCase
 
         $this->actingAsContractor();
 
-        $file = File::factory()->image()->create();
+        $file = File::factory()->realImage()->create();
 
         $response = $this->postJson($this->getBasePath($recipe->id), [
             'file_uuid' => $file->uuid
@@ -121,6 +128,9 @@ class RecipePictureTest extends ApiCase
      * @return void
      */
     public function test_detach_picture() : void {
+
+        Storage::fake();
+        Storage::fake('public');
 
         $this->actingAsContractor();
 
@@ -212,6 +222,49 @@ class RecipePictureTest extends ApiCase
 
 
     }
+
+    /**
+     * Test la récupération des photos et des liens
+     *
+     * @group recipe-pictures
+     * @return void
+     */
+    public function test_retreive_pictures() : void {
+
+        $this->actingAsClient();
+
+        $recipe_type = RecipeType::first();
+
+        $files = File::factory()->image()->count(5);
+
+        $recipe = Recipe::factory()
+                    ->has($files, 'pictures')
+                    ->for($recipe_type, 'type')
+                    ->create();
+        
+        $response = $this->get($this->getBasePath($recipe->id));
+
+        $response->assertOk()->assertJsonStructure([
+            '*' => [
+                'uuid',
+                'link',
+                'external_link'
+            ]
+        ]);
+
+        $content = collect(json_decode($response->content(), true));
+
+        $recipe = $recipe->refresh();
+
+        $file = $recipe->pictures()->first();
+
+        $file_response = $content->where('uuid', $file->uuid)->first();
+
+        $this->assertTrue(Str::contains($file_response['external_link'], config('app.cdn_url')));
+
+    }
+
+
 
 
     /**
