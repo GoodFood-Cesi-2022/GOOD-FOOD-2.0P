@@ -6,7 +6,7 @@
 
 ## {{ $recipe_name }}
 
-{{ __('Vous avez jusqu\'au **:date** pour vous préparer, à compter de cette date la nouvelle recette sera automatiquement ajoutée au recettes disponibles pour les clients.', ['date' => $date]) }}
+{{ __('Vous avez jusqu\'au **:date** pour vous préparer, à compter de cette date la nouvelle recette sera automatiquement ajoutée aux plats disponibles pour les clients.', ['date' => $date]) }}
 
 
 
