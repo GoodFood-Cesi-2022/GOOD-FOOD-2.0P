@@ -10,5 +10,5 @@
 
 
 
-{{ __("Si vous n'êtes pas concerné par cet mail, vous pouvez l'ignorer.") }}
+{{ __("Si vous n'êtes pas concerné par cet email, vous pouvez l'ignorer.") }}
 @endcomponent
