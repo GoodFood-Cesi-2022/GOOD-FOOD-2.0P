@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\Ingredients;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Ingredients\CreateIngredientTypeRequest;
-use App\Http\Resources\IngredientTypeCollection;
-use App\Http\Resources\IngredientTypeResource;
+use Illuminate\Http\Request;
 use App\Models\IngredientType;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\IngredientTypeResource;
+use App\Http\Resources\IngredientTypeCollection;
+use App\Http\Requests\Ingredients\CreateIngredientTypeRequest;
 
 class IngredientTypeController extends Controller
 {
@@ -33,13 +34,14 @@ class IngredientTypeController extends Controller
     /**
      * Récupére tous les types d'ingrédients
      *
+     * @param Request $request
      * @return IngredientTypeCollection
      */
-    public function all() : IngredientTypeCollection {
+    public function all(Request $request) : IngredientTypeCollection {
 
         $this->authorize('view-any', IngredientType::class);
 
-        $ingredient_types = IngredientType::all();
+        $ingredient_types = IngredientType::filter($request->all())->get();
 
         return new IngredientTypeCollection($ingredient_types);
 

@@ -87,6 +87,30 @@ class IngredientTypeTest extends ApiCase
         
     }
 
+    /**
+     * Test la recherche sur les types d'ingrédients
+     *
+     * @group ingredient_types
+     * @return void
+     */
+    public function test_ingredient_type_search() : void {
+
+        IngredientType::factory()->count(20)->create();
+
+        IngredientType::factory()->create([
+            'name' => "My Best Ingredient Type",
+            'code' => "mybestingredienttype"
+        ]);
+
+        $this->actingAsClient();
+
+        $response = $this->get(self::BASE_PATH . "?search=mybestingredienttype");
+
+        $response->assertOk()->assertJsonCount(1);
+
+
+    }
+
 
     /**
      * Test les accès en fonction des rôles
