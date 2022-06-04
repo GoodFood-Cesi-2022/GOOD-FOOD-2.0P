@@ -12,6 +12,19 @@ class RecipePolicy
     use HandlesAuthorization;
 
     /**
+     * Determine if user can view recipe
+     *
+     * @param User $user
+     * @param Recipe $recipe
+     * @return boolean
+     */
+    public function view(User $user, Recipe $recipe) : bool {
+
+        return true;
+
+    }
+
+    /**
      * Determine if the current user can view recipes
      *
      * @param User $user

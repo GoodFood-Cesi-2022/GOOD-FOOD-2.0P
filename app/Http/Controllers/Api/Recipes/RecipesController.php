@@ -26,6 +26,22 @@ class RecipesController extends Controller
 {
     
     /**
+     * Retrouve une recette
+     *
+     * @param Request $request
+     * @param Recipe $recipe
+     * @return RecipeResource
+     */
+    public function find(Request $request, Recipe $recipe) : RecipeResource {
+
+        $this->authorize('view', $recipe);
+
+        return new RecipeResource($recipe);
+
+    }
+
+
+    /**
      * Ajoute une recette dans le système
      *
      * @param AddRecipeRequest $request

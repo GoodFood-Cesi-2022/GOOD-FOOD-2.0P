@@ -841,7 +841,28 @@ class RecipeTest extends ApiCase
 
     }
 
+    /**
+     * test la récupération d'une recette
+     *
+     * @group recipes
+     * @return void
+     */
+    public function test_retreive_recipe() : void {
+
+        $recipe_type = RecipeType::whereCode('main_course')->first();
+        $ingredients = Ingredient::factory()->count(5);
+
+        $recipe = Recipe::factory()->for($recipe_type, 'type')->has($ingredients, 'ingredients')->create();
+
+        $this->actingAsClient();
+
+        $response = $this->get(self::BASE_PATH . "/{$recipe->id}");
+
+        $response->assertOk()->assertJsonFragment([
+            'id' => $recipe->id
+        ]);
 
 
+    }
 
 }
