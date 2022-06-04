@@ -32,7 +32,6 @@ trait CreatedByConstraint {
      * @return boolean
      */
     public function isCreatedBy(User|int $user) : bool {
-        
         if($user instanceof User) {
             return $user->id === $this->created_by;
         }

@@ -40,6 +40,33 @@ class RecipePolicy
     }
 
     /**
+     * Determine if a recipe can be updated
+     *
+     * @param User $user
+     * @param Recipe $recipe
+     * @return boolean
+     */
+    public function update(User $user, Recipe $recipe) : bool {
+
+        return $this->canEditRecipe($user, $recipe);
+
+    }
+
+    /**
+     * Determine if a recipe can be deleted by the user
+     *
+     * @param User $user
+     * @param Recipe $recipe
+     * @return boolean
+     */
+    public function delete(User $user, Recipe $recipe) : bool {
+
+        return $this->canEditRecipe($user, $recipe);
+
+    }
+
+
+    /**
      * Determine if the user can star a recipe
      *
      * @param User $user
@@ -72,7 +99,7 @@ class RecipePolicy
      */
     public function attachPicture(User $user, Recipe $recipe) : bool {
 
-        return $this->canAttachOrDetachPicture($user, $recipe);
+        return $this->canEditRecipe($user, $recipe);
 
     }
 
@@ -85,7 +112,7 @@ class RecipePolicy
      */
     public function detachPicture(User $user, Recipe $recipe) : bool {
 
-        return $this->canAttachOrDetachPicture($user, $recipe);
+        return $this->canEditRecipe($user, $recipe);
         
 
     }
@@ -115,19 +142,22 @@ class RecipePolicy
 
 
     /**
-     * Determine if an user can attach or detach picture
+     * Determine if an user can update a privacy recipe
      *
      * @param User $user
      * @param Recipe $recipe
      * @return boolean
      */
-    protected function canAttachOrDetachPicture(User $user, Recipe $recipe) : bool {
+    protected function canEditRecipe(User $user, Recipe $recipe) : bool {
 
-        if($user->hasRole('goodfood')) {
+        if($user->hasRole(Roles::goodfood->value)) {
             return true;
         }
 
-        if($user->hasRole('contractor') && $recipe->isCreatedBy($user)) {
+        if($user->hasRole(Roles::contractor->value) 
+            && $recipe->isCreatedBy($user) 
+            && $recipe->star === false
+        ) {
             return true;
         }
 

@@ -53,7 +53,7 @@ class AddRecipeRequest extends FormRequest
                 'numeric'
             ],
             'ingredients' => [
-                'required',
+                'present',
                 'array'
             ],
             'ingredients.*' => [

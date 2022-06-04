@@ -16,4 +16,18 @@ return [
     'delay' => env('RECIPE_DELAY', '20d'),
 
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Recipe delay before delete
+    |--------------------------------------------------------------------------
+    |
+    | This delay determine how time a recipe will be deleted when app is in 
+    | normal mode. When app is running in configuration mode the recipe will be
+    | delete immediatly and no notification will be sent
+    |
+    */
+    'delay_before_delete' => env('RECIPE_DELETE_DELAY', '15d'),
+
+
 ];

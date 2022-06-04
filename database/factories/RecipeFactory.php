@@ -60,4 +60,23 @@ class RecipeFactory extends Factory
 
     }
 
+    /**
+     * Rectte à supprimer à la date indiquée
+     *
+     * @param \Carbon\Carbon $date
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function toTrashAt(Carbon $date) : Factory {
+
+        return $this->state(function (array $attributes) use ($date) : array {
+
+            return [
+                'trashed_at' => $date 
+            ];
+
+        });
+
+    }
+
+
 }

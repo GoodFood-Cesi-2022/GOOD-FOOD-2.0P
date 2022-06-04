@@ -16,8 +16,10 @@ use App\Notifications\NewRecipeStarAdded;
 use App\Http\Requests\Recipes\AddRecipeRequest;
 use App\Http\Requests\Recipes\StarRecipeRequest;
 use App\Http\Requests\Recipes\UnstarRecipeRequest;
+use App\Http\Requests\Recipes\UpdateRecipeRequest;
 use App\Http\Resources\IngredientCollection;
 use App\Http\Resources\RecipeTypeCollection;
+use App\Notifications\DeleteRecipe;
 use Illuminate\Http\Response;
 
 class RecipesController extends Controller
@@ -151,6 +153,89 @@ class RecipesController extends Controller
         return new IngredientCollection($ingredients);
 
     }
+
+    /**
+     * Mise à jour d'une recette
+     *
+     * @param UpdateRecipeRequest $request
+     * @return Response
+     */
+    public function update(UpdateRecipeRequest $request, Recipe $recipe, Ingredient $ingredient_model) : Response {
+
+        if($request->safe()->star) {
+            $this->authorize('star', $recipe);
+        }
+
+        DB::beginTransaction();
+
+        try {
+        
+            $recipe->name = $request->safe()->name;
+            $recipe->description = $request->safe()->description;
+            $recipe->star = $request->safe()->star;
+            $recipe->base_price = $request->safe()->base_price;
+            $recipe->type()->associate(RecipeType::whereCode($request->recipe_type)->first());
+            $recipe->save();
+            $ingredients = $ingredient_model->whereIn('id', $request->ingredients)->get();
+            $recipe->ingredients()->sync($ingredients->pluck('id')->toArray());
+
+            DB::commit();
+        
+        }catch(\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+
+        if($recipe->wasChanged('star')) {
+            $this->sendNotificationRecipeStar($recipe);
+        }
+
+        return response('', 204);
+
+
+    }
+
+    /**
+     * Supprime une recette si en mode normal envoi un mail d'information
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function delete(Request $request, Recipe $recipe) : Response {
+
+        $this->authorize('delete', $recipe);
+
+        if(app_mode_configuration()) {
+            $recipe->delete();
+        }else{
+            $recipe->trashed_at = Carbon::today()->add(config('recipes.delay_before_delete'));
+            $recipe->save();
+        }
+
+        $this->sendNotificationRecipeDeleted($recipe);
+
+        return response('', 204);
+
+    }
+
+
+    /**
+     * Envoi une notification de suppression de la recette
+     *
+     * @param Recipe $recipe
+     * @return void
+     */
+    private function sendNotificationRecipeDeleted(Recipe $recipe) : void {
+
+        if(app_mode_normal() && $recipe->trashed_at != null) {
+            // A revoir quand les franchisés seront développés
+            $contractors = [auth()->user()];
+            Notification::send($contractors, new DeleteRecipe($recipe));
+        }
+
+
+    }
+
 
 
 

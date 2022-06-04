@@ -21,11 +21,13 @@ class Recipe extends Model implements CreatedByConstraintContract
         'description',
         'base_price',
         'star',
-        'available_at'
+        'available_at',
+        'trashed_at'
     ];
 
     protected $casts = [
-        'available_at' => 'datetime'
+        'available_at' => 'datetime', // Quand la recette sera disponible
+        'trashed_at' => 'datetime' // Quand la recette sera supprimé
     ];
 
     /**
@@ -51,6 +53,16 @@ class Recipe extends Model implements CreatedByConstraintContract
      */
     public function scopeAvailable(Builder $query) : Builder {
         return $query->whereDate('available_at', '<=', Carbon::today());
+    }
+
+    /**
+     * Scope les résultats sur les recettes à supprimer
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeToDelete(Builder $query) : Builder {
+        return $query->whereDate('trashed_at', '>=', Carbon::today());
     }
 
 

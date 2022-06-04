@@ -87,6 +87,8 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
 
 
         Route::group(['prefix' => '{recipe}'], function() {
+            Route::put('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'update']);
+            Route::delete('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'delete']);
             Route::post('star', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'star']);
             Route::post('unstar', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'unstar']);
             Route::get('ingredients', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'getIngredients']);
