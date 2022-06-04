@@ -202,6 +202,11 @@
         "tags": [
           "users"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IncludesFilter"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -237,6 +242,9 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "$ref": "#/components/parameters/IncludesFilter"
           }
         ],
         "responses": {
@@ -1345,6 +1353,11 @@
         "tags": [
           "ingredients"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SearchFilter"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2080,6 +2093,27 @@
         "schema": {
           "type": "integer",
           "format": "int64"
+        }
+      },
+      "IncludesFilter": {
+        "name": "includes",
+        "description": "Relation à charger dans le model",
+        "required": false,
+        "in": "query",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "SearchFilter": {
+        "name": "search",
+        "description": "Filtre sur les données retournées",
+        "required": false,
+        "in": "query",
+        "schema": {
+          "type": "string"
         }
       }
     },

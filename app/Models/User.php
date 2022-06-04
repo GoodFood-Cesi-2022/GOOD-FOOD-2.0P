@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
-use App\Contracts\Users\ConfirmableToken as ConfirmableTokenInterface;
 use App\Traits\Users\HasRole;
+use EloquentFilter\Filterable;
 use Laravel\Passport\HasApiTokens;
+use App\Traits\Users\ConfirmableToken;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Contracts\Users\HasRole as HasRoleInterface;
-use App\Traits\Users\ConfirmableToken;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Contracts\Users\ConfirmableToken as ConfirmableTokenInterface;
 
 class User extends Authenticatable implements MustVerifyEmail, HasRoleInterface, ConfirmableTokenInterface
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRole, ConfirmableToken, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRole, ConfirmableToken, Notifiable, Filterable;
 
     /**
      * The attributes that are mass assignable.

@@ -6,9 +6,13 @@ use Tests\TestCase;
 use App\Enums\Roles;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\TestResponse;
 use Laravel\Passport\Passport;
 
 class ApiCase extends TestCase {
+
+    use RefreshDatabase;
 
     /**
      * Authentifie l'utilisateur pour l'API en tant que client
@@ -36,6 +40,24 @@ class ApiCase extends TestCase {
     public function actingAsGoodFood() : User {
         return $this->actingLike(Roles::goodfood->value);
     }
+
+
+    /**
+     * Vérifie si la relation est présente dans la reponse
+     * Permet de tester la relation includes
+     *
+     * @param TestResponse $response
+     * @param string $relation
+     * @return void
+     */
+    public function assertRelationIsPresent(TestResponse $response, string $relation) : void {
+
+        $content = (array) json_decode($response->content());
+
+        $this->assertArrayHasKey($relation, $content, "The relation ${relation} is not present in resource");
+
+    }
+
 
 
     /**
