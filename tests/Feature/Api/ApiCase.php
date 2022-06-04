@@ -6,10 +6,13 @@ use Tests\TestCase;
 use App\Enums\Roles;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
 use Laravel\Passport\Passport;
 
 class ApiCase extends TestCase {
+
+    use RefreshDatabase;
 
     /**
      * Authentifie l'utilisateur pour l'API en tant que client

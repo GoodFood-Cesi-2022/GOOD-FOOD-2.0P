@@ -28,7 +28,7 @@ class UsersController extends Controller {
 
         $this->authorize('view', $request->user_id);
 
-        $user = User::filter($request->all())->firstOrFail();
+        $user = User::filter($request->all())->whereId($request->user_id->id)->firstOrFail();
 
         return new UserResource($user);
 
