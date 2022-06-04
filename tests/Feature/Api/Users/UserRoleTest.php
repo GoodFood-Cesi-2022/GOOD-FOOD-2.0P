@@ -106,6 +106,7 @@ class UserRoleTest extends ApiCase {
     /**
      * test le cas où pas de rôle passé pour vérification
      *
+     * @group user_role
      * @return void
      */
     public function test_has_one_of_roles_empty() {
@@ -117,6 +118,31 @@ class UserRoleTest extends ApiCase {
         $user->roles()->attach($role_id);
 
         $this->assertFalse($user->hasOneOfRoles([]));
+
+    }
+
+    /**
+     * Test le chargment des relations par query parameter
+     *
+     * @group user_role
+     * @return void
+     */
+    public function test_user_relation_load() : void {
+
+        $this->actingAsGoodFood();
+
+        $user = User::factory()->create();
+
+        $role_id = Role::whereCode(Roles::contractor->value)->first()->id;
+
+        $user->roles()->attach($role_id);
+
+        $response = $this->get(self::BASE_PATH . "/{$user->id}?includes[]=roles");
+
+        $response->assertOk();
+
+        $this->assertRelationIsPresent($response, 'roles');
+
 
     }
 
