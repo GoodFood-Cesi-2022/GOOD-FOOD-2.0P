@@ -30,5 +30,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         JsonResource::withoutWrapping();
+
+        if(!app_has_mode()) {
+            set_app_mode('normal');
+        }
+
     }
 }

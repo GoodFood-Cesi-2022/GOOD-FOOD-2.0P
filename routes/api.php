@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\FilesController;
-use App\Http\Controllers\Api\Ingredients\IngredientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -74,6 +72,42 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
     Route::group(['prefix' => 'files'], function() {
 
         Route::post('', [\App\Http\Controllers\Api\FilesController::class, 'upload']);
+
+    });
+
+
+    Route::group(['prefix' => 'recipes'], function() {
+
+        Route::get('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'all']);
+        Route::post('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'add']);
+
+        Route::group(['prefix' => 'types'], function() {
+            Route::get('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'getTypes']);
+        });
+
+
+        Route::group(['prefix' => '{recipe}'], function() {
+            Route::get('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'find']);
+            Route::put('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'update']);
+            Route::delete('', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'delete']);
+            Route::post('star', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'star']);
+            Route::post('unstar', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'unstar']);
+            Route::get('ingredients', [\App\Http\Controllers\Api\Recipes\RecipesController::class, 'getIngredients']);
+            
+            Route::group(['prefix' => 'pictures'], function() {
+                Route::get('', [\App\Http\Controllers\Api\Recipes\RecipePicturesController::class, 'getPictures']);
+                Route::post('', [\App\Http\Controllers\Api\Recipes\RecipePicturesController::class, 'attach']);
+
+                Route::group(['prefix' => '{picture}'], function() {
+                    Route::delete('', [\App\Http\Controllers\Api\Recipes\RecipePicturesController::class, 'detach']);
+                });
+
+                
+            });
+
+        });
+
+
 
     });
 
