@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class IngredientTypeResource extends JsonResource
 {
@@ -20,7 +19,8 @@ class IngredientTypeResource extends JsonResource
             'name' => $this->name,
             'description' =>  $this->description,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+            'abilities' => $this->appendAbilities($request)
         ];
     }
 }

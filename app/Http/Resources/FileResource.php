@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class FileResource extends JsonResource
 {
@@ -20,7 +19,8 @@ class FileResource extends JsonResource
             'size' => $this->size,
             'size_unit' => 'bytes',
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+            'abilities' => $this->appendAbilities($request)
         ];
     }
 }
