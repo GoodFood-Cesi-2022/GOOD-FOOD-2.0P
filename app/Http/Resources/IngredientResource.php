@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class IngredientResource extends JsonResource
 {
@@ -20,7 +19,8 @@ class IngredientResource extends JsonResource
             'allergen' => $this->allergen,
             'types' => IngredientTypeResource::collection($this->types),
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+            'abilities' => $this->appendAbilities($request)
         ];
     }
 }
