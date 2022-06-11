@@ -36,6 +36,8 @@ class RecipesController extends Controller
 
         $this->authorize('view', $recipe);
 
+        $recipe = Recipe::filter($request->all())->whereId($recipe->id)->firstOrFail();
+
         return new RecipeResource($recipe);
 
     }

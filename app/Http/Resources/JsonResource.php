@@ -9,24 +9,25 @@ use Illuminate\Http\Resources\Json\JsonResource as BaseJsonResource;
 abstract class JsonResource extends BaseJsonResource
 {
 
-
     /**
      * Retourne les permissions demandées dans la req
      *
      * @param Request $request
      * @return array
      */
-    protected function appendAbilities(Request $request) : array {
+    protected function appendAbilities(Request $request) : mixed {
 
         if($request->has('abilities')) {
 
             $permissions = $this->getAbilities($request->query('abilities', []));
 
+            $request->offsetUnset('abilities');
+
             return $this->when(count($permissions) > 0, $permissions);
 
         }
 
-        return [];
+        return $this->when(false, []);
 
     }
 

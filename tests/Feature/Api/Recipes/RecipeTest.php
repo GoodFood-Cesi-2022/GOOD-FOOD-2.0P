@@ -51,7 +51,7 @@ class RecipeTest extends ApiCase
             'description' => "Description de la recette 1",
             'star' => false,
             'base_price' => 10.27,
-            'ingredients' => (new IngredientCollection($ingredients))->toArray(request()),
+            'ingredients' => json_decode((new IngredientCollection($ingredients))->toJson(), true),
             'recipe_type' => [
                 'code' => "appetizer"
             ]
