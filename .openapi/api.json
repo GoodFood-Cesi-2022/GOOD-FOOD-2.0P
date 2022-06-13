@@ -1362,7 +1362,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Ingredient"
+                "type": "object",
+                "properties": {
+                  "types": {
+                    "$ref": "#/components/schemas/IngredientTypeCode"
+                  }
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Ingredient"
+                  }
+                ]
               }
             }
           }
@@ -2421,7 +2431,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/IngredientType"
-            }
+            },
+            "readOnly": true
           }
         },
         "allOf": [
