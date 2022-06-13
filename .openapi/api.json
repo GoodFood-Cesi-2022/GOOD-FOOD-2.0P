@@ -1365,7 +1365,11 @@
                 "type": "object",
                 "properties": {
                   "types": {
-                    "$ref": "#/components/schemas/IngredientTypeCode"
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Code du type de l'ingrédient"
+                    }
                   }
                 },
                 "anyOf": [
