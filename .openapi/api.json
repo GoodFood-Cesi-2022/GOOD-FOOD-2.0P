@@ -204,7 +204,19 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/IncludesFilter"
+            "name": "includes",
+            "description": "Relations du model pouvant être ajoutées à la réponse",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type":"array",
+              "items": {
+                "type":"string",
+                "enum": [
+                  "roles"
+                ]
+              }
+            }
           }
         ],
         "responses": {
@@ -244,7 +256,19 @@
             "$ref": "#/components/parameters/UserId"
           },
           {
-            "$ref": "#/components/parameters/IncludesFilter"
+            "name": "includes",
+            "description": "Relations du model pouvant être ajoutées à la réponse",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type":"array",
+              "items": {
+                "type":"string",
+                "enum": [
+                  "roles"
+                ]
+              }
+            }
           }
         ],
         "responses": {
@@ -793,6 +817,27 @@
         "tags": [
           "recipes"
         ],
+        "parameters": [
+          {
+            "name": "includes",
+            "description": "Relations du model pouvant être ajoutées à la réponse",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type":"array",
+              "items": {
+                "type":"string",
+                "enum": [
+                  "createdBy",
+                  "pictures"
+                ]
+              }
+            }
+          },
+          {
+            "$ref": "#/components/parameters/NameFilter"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -844,12 +889,16 @@
                     "type": "array",
                     "items": {
                       "type": "integer",
-                      "description": "ID d'un ingrédient",
+                      "description": "ID des ingrédients de la recette",
                       "format": "int64"
                     }
+                  },
+                  "recipe_type": {
+                    "type": "string",
+                    "description": "Code du type d'ingrédient"
                   }
                 },
-                "allOf": [
+                "anyOf": [
                   {
                     "$ref": "#/components/schemas/Recipe"
                   }
@@ -1575,6 +1624,392 @@
           }
         }
       }
+    },
+    "/contractors": {
+      "get": {
+        "summary": "Récupérer les franchisés de la plateforme",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Filtre les résultats sur le nom, email, téléphone",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "contractors"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Contractor"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer un nouveau franchisé",
+        "tags": [
+          "contractors"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contractor"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contractor"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/contractors/{contractor_id}/recipes": {
+      "get": {
+        "summary": "Récupérer la liste des recettes du franchisé. Paginée par 20",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ContractorId"
+          }
+        ],
+        "tags": [
+          "contractors"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content":{
+              "application/json": {
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ContractorRecipe"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Ajouter une recette au catalogue du franchisé",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ContractorId"
+          }
+        ],
+        "tags": [
+          "contractors"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json":{
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContractorRecipe"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractorRecipe"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/contractors/{contractor_id}/times": {
+      "get": {
+        "summary": "Récupérer les horaires d'ouvertures de la franchise",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ContractorId"
+          }
+        ],
+        "tags": [
+          "contractors"
+        ],
+        "responses": {
+          "200":{
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref": "#/components/schemas/ContractorTimes"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer ou modifier les horaires d'ouvertures de la franchise.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ContractorId"
+          }
+        ],
+        "tags": [
+          "contractors"
+        ],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref": "#/components/schemas/ContractorTimes"
+              }
+            }
+          }
+        },
+        "responses":{
+          "201":{
+            "description": "Created",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref": "#/components/schemas/ContractorTimes"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Modifier les horaires de la franchise",
+        "tags": [
+          "contractors"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ContractorId"
+          }
+        ],
+        "requestBody": {
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref": "#/components/schemas/ContractorTimes"
+              }
+            }
+          }
+        },
+        "responses":{
+          "204":{
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/contractors/{contractor_id}/recipes/{recipe_id}": {
+      "put": {
+        "summary": "Modifier le prix de la recette",
+        "tags": [
+          "contractors"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ContractorId"
+          },
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          }
+        ],
+        "requestBody": {
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref": "#/components/schemas/ContractorRecipeUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Retirer une recette du catalogue du franchisé",
+        "parameters":[
+          {
+            "$ref": "#/components/parameters/ContractorId"
+          },
+          {
+            "$ref": "#/components/parameters/RecipeId"
+          }
+        ],
+        "tags": [
+          "contractors"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1829,7 +2264,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Ingredient"
-            }
+            },
+            "readOnly": true
           },
           "recipe_type": {
             "$ref": "#/components/schemas/RecipeType"
@@ -2023,6 +2459,178 @@
             "readOnly": true
           }
         }
+      },
+      "Contractor": {
+        "type": "object",
+        "required": [
+          "name",
+          "phone",
+          "email",
+          "timezone",
+          "max_delivery_radius",
+          "address_id"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nom du franchisé"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Numéro de téléphone du franchisé"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email de la franchise",
+            "format": "email"
+          },
+          "timezone": {
+            "type": "string",
+            "description": "Code de la timezone pour convertir les heures"
+          },
+          "max_delivery_radius": {
+            "type": "integer",
+            "description": "Rayon maximale de livraison du franchisé"
+          },
+          "address_id":{
+            "type": "integer",
+            "format": "int64",
+            "description": "ID d'une adresse dans le système"
+          },
+          "create_by": {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID de l'utilisateur qui a créé le franchisé"
+          },
+          "address":{
+            "type": "object",
+            "description": "Adresse de la franchise",
+            "allOf":[
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ],
+            "readOnly": true
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          }
+        ]    
+      },
+      "ContractorTimes": {
+        "type": "object",
+        "properties": {
+          "monday_lunch": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "monday_night": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tuesday_lunch": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tuesday_night": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "wednesday_lunch": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "wednesday_night": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "thursday_lunch": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "thursday_night": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "friday_lunch": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "friday_night": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "staturday_lunch": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "saturday_night": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sunday_lunch": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sunday_night": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          }
+        ]
+      },
+      "ContractorRecipe": {
+        "type": "object",
+        "required": [
+          "price",
+          "recipe_id"
+        ],
+        "properties": {
+          "price": {
+            "type": "number",
+            "format": "double",
+            "description": "Prix de la recette affichée au catalogue"
+          },
+          "recipe_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID d'une recette du système"
+          },
+          "recipe": {
+            "type": "object",
+            "description": "Recette associée",
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          }
+        ]
+      },
+      "ContractorRecipeUpdate": {
+        "type": "object",
+        "required": [
+          "price"
+        ],
+        "properties": {
+          "price": {
+            "type": "number",
+            "format": "double",
+            "description": "Prix à modifier"
+          }
+        }
       }
     },
     "parameters": {
@@ -2095,18 +2703,6 @@
           "format": "int64"
         }
       },
-      "IncludesFilter": {
-        "name": "includes",
-        "description": "Relation à charger dans le model",
-        "required": false,
-        "in": "query",
-        "schema": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
       "SearchFilter": {
         "name": "search",
         "description": "Filtre sur les données retournées",
@@ -2114,6 +2710,25 @@
         "in": "query",
         "schema": {
           "type": "string"
+        }
+      },
+      "NameFilter": {
+        "name": "name",
+        "description": "Filtre sur les données retournées par le nom",
+        "required": false,
+        "in": "query",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "ContractorId": {
+        "name": "contractor_id",
+        "description": "ID d'un franchisé",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     },
