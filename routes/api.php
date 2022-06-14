@@ -107,7 +107,16 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
 
         });
 
+    });
 
+    Route::group(['prefix' => 'addresses'], function() {
+
+        Route::post('', [\App\Http\Controllers\Api\Addresses\AddressController::class, 'create']);
+
+        Route::group(['prefix' => '{address}'], function() {
+            Route::put('', [\App\Http\Controllers\Api\Addresses\AddressController::class, 'update']);
+            Route::delete('', [\App\Http\Controllers\Api\Addresses\AddressController::class, 'delete']);
+        });
 
     });
 
