@@ -666,7 +666,7 @@
     },
     "/addresses": {
       "post": {
-        "summary": "Créé une nouvelle adresse dans le système.",
+        "summary": "Créér une nouvelle adresse dans le système.",
         "tags": [
           "addresses"
         ],
@@ -728,9 +728,15 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "No Content",
-            "content": {}
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            }
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
@@ -2094,10 +2100,14 @@
             "type": "string"
           },
           "lat": {
-            "type": "string"
+            "type": "string",
+            "descritpion": "Latitude de l'adresse pour les données de géolocalisation",
+            "readOnly": true
           },
           "lon": {
-            "type": "string"
+            "type": "string",
+            "description": "Lontitude de l'adresse pour les données de géolocalisation",
+            "readOnly": true
           }
         }
       },

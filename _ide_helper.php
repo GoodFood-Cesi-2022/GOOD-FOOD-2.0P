@@ -16211,7 +16211,30 @@
      
 }
 
-        namespace Spatie\LaravelIgnition\Facades { 
+        namespace App\Facades { 
+            /**
+     * 
+     *
+     */ 
+        class OSMFacade {
+                    /**
+         * Transforme une adresse en coordonnées lat, lon via le service OpenStreetMap
+         *
+         * @param \App\Models\Address $address
+         * @return array|false 
+         * @static 
+         */ 
+        public static function transformAddressToGeocoding($address)
+        {
+                        /** @var \App\Services\OSMService $instance */
+                        return $instance->transformAddressToGeocoding($address);
+        }
+         
+    }
+     
+}
+
+    namespace Spatie\LaravelIgnition\Facades { 
             /**
      * 
      *
@@ -20268,6 +20291,7 @@ namespace  {
             class URL extends \Illuminate\Support\Facades\URL {}
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
+            class OSM extends \App\Facades\OSMFacade {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
      
 }

@@ -194,6 +194,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         EloquentFilter\ServiceProvider::class,
+        App\Providers\OSMServiceProvider::class,
 
     ],
 
@@ -249,6 +250,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'OSM' => \App\Facades\OSMFacade::class,
 
     ],
 
