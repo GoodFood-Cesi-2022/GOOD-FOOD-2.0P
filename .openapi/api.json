@@ -4,6 +4,169 @@
     "title": "GOODFOOD API",
     "version": "0.0.0"
   },
+  "tags": [
+    {
+      "name": "users",
+      "description": "User"
+    },
+    {
+      "name": "files",
+      "description": "Upload Files"
+    },
+    {
+      "name": "addresses",
+      "description": "Addresses"
+    },
+    {
+      "name": "roles",
+      "description": "Roles"
+    },
+    {
+      "name": "recipes",
+      "description": "Recipes"
+    },
+    {
+      "name": "ingredients",
+      "description": "Ingredients"
+    },
+    {
+      "name": "contractors",
+      "description": "Contractors"
+    },
+    {
+      "name": "user_model",
+      "x-displayName": "User",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/User\" />\n"
+    },
+    {
+      "name": "address_model",
+      "x-displayName": "Address",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Address\" />\n"
+    },
+    {
+      "name": "role_model",
+      "x-displayName": "Role",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Role\" />\n"
+    },
+    {
+      "name": "user_address_model",
+      "x-displayName": "User Address",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/UserAddress\" />\n"
+    },
+    {
+      "name": "user_role_model",
+      "x-displayName": "User Role",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/UserRole\" />\n"
+    },
+    {
+      "name": "pagination_links_model",
+      "x-displayName": "Pagination Links",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/PaginationLinks\" />\n"
+    },
+    {
+      "name": "pagination_meta_model",
+      "x-displayName": "Pagination Meta",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/PaginationMeta\" />\n"
+    },
+    {
+      "name": "recipe_model",
+      "x-displayName": "Recipe",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Recipe\" />\n"
+    },
+    {
+      "name": "ingredient_type_mode",
+      "x-displayName": "Ingredient Type",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/IngredientType\" />\n"
+    },
+    {
+      "name": "recipe_type_model",
+      "x-displayName": "Recipe Type",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RecipeType\" />\n"
+    },
+    {
+      "name": "file_model",
+      "x-displayName": "File",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/File\" />\n"
+    },
+    {
+      "name": "recipe_ingredient_model",
+      "x-displayName": "Recipe Ingredient",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/RecipeIngredient\" />\n"
+    },
+    {
+      "name": "ingredient_model",
+      "x-displayName": "Ingredient",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Ingredient\" />\n"
+    },
+    {
+      "name": "ingredient_type_code_model",
+      "x-displayName": "Ingredient Type Code",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/IngredientTypeCode\" />\n"
+    },
+    {
+      "name": "file_public_model",
+      "x-displayName": "File Public",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/FilePublic\" />\n"
+    },
+    {
+      "name": "contractor_model",
+      "x-displayName": "Contractor",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Contractor\" />\n"
+    },
+    {
+      "name": "contractor_times_model",
+      "x-displayName": "Contractor Times",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ContractorTimes\" />\n"
+    },
+    {
+      "name": "contractor_recipe_model",
+      "x-displayName": "Contractor Recipe",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ContractorRecipe\" />\n"
+    },
+    {
+      "name": "contractor_recipe_update_model",
+      "x-displayName": "Contractor Recipe Update",
+      "description": "<SchemaDefinition schemaRef=\"#/components/schemas/ContractorRecipeUpdate\" />\n"
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Endpoints",
+      "tags": [
+        "files",
+        "users",
+        "addresses",
+        "roles",
+        "recipes",
+        "ingredients",
+        "contractors"
+      ]
+    },
+    {
+      "name": "Models",
+      "tags": [
+        "file_model",
+        "file_public_model",
+        "user_model",
+        "address_model",
+        "role_model",
+        "user_address_model",
+        "user_role_model",
+        "pagination_links_model",
+        "pagination_meta_model",
+        "recipe_model",
+        "recipe_type_model",
+        "recipe_ingredient_model",
+        "ingredient_model",
+        "ingredient_type_model",
+        "ingredient_type_code_model",
+        "contractor_model",
+        "contractor_times_model",
+        "contractor_recipe_model",
+        "contractor_recipe_update_model"
+      ]
+    }
+  ],
   "servers": [
     {
       "url": "localhost:8080/api"
@@ -2074,9 +2237,7 @@
           "first_line",
           "zip_code",
           "country",
-          "city",
-          "lat",
-          "lon"
+          "city"
         ],
         "properties": {
           "id": {
@@ -2101,7 +2262,7 @@
           },
           "lat": {
             "type": "string",
-            "descritpion": "Latitude de l'adresse pour les données de géolocalisation",
+            "description": "Latitude de l'adresse pour les données de géolocalisation",
             "readOnly": true
           },
           "lon": {
