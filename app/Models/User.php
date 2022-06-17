@@ -81,6 +81,15 @@ class User extends Authenticatable implements MustVerifyEmail, HasRoleInterface,
         return $this->emailLogin->email;
     }
 
+    /**
+     * Retourne les adresses de l'utilisateur
+     */
+    public function addresses() {
+        return $this->belongsToMany(\App\Models\Address::class, 'user_addresses')
+                    ->withPivot('name', 'id', 'default', 'timezone', 'address_id')
+                    ->withTimestamps();
+    }
+
 
 
 
