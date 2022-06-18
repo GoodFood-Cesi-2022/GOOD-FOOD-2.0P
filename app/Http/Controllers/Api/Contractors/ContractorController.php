@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\Contractors;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Contractors\AddRecipesRequest;
 use App\Http\Resources\ContractorResource;
 use App\Http\Requests\Contractors\CreateContractorRequest;
+use App\Http\Resources\ContractorRecipeCollection;
 use App\Models\Contractor;
 use App\Models\Email;
 
@@ -33,10 +35,26 @@ class ContractorController extends Controller
 
         $contractor->email()->associate($email);
         $contractor->address()->associate($request->address_id);
+        $contractor->ownedBy()->associate($request->owned_by);
 
         $contractor->save();
 
         return new ContractorResource($contractor);
+
+    }
+
+
+    /**
+     * Ajouter des recettes au franchisé
+     *
+     * @param AddRecipesRequest $request
+     * @param Contractor $contractor
+     * @return ContractorRecipeCollection
+     */
+    public function addRecipes(AddRecipesRequest $request, Contractor $contractor) : ContractorRecipeCollection {
+
+
+
 
     }
 

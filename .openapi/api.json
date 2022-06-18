@@ -1947,7 +1947,7 @@
         }
       },
       "post": {
-        "summary": "Ajouter une recette au catalogue du franchisé",
+        "summary": "Ajouter des recettes au catalogue du franchisé",
         "parameters": [
           {
             "$ref": "#/components/parameters/ContractorId"
@@ -2653,7 +2653,8 @@
           "phone",
           "email",
           "max_delivery_radius",
-          "address_id"
+          "address_id",
+          "owned_by"
         ],
         "properties": {
           "name": {
@@ -2677,6 +2678,21 @@
             "type": "integer",
             "format": "int64",
             "description": "ID d'une adresse dans le système"
+          },
+          "ownedBy": {
+            "type":"object",
+            "description": "Propriétaire de la franchise",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ],
+            "readOnly": true
+          },
+          "owned_by": {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID d'un utilisateur du système qui détermine le propriétaire de la franchise"
           },
           "create_by": {
             "type": "integer",

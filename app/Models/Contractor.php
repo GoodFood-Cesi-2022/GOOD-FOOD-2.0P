@@ -34,5 +34,19 @@ class Contractor extends Model implements CreatedByConstraintContract
         return $this->belongsTo(\App\Models\Address::class);
     }
 
+    /**
+     * Propriétaire de la franchise
+     */
+    public function ownedBy() {
+        return $this->belongsTo(\App\Models\User::class, 'owned_by', 'id');
+    }
+
+    /**
+     * Les recettes du franchisé
+     */
+    public function recipes() {
+        return $this->belongsToMany(\App\Models\Recipe::class, 'contractor_recipes');
+    }
+
 
 }
