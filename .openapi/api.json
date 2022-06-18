@@ -2652,7 +2652,6 @@
           "name",
           "phone",
           "email",
-          "timezone",
           "max_delivery_radius",
           "address_id"
         ],
@@ -2670,10 +2669,6 @@
             "description": "Email de la franchise",
             "format": "email"
           },
-          "timezone": {
-            "type": "string",
-            "description": "Code de la timezone pour convertir les heures"
-          },
           "max_delivery_radius": {
             "type": "integer",
             "description": "Rayon maximale de livraison du franchisé"
@@ -2686,7 +2681,8 @@
           "create_by": {
             "type": "integer",
             "format": "int64",
-            "description": "ID de l'utilisateur qui a créé le franchisé"
+            "description": "ID de l'utilisateur qui a créé le franchisé",
+            "readOnly": true
           },
           "address":{
             "type": "object",

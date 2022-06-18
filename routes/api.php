@@ -134,4 +134,11 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
     });
 
 
+    Route::group(['prefix' => 'contractors'], function() {
+
+        Route::post('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'create']);
+
+    });
+
+
 });
