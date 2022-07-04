@@ -1751,7 +1751,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Ingredient"
+                "type": "object",
+                "properties": {
+                  "types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Code du type de l'ingrédient"
+                    }
+                  }
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Ingredient"
+                  }
+                ]
               }
             }
           }
@@ -1819,6 +1833,32 @@
             "description": "Filtre les résultats sur le nom, email, téléphone",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "pos",
+            "in": "query",
+            "required": false,
+            "description": "Coordonnées du client pour retourner une liste de franchise accessible",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "lat",
+                  "lon"
+                ],
+                "properties": {
+                  "lat": {
+                    "description": "Latitude de la position de l'utilisateur",
+                    "type": "number"
+                  },
+                  "lon": {
+                    "description": "Longitude de la position de l'utilisateur",
+                    "type": "number"
+                  }
+                }
+              }
             }
           }
         ],
@@ -1902,6 +1942,22 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/ContractorId"
+          },
+          {
+            "name": "includes",
+            "description": "Relations du model pouvant être ajoutées à la réponse",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type":"array",
+              "items": {
+                "type":"string",
+                "enum": [
+                  "createdBy",
+                  "pictures"
+                ]
+              }
+            }
           }
         ],
         "tags": [
@@ -1960,9 +2016,17 @@
           "content": {
             "application/json":{
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ContractorRecipe"
+                "type": "object",
+                "required": [
+                  "recipes"
+                ],
+                "properties": {
+                  "recipes": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ContractorRecipe"
+                    }
+                  }
                 }
               }
             }
@@ -1974,7 +2038,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContractorRecipe"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContractorRecipe"
+                  }
                 }
               }
             }
