@@ -137,6 +137,30 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
     Route::group(['prefix' => 'contractors'], function() {
 
         Route::post('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'create']);
+        Route::get('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'all']);
+
+        Route::group(['prefix' => '{contractor}'], function() {
+
+            Route::group(['prefix' => 'recipes'], function() {
+                Route::get('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'getRecipes']);
+                Route::post('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'addRecipes']);
+
+                Route::group(['prefix' => '{recipe}'], function() {
+                    Route::put('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'updateRecipe']);
+                    Route::delete('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'deleteRecipe']);
+                });
+
+            });
+
+            Route::group(['prefix' => 'times'], function() {
+                Route::get('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'getTimes']);
+                Route::post('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'addTimes']);
+                Route::put('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'updateTimes']);
+            });
+
+
+        });
+
 
     });
 

@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Email;
+use App\Models\Address;
+use App\Models\ContractorTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,8 +23,13 @@ class ContractorFactory extends Factory
         return [
             'name' => $this->faker->catchPhrase,
             'phone' => $this->faker->phoneNumber(),
-            'max_delivery_radius' => $this->faker->random_int(1, 30),
+            'max_delivery_radius' => $this->faker->numberBetween(1, 30),
             'email_id' => Email::factory()->create()->id,
+            'created_by' => User::factory(),
+            'timezone' => 'FR',
+            'address_id' => Address::factory()->latlon(),
+            'owned_by' => User::factory()
         ];
     }
+
 }
