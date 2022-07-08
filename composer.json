@@ -32,7 +32,9 @@
         },
         "files": [
             "app/helpers/AppModeHelper.php",
-            "app/helpers/UrlHelper.php"
+            "app/helpers/UrlHelper.php",
+            "app/helpers/DistanceHelper.php",
+            "app/helpers/ContractorDaysHelper.php"
         ]
     },
     "autoload-dev": {

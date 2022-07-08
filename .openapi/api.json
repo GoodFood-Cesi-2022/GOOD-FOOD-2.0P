@@ -1751,7 +1751,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Ingredient"
+                "type": "object",
+                "properties": {
+                  "types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Code du type de l'ingrédient"
+                    }
+                  }
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Ingredient"
+                  }
+                ]
               }
             }
           }
@@ -1819,6 +1833,32 @@
             "description": "Filtre les résultats sur le nom, email, téléphone",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "pos",
+            "in": "query",
+            "required": false,
+            "description": "Coordonnées du client pour retourner une liste de franchise accessible",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "lat",
+                  "lon"
+                ],
+                "properties": {
+                  "lat": {
+                    "description": "Latitude de la position de l'utilisateur",
+                    "type": "number"
+                  },
+                  "lon": {
+                    "description": "Longitude de la position de l'utilisateur",
+                    "type": "number"
+                  }
+                }
+              }
             }
           }
         ],
@@ -1902,6 +1942,22 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/ContractorId"
+          },
+          {
+            "name": "includes",
+            "description": "Relations du model pouvant être ajoutées à la réponse",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type":"array",
+              "items": {
+                "type":"string",
+                "enum": [
+                  "createdBy",
+                  "pictures"
+                ]
+              }
+            }
           }
         ],
         "tags": [
@@ -1947,7 +2003,7 @@
         }
       },
       "post": {
-        "summary": "Ajouter une recette au catalogue du franchisé",
+        "summary": "Ajouter des recettes au catalogue du franchisé",
         "parameters": [
           {
             "$ref": "#/components/parameters/ContractorId"
@@ -1960,9 +2016,17 @@
           "content": {
             "application/json":{
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ContractorRecipe"
+                "type": "object",
+                "required": [
+                  "recipes"
+                ],
+                "properties": {
+                  "recipes": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ContractorRecipe"
+                    }
+                  }
                 }
               }
             }
@@ -1974,7 +2038,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContractorRecipe"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContractorRecipe"
+                  }
                 }
               }
             }
@@ -2652,9 +2719,9 @@
           "name",
           "phone",
           "email",
-          "timezone",
           "max_delivery_radius",
-          "address_id"
+          "address_id",
+          "owned_by"
         ],
         "properties": {
           "name": {
@@ -2670,10 +2737,6 @@
             "description": "Email de la franchise",
             "format": "email"
           },
-          "timezone": {
-            "type": "string",
-            "description": "Code de la timezone pour convertir les heures"
-          },
           "max_delivery_radius": {
             "type": "integer",
             "description": "Rayon maximale de livraison du franchisé"
@@ -2683,10 +2746,26 @@
             "format": "int64",
             "description": "ID d'une adresse dans le système"
           },
+          "ownedBy": {
+            "type":"object",
+            "description": "Propriétaire de la franchise",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ],
+            "readOnly": true
+          },
+          "owned_by": {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID d'un utilisateur du système qui détermine le propriétaire de la franchise"
+          },
           "create_by": {
             "type": "integer",
             "format": "int64",
-            "description": "ID de l'utilisateur qui a créé le franchisé"
+            "description": "ID de l'utilisateur qui a créé le franchisé",
+            "readOnly": true
           },
           "address":{
             "type": "object",
@@ -2708,61 +2787,61 @@
       "ContractorTimes": {
         "type": "object",
         "properties": {
-          "monday_lunch": {
-            "type": "string",
-            "format": "date-time"
+          "monday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "monday_night": {
-            "type": "string",
-            "format": "date-time"
+          "tuesday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "tuesday_lunch": {
-            "type": "string",
-            "format": "date-time"
+          "wednesday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "tuesday_night": {
-            "type": "string",
-            "format": "date-time"
+          "thursday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "wednesday_lunch": {
-            "type": "string",
-            "format": "date-time"
+          "friday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "wednesday_night": {
-            "type": "string",
-            "format": "date-time"
+          "saturday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "thursday_lunch": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "thursday_night": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "friday_lunch": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "friday_night": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "staturday_lunch": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "saturday_night": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "sunday_lunch": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "sunday_night": {
-            "type": "string",
-            "format": "date-time"
+          "sunday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           }
         },
         "allOf": [
@@ -2770,6 +2849,42 @@
             "$ref": "#/components/schemas/Timestamps"
           }
         ]
+      },
+      "ContractorTimeServices": {
+        "type": "object",
+        "properties": {
+          "lunch": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeHours"
+              }
+            ]
+          },
+          "night": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeHours"
+              }
+            ]
+          }
+        }
+      },
+      "ContractorTimeHours": {
+        "type": "object",
+        "properties": {
+          "opened_at": {
+            "type": "string",
+            "description": "Horaire d'ouverture du service au format HH:MM",
+            "nullable": true
+          },
+          "closed_at": {
+            "type": "string",
+            "description": "Horaire de fermeture du service au format HH:MM",
+            "nullable": true
+          }
+        }
       },
       "ContractorRecipe": {
         "type": "object",

@@ -5,7 +5,6 @@ namespace App\Http\Requests\Recipes;
 use App\Models\Recipe;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
 class AddRecipeRequest extends FormRequest
 {
