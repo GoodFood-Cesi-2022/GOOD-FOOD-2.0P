@@ -42,7 +42,6 @@ class UserAddressesController extends Controller
     /**
      * Retourne la liste des adresses de l'utilisateur
      *
-     * @param Request $request
      * @param User $user
      * @return UserAddressCollection
      */
