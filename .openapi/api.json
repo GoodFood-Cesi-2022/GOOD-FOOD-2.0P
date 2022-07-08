@@ -2787,61 +2787,61 @@
       "ContractorTimes": {
         "type": "object",
         "properties": {
-          "monday_lunch": {
-            "type": "string",
-            "format": "date-time"
+          "monday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "monday_night": {
-            "type": "string",
-            "format": "date-time"
+          "tuesday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "tuesday_lunch": {
-            "type": "string",
-            "format": "date-time"
+          "wednesday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "tuesday_night": {
-            "type": "string",
-            "format": "date-time"
+          "thursday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "wednesday_lunch": {
-            "type": "string",
-            "format": "date-time"
+          "friday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "wednesday_night": {
-            "type": "string",
-            "format": "date-time"
+          "saturday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           },
-          "thursday_lunch": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "thursday_night": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "friday_lunch": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "friday_night": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "staturday_lunch": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "saturday_night": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "sunday_lunch": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "sunday_night": {
-            "type": "string",
-            "format": "date-time"
+          "sunday": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeServices"
+              }
+            ]
           }
         },
         "allOf": [
@@ -2849,6 +2849,42 @@
             "$ref": "#/components/schemas/Timestamps"
           }
         ]
+      },
+      "ContractorTimeServices": {
+        "type": "object",
+        "properties": {
+          "lunch": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeHours"
+              }
+            ]
+          },
+          "night": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContractorTimeHours"
+              }
+            ]
+          }
+        }
+      },
+      "ContractorTimeHours": {
+        "type": "object",
+        "properties": {
+          "opened_at": {
+            "type": "string",
+            "description": "Horaire d'ouverture du service au format HH:MM",
+            "nullable": true
+          },
+          "closed_at": {
+            "type": "string",
+            "description": "Horaire de fermeture du service au format HH:MM",
+            "nullable": true
+          }
+        }
       },
       "ContractorRecipe": {
         "type": "object",
