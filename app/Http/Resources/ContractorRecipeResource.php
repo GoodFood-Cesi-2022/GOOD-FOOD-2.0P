@@ -14,7 +14,7 @@ class ContractorRecipeResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'price' => $this->pivot->price,
+            'price' => (float) $this->pivot->price,
             'recipe' => new RecipeResource($this->resource)
         ];
     }
