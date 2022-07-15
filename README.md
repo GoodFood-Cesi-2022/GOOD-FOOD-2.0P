@@ -24,7 +24,13 @@ docker-compose up -d
 docker-compose exec api composer install
 ```
 
-Vérifier l'installation [localhost:8080](http://localhost:8080)
+6. Installation de l'application
+
+```bash
+docker-compose exec api php artisan app:install
+```
+
+Vérifier l'installation [localhost:8085](http://localhost:8085)
 
 
 ## Documentation
