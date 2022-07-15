@@ -8,30 +8,8 @@ Tout pour lancer les conteneurs et faire tourner l'application.
 
 ## Construction des conteneurs
 
-### API
-
-```
-docker-compose build api
-```
-
-### Doc
-
-```
-docker-compose build doc
-```
-
-### NGINX
-
-!!! tip "Pour les droits utilisateurs"
-
 ```bash
-docker-compose build nginx
-```
-
-### Doctum
-
-```
-docker-compose build doctum
+docker-compose build
 ```
 
 ## Lancement des services
@@ -46,7 +24,13 @@ docker-compose up -d
 docker-compose exec api composer install
 ```
 
-Toutes les resources seront contruites et l'application sera disponible à l'adresse suivante [localhost:8080](http://localhost:8080)
+### Installation de l'application
+
+```
+docker-compose exec api php artisan app:install
+```
+
+Toutes les resources seront contruites et l'application sera disponible à l'adresse suivante [localhost:8080](http://localhost:8085)
 
 ## Mettre en pause les services
 
