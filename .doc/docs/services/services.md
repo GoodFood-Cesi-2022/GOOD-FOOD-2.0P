@@ -10,6 +10,8 @@ Liste des conteneurs pour gérer les services de l'application.
 |db|5432|5432|`SQL`|Base de données PostgreSQL pour les données de l'application|PROD|
 |cache||6379|`TCP`|Cache de l'API pour les données temporaires et pour la sauvegarde des jobs|PROD|
 |nginx|8080|80|`HTTP`| Front pour contacter le service de l'API|PROD|
+|nginx|8085|8001|`HTTP`| Front pour contacter le service de l'authentification|PROD|
+|nginx|8086|8002|`HTTP`| Front pour contacter le CDN et récupérer les fichiers|PROD|
 |search||8108|`HTTP`| Service pour l'indexation et la recherche de résultat|PROD|
 |mailhog|8025,1025|8025,1025|`HTTP`,`SMTP`|Faker de boite mail pour tester les mails envoyés de l'application|DEV|
 |doc|8009|8000|`HTTP`|Documentation [MKdocs Material](https://squidfunk.github.io/mkdocs-material/) pour la documentation technique|DEV|
