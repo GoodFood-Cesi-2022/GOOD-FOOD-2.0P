@@ -8,6 +8,7 @@ use App\Http\Requests\Contractors\AddContractorTimesRequest;
 use App\Http\Requests\Contractors\AddRecipesRequest;
 use App\Http\Resources\ContractorResource;
 use App\Http\Requests\Contractors\CreateContractorRequest;
+use App\Http\Requests\Contractors\UpdateContractorRequest;
 use App\Http\Requests\Contractors\UpdateRecipeRequest;
 use App\Http\Resources\ContractorCollection;
 use App\Http\Resources\ContractorRecipeCollection;
@@ -206,6 +207,52 @@ class ContractorController extends Controller
         return response('', 204);
 
     }
+
+    /**
+     * Met à jour les informations de la franchise
+     *
+     * @param UpdateContractorRequest $request
+     * @param Contractor $contractor
+     * @return Illuminate\Http\Response
+     */
+    public function update(UpdateContractorRequest $request, Contractor $contractor) : \Illuminate\Http\Response {
+
+        $email = Email::firstOrCreate([
+            'email' => $request->email
+        ]);
+
+        $contractor->name = $request->name;
+        $contractor->phone = $request->phone;
+        $contractor->timezone = 'FR';
+        $contractor->max_delivery_radius = $request->max_delivery_radius;
+
+        $contractor->email()->associate($email);
+        $contractor->address()->associate($request->address_id);
+        $contractor->ownedBy()->associate($request->owned_by);
+
+        $contractor->save();
+
+        return response('', 204);
+
+    }
+
+    /**
+     * Supprime une franchise
+     *
+     * @param Request $request
+     * @param Contractor $contractor
+     * @return Illuminate\Http\Response
+     */
+    public function delete(Request $request, Contractor $contractor) : \Illuminate\Http\Response {
+        
+        $this->authorize('delete', $contractor);
+
+        $contractor->delete();
+
+        return response('', 204);
+
+    }
+
 
 
     /**

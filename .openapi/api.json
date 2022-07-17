@@ -1936,6 +1936,78 @@
         }
       }
     },
+    "/contractors/{contractor_id}": {
+      "put": {
+        "summary": "Mise à jour des informations d'une franchise",
+        "tags": [
+          "contractors"
+        ],
+        "parameters": [
+          {
+            "$ref" : "#/components/parameters/ContractorId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json":{
+              "schema": {
+                "$ref" : "#/components/schemas/Contractor"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete" : {
+        "summary": "Supprimer une franchise",
+        "tags": [
+          "contractors"
+        ],
+        "parameters": [
+          {
+            "$ref" : "#/components/parameters/ContractorId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
     "/contractors/{contractor_id}/recipes": {
       "get": {
         "summary": "Récupérer la liste des recettes du franchisé. Paginée par 20",
