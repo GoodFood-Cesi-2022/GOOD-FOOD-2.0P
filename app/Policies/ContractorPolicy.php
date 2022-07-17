@@ -24,6 +24,30 @@ class ContractorPolicy
 
 
     /**
+     * Determine si l'utilisateur courant peut mettre à jour la franchise
+     *
+     * @param User $user
+     * @param Contractor $contractor
+     * @return boolean
+     */
+    public function update(User $user, Contractor $contractor) : bool {
+        return $this->canBeDoByOwner($user, $contractor);
+    }
+
+
+    /**
+     * Determine si l'utilisateur peut supprimer la franchise
+     *
+     * @param User $user
+     * @param Contractor $contractor
+     * @return boolean
+     */
+    public function delete(User $user, Contractor $contractor) : bool {
+        return $user->hasRole(Roles::goodfood->value);
+    }
+
+
+    /**
      * Determine si l'utilisateur courant peut ajouter des recettes
      * au catalogue de la franchise
      *
@@ -32,15 +56,7 @@ class ContractorPolicy
      */
     public function addRecipes(User $user, Contractor $contractor) : bool {
         
-        if($user->hasRole(Roles::goodfood->value)) {
-            return true;
-        }
-        
-        if($user->id === $contractor->owned_by) {
-            return true;
-        }
-
-        return false;
+        return $this->canBeDoByOwner($user, $contractor);
 
     }
 
@@ -66,15 +82,7 @@ class ContractorPolicy
      */
     public function addTimes(User $user, Contractor $contractor) : bool {
 
-        if($user->hasRole(Roles::goodfood->value)) {
-            return true;
-        }
-        
-        if($user->id === $contractor->owned_by) {
-            return true;
-        }
-
-        return false;        
+        return $this->canBeDoByOwner($user, $contractor);
 
     }
 
@@ -112,15 +120,7 @@ class ContractorPolicy
      * @return boolean
      */
     public function updateRecipe(User $user, Contractor $contractor) : bool {
-        if($user->hasRole(Roles::goodfood->value)) {
-            return true;
-        }
-        
-        if($user->id === $contractor->owned_by) {
-            return true;
-        }
-
-        return false;
+        return $this->canBeDoByOwner($user, $contractor);
     }
 
     /**
@@ -138,6 +138,25 @@ class ContractorPolicy
         }
         
         if($user->id === $contractor->owned_by && !$recipe->star) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Si l'utilisateur courant peut effectuer l'action par le owner
+     *
+     * @param User $user
+     * @param Contractor $contractor
+     * @return boolean
+     */
+    protected function canBeDoByOwner(User $user, Contractor $contractor) : bool {
+        if($user->hasRole(Roles::goodfood->value)) {
+            return true;
+        }
+        
+        if($user->id === $contractor->owned_by) {
             return true;
         }
 

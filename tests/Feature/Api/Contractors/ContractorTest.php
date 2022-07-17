@@ -66,6 +66,70 @@ class ContractorTest extends ApiCase
     }
 
     /**
+     * Test la modification du contractor
+     *
+     * @group contractor
+     * @return void
+     */
+    public function test_update_contractor() : void {
+
+        $owner = $this->actingAsContractor();
+
+        $address = Address::factory()->create();
+
+        $contractor = Contractor::factory()->create([
+            'owned_by' => $owner->id
+        ]);
+
+        $email = Email::factory()->create();
+
+        $response = $this->putJson(self::BASE_PATH . "/{$contractor->id}", [
+            'name' => 'ContractorUpdate09',
+            'address_id' => $address->id,
+            'email' => $email->email,
+            'max_delivery_radius' => 25,
+            'phone' => "0909090909",
+            'owned_by' => $owner->id
+        ]);
+
+        $response->assertNoContent();
+
+        $this->assertDatabaseHas('contractors', [
+            'id' => $contractor->id,
+            'name' => "ContractorUpdate09",
+            'address_id' => $address->id,
+            'email_id' => $email->id,
+            'max_delivery_radius' => 25,
+            'owned_by' => $owner->id
+        ]);
+
+    }
+
+    /**
+     * Test la suppression d'une franchise
+     *
+     * @group contractor
+     * @return void
+     */
+    public function test_delete_contractor() : void {
+
+        $contractor = Contractor::factory()->create();
+
+        $this->actingAsGoodFood();
+
+        $response = $this->delete(self::BASE_PATH . "/{$contractor->id}");
+
+        $response->assertNoContent();
+
+        $this->assertSoftDeleted('contractors', [
+            'id' => $contractor->id
+        ]);
+
+    }
+
+
+
+    /**
      * Test qu'une franchise ne peut être détenu que par un franchisé ou un goodfood
      *
      * @group contractor

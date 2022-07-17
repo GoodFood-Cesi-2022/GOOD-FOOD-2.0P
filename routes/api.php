@@ -141,6 +141,9 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
 
         Route::group(['prefix' => '{contractor}'], function() {
 
+            Route::put('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'update']);
+            Route::delete('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'delete']);
+
             Route::group(['prefix' => 'recipes'], function() {
                 Route::get('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'getRecipes']);
                 Route::post('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'addRecipes']);
