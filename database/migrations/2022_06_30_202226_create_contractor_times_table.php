@@ -43,7 +43,7 @@ return new class extends Migration
             $table->string('sunday_lunch_closed_at')->nullable();
             $table->string('sunday_night_opened_at')->nullable();
             $table->string('sunday_night_closed_at')->nullable();
-            $table->foreignId('contractor_id')->constrained('contractors');
+            $table->foreignId('contractor_id')->constrained('contractors')->onDelete('cascade');
             $table->timestamps();
         });
     }

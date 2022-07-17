@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('contractor_recipes', function (Blueprint $table) {
             $table->id();
             $table->decimal('price');
-            $table->foreignId('recipe_id')->constrained('recipes');
-            $table->foreignId('contractor_id')->constrained('contractors');
+            $table->foreignId('recipe_id')->constrained('recipes')->onDelete('cascade');
+            $table->foreignId('contractor_id')->constrained('contractors')->onDelete('cascade');
             $table->timestamps();
         });
     }
