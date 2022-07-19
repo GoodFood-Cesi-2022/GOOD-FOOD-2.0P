@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Contractors\Orders\OrdersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -159,6 +160,22 @@ Route::group(['middleware' => ["auth:api", "verified"]], function() {
                 Route::get('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'getTimes']);
                 Route::post('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'addTimes']);
                 Route::put('', [\App\Http\Controllers\Api\Contractors\ContractorController::class, 'updateTimes']);
+            });
+
+
+            Route::group(['prefix' => 'orders'], function() {
+
+                Route::post('', [\App\Http\Controllers\Api\Contractors\Orders\OrdersController::class, 'create']);
+                Route::get('', [\App\Http\Controllers\Api\Contractors\Orders\OrdersController::class, 'all']);
+
+                Route::group(['prefix' => '{order}'], function() {
+
+                    Route::get('', [\App\Http\Controllers\Api\Contractors\Orders\OrdersController::class, 'retreive']);
+                    Route::post('accept', [\App\Http\Controllers\Api\Contractors\Orders\OrdersController::class, 'accept']);
+                    Route::post('reject', [\App\Http\Controllers\Api\Contractors\Orders\OrdersController::class, 'reject']);
+
+                });
+        
             });
 
 

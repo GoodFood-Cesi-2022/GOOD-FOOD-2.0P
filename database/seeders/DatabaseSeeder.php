@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             IngredientTypeSeeder::class,
             RecipeTypeSeeder::class,
+            VatCodeSeeder::class,
+            OrderStateSeeder::class,
         ]);
     }
 }

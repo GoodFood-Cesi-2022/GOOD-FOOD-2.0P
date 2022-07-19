@@ -145,6 +145,28 @@ class ContractorPolicy
     }
 
     /**
+     * Determine si l'utilisateur courant peut voir les commande
+     *
+     * @param User $user
+     * @param Contractor $contractor
+     * @return boolean
+     */
+    public function viewOrders(User $user, Contractor $contractor) : bool {
+
+        if($user->hasRole(Roles::goodfood->value)) {
+            return true;
+        }
+
+        if($user->hasRole(Roles::contractor->value) && $user->id === $contractor->owned_by) {
+            return true;
+        }
+
+        return false;
+
+    } 
+
+
+    /**
      * Si l'utilisateur courant peut effectuer l'action par le owner
      *
      * @param User $user
