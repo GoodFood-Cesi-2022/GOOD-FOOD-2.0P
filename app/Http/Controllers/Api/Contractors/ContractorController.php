@@ -46,6 +46,14 @@ class ContractorController extends Controller
         $contractor->ownedBy()->associate($request->owned_by);
 
         $contractor->save();
+        
+        $recipes = Recipe::whereStar(true)->get();
+        
+        $contractor->recipes()->sync($recipes->mapWithKeys(function(Recipe $recipe) {
+            return [$recipe->id => [
+                'price' => $recipe->base_price
+            ]];
+        }));
 
         return new ContractorResource($contractor);
 
