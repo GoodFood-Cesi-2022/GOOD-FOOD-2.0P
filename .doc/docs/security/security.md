@@ -34,11 +34,7 @@ Les clés secretes des clients sont hachées dans tous les environnements, sauf 
 
 ### Scopes
 
-Liste des scopes de l'API
-
-|Scope|Access|
-|-|-|
-|`api`|Accès à tous les endpoints offert par l'API|
+Aucun scope pour l'API, l'ensemble des routes sont accessibles pour tous les clients.
 
 
 ### Clients 
