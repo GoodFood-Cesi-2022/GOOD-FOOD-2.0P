@@ -8,8 +8,13 @@ nav:
     - Conteneurs: services/services.md
     - Installation: services/install.md
     - Configuration: services/conf.md
+    - Modes: app/application.md
     - Mise à jour: services/update.md
     - OSM: services/osm.md
+  - Base de données:
+    - Fonctionnelle: databases/core.md
+    - Authentification: databases/auth.md
+    - Versions: databases/versions.md
   - Développement:
     - API: debug/postman.md
     - Débuggage: debug/telescope.md

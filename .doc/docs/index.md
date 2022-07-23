@@ -10,8 +10,8 @@ Cette documentation est à destination des personnes qui vont intervenir sur le 
 
 Vous pouvez suivre l'ordre proposé ci dessous ou vous balader sur les différentes pages de la documentation.
 
-1. [Services](/services/services)
-2. [Installation des services](/services/install)
+1. [Services](./services/services)
+2. [Installation des services](./services/install)
 
 
 ## Liens externes
