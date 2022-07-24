@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
+
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +13,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        \App\Models\User::class => \App\Policies\UserPolicy::class,
+        \App\Models\IngredientType::class => \App\Policies\IngredientTypePolicy::class,
+        \App\Models\Ingredient::class => \App\Policies\IngredientPolicy::class,
     ];
 
     /**
@@ -25,6 +27,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Client secret are hased in database
+        if(!$this->app->environment('local')) {
+            \Laravel\Passport\Passport::hashClientSecrets();
+        }
+
+        if(!$this->app->routesAreCached()) {
+            \Laravel\Passport\Passport::routes();
+        }
     }
 }

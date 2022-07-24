@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/dashboard';
 
     /**
      * The controller namespace for the application.
@@ -26,7 +26,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string|null
      */
-    // protected $namespace = 'App\\Http\\Controllers';
+    protected $namespace = 'App\\Http\\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -47,6 +47,38 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
+
+
+        // Bindings
+        Route::bind('user_id', function($value) {
+            return $value === "current" ? auth()->user() : \App\Models\User::whereId($value)->firstOrFail();
+        });
+
+        Route::bind('role', function($value) {
+            return is_numeric($value) ? \App\Models\Role::findOrFail($value) : \App\Models\Role::whereCode($value)->firstOrFail();
+        });
+
+        Route::bind('ingredient', function($value) {
+            return \App\Models\Ingredient::findOrFail($value);
+        });
+
+        Route::bind('recipe', function($value) {
+            return \App\Models\Recipe::findOrFail($value);
+        });
+
+        Route::bind('picture', function($value) {
+            return \App\Models\File::whereUuid($value)->firstOrFail();
+        });
+
+        Route::bind('address', function($value) {
+            return \App\Models\Address::whereId($value)->firstOrFail();
+        });
+
+        Route::bind('contractor', function($value) : \App\Models\Contractor {
+            return \App\Models\Contractor::whereId($value)->firstOrFail();
+        });
+
+
     }
 
     /**

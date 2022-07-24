@@ -10,17 +10,19 @@ Liste des conteneurs pour gérer les services de l'application.
 |db|5432|5432|`SQL`|Base de données PostgreSQL pour les données de l'application|PROD|
 |cache||6379|`TCP`|Cache de l'API pour les données temporaires et pour la sauvegarde des jobs|PROD|
 |nginx|8080|80|`HTTP`| Front pour contacter le service de l'API|PROD|
+|nginx|8085|8001|`HTTP`| Front pour contacter le service de l'authentification|PROD|
+|nginx|8086|8002|`HTTP`| Front pour contacter le CDN et récupérer les fichiers|PROD|
 |search||8108|`HTTP`| Service pour l'indexation et la recherche de résultat|PROD|
 |mailhog|8025,1025|8025,1025|`HTTP`,`SMTP`|Faker de boite mail pour tester les mails envoyés de l'application|DEV|
 |doc|8009|8000|`HTTP`|Documentation [MKdocs Material](https://squidfunk.github.io/mkdocs-material/) pour la documentation technique|DEV|
-|pgadmin|5050|80|`HTTP`|Interface pour gérer la base de données depuis une application web. [configuration](/services/PGADMIN)|PROD|
 |doctum|8010|80|`HTTP`|Documentation API pour les références DocBlock|DEV|
+|redoc|8011|80|`HTTP`|Conteneur pour visualiser les spécifications de l'API au format OPEN API V3|DEV|
 
 ### Réseau
 
 L'ensemble des conteneurs sont sur le réseau `goodfood` pour qu'ils puissent communiquer entre eux.
 
-!!! danger "Exception pour le conteneur de doc, doctum"
+!!! danger "Exception pour le conteneur de doc, doctum, redoc"
 
 ### Stockage
 
@@ -31,7 +33,7 @@ La base de données possède un volume fixe ainsi que le service search et le ca
 
 ## Conteneurs Personnalisés
 
-### API
+### API (app laravel)
 
 Le conteneur de l'API est personnalisé. Il est construit à partir du fichier `./Dockerfile`. Il est basé sur l'image `php:8.1-fpm`. 
 
@@ -45,7 +47,7 @@ Pour build l'image
 docker-compose build api
 ```
 
-### DOC
+### DOC (mkdocs)
 
 !!! tip "Par défaut le site est en hot-relive"
     Quand vous mettez à jour la documentation le site se recharge automatiquement.
@@ -53,10 +55,17 @@ docker-compose build api
 La configuration est disponible dans le fichier `./doc/Dockerfile`. Pour l'instant il est vide mais il sera peut-être nécessaire de rajouter des extensions ou des étapes de constuction.
 
 
-### DOC API REFERENCES
+### DOC API REFERENCES (doctum)
 
 Cette documentation est générée par [DOCTUM](https://github.com/code-lts/doctum). Cette documentation contient les références des `DocBlock` contenu dans le dossier `app` du dépôt.
 
 Elle est accessible sur [localhost:8010](http://localhost:8010)
 
 La configuration est disponible dans le dichier `./doctum/Dockerfile`
+
+
+### DOC API SPECIFICATIONS (redoc)
+
+Documentation pour convertir en une page HTML statique et voir les spécifications de l'API définit au format OPENAPI V3. Accessible sur [localhost:8011](http://localhost:8011)
+
+La configuration du conteneur est disponible `./openapi/Dockerfile`

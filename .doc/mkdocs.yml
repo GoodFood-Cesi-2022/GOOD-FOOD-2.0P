@@ -8,11 +8,24 @@ nav:
     - Conteneurs: services/services.md
     - Installation: services/install.md
     - Configuration: services/conf.md
+    - Modes: app/application.md
+    - Mise à jour: services/update.md
+    - OSM: services/osm.md
+  - Base de données:
+    - Fonctionnelle: databases/core.md
+    - Authentification: databases/auth.md
+    - Versions: databases/versions.md
   - Développement:
     - API: debug/postman.md
     - Débuggage: debug/telescope.md
+  - Sécurité: 
+    - Authentification: security/security.md
+    - Permissions: security/permissions.md
+  - Fichiers: files/file.md
   - Test:
     - PHPUnit: test/phpunit.md
+  - API: redoc/redoc-static.html
+  - Namespaces: doctum/index.html
 
 theme:
   name: material

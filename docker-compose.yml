@@ -1,16 +1,44 @@
 version: "3.7"
 services:
+  cdn:
+    build:
+      args:
+        user: www
+        uid: 1000
+      context: ./
+      dockerfile: ./.docker-compose/api/Dockerfile
+    image: goodfood-cdn
+    container_name: goodfood-cdn
+    working_dir: /var/www
+    volumes: 
+      - ./:/var/www
+    networks:
+      - goodfood
+  oauth:
+    build:
+      args:
+        user: www
+        uid: 1000
+      context: ./
+      dockerfile: ./.docker-compose/api/Dockerfile
+    image: goodfood-oauth-provider
+    container_name: goodfood-oauth-provider
+    working_dir: /var/www
+    volumes: 
+      - ./:/var/www
+    networks:
+      - goodfood
   api:
     build:
       args:
         user: www
         uid: 1000
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: ./.docker-compose/api/Dockerfile
     image: goodfood
     container_name: goodfood-api
     restart: unless-stopped
-    working_dir: /var/www/
+    working_dir: /var/www
     volumes:
       - ./:/var/www
     networks:
@@ -37,6 +65,25 @@ services:
       test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
       retries: 3
       timeout: 5s
+  dbtest:
+    image: postgres
+    container_name: goodfood-dbtest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DATABASE: ${DB_DATABASE}
+      POSTGRES_ROOT_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: postgres
+    volumes:
+      - ./.docker-compose/postgresql:/docker-entrypoint-initdb.d
+    networks:
+      - goodfood
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
+      retries: 3
+      timeout: 5s
   nginx:
     build:
       context: ./
@@ -49,6 +96,8 @@ services:
     restart: unless-stopped
     ports:
       - 8080:80
+      - 8085:8001
+      - 8090:8002
     volumes:
       - ./:/var/www
     networks:
@@ -104,21 +153,19 @@ services:
     restart: unless-stopped
     ports:
       - 8010:80
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: goodfood-pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@admin.admin"
-      PGADMIN_DEFAULT_PASSWORD: "admin"
+  redoc:
+    build: 
+      context: ./
+      dockerfile: ./.openapi/Dockerfile
+    image: goodfood-redoc
+    container_name: goodfood-redoc
     ports:
-      - 5050:80
-    networks:
-      - goodfood
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - 8011:80
+
 
 networks:
   goodfood:
+    name: goodfood
     driver: bridge
 
 volumes:
@@ -127,6 +174,4 @@ volumes:
   db-data:
     driver: local
   cache-data:
-    driver: local
-  pgadmin-data:
     driver: local

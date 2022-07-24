@@ -43,6 +43,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Running Mode Key
+    |--------------------------------------------------------------------------
+    |
+    | Determine the cache key name to retreive app mode running
+    |
+    */
+
+    'mode' => env('APP_MODE_KEY', 'APP_MODE_KEY'),
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
     |
@@ -55,6 +67,12 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
+
+    'front_url' => env('FRONT_URL', 'http://localhost'),
+
+    'api_url' => env('API_URL', 'http://localhost'),
+
+    'cdn_url' => env('CDN_URL', 'http://localhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -175,6 +193,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
+        EloquentFilter\ServiceProvider::class,
+        App\Providers\OSMServiceProvider::class,
 
     ],
 
@@ -230,6 +250,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'OSM' => \App\Facades\OSMFacade::class,
 
     ],
 

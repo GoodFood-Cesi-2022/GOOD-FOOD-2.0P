@@ -10,12 +10,12 @@ Cette documentation est à destination des personnes qui vont intervenir sur le 
 
 Vous pouvez suivre l'ordre proposé ci dessous ou vous balader sur les différentes pages de la documentation.
 
-1. [Services](/services/services)
-2. [Installation des services](/services/install)
+1. [Services](./services/services)
+2. [Installation des services](./services/install)
 
 
 ## Liens externes
 
-* [Documentation Laravel](https://laravel.com/docs/8.x)
+* [Documentation Laravel 9](https://laravel.com/docs/9.x)
 * [Documentation Docker](https://www.docker.com/)
 * [Docker Desktop Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
