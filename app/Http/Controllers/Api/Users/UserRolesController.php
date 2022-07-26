@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleCollection;
-use App\Http\Requests\DetachRoleRequest;
 use App\Http\Requests\Users\AddRoleRequest;
+use App\Http\Requests\Users\DetachRoleRequest;
 
 class UserRolesController extends Controller {
 
